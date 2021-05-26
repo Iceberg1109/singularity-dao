@@ -1,0 +1,43 @@
+.navbar {
+  padding: 1.5em;
+
+  .nav-link {
+    cursor: pointer;
+  }
+
+  .btn-wallet {
+    border-radius: 40px;
+
+    .btn-inner--text {
+      font-size: 0.83em;
+    }
+  }
+
+  .input-group {
+    border: 1px solid #d8d8d8;
+    box-shadow: none;
+  }
+}
+
+.nav-footer {
+  .nav-link {
+    display: inline-block;
+  }
+}
+
+.container-wallet {
+  &:hover {
+    background-color: rgba(195, 195, 195, 0.14);
+  }
+
+  cursor: pointer;
+}
+
+.header-brand {
+  max-width: 150px;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+  }
+}
