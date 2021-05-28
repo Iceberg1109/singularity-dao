@@ -17,14 +17,10 @@ const ForgePage = () => {
         <br /> eiusmod tempor incididunt ut labore et dolore magna aliqua.
       </Typography>
       <div className="py-4 mt-5">
-        <Typography color="text1" size={32} weight={600}>
-          Forge basket
-        </Typography>
+
         <Row className="my-3">
           <Col lg={4}>
-            <ForgeBasket   onClick={() =>
-              router.push({ pathname: `swap`})
-            }/>
+            <ForgeBasket   />
           </Col>
           <Col lg={4}>
             <ForgeBasket />

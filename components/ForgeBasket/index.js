@@ -2,6 +2,7 @@ import { Card, Col, Progress, Row } from "reactstrap";
 import styled from "styled-components";
 import { OutlinedButton } from "../Buttons";
 import Typography from "../Typography";
+import { useRouter } from "next/router";
 
 const CustomProgress = styled(Progress)`
   .progress-bar {
@@ -13,13 +14,15 @@ const CustomProgress = styled(Progress)`
 `;
 
 const ForgeBasket = ({ data }) => {
+    const router = useRouter();
+
   const DepositTypography = () => (
     <div className="d-flex justify-content-between">
       <Typography color="text2" size={14} weight={400}>
-        ETH deposited
+        SDAO LP deposited
       </Typography>
       <Typography color="text1" size={14} weight={600}>
-        0.0000ETH
+        0.0000 LP
       </Typography>
     </div>
   );
@@ -49,17 +52,13 @@ const ForgeBasket = ({ data }) => {
             18%
           </Typography>
         </div>
-        <CustomProgress
-          className="progress-xs mb-0"
-          color="success"
-          max="100"
-          value={18}
-        />
       </div>
       <DepositTypography />
       <DepositTypography />
       <div className="text-align-center mt-3">
-        <OutlinedButton color="interactive2">Deposit / Withdraw</OutlinedButton>
+        <OutlinedButton color="interactive2" onClick={() =>
+              router.push({ pathname: `swap`})
+            }>Swap/ Add Liquidity/ Stake</OutlinedButton>
       </div>
     </Card>
   );
