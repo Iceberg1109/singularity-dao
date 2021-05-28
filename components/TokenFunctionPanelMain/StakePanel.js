@@ -88,8 +88,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
       signer
     );
 
-    const tx = await stakingContract.withdraw(
-      web3.utils.toWei("1", "gwei"),
+    const tx = await stakingContract.getReward(
       {
         gasPrice: web3.utils.toWei("60", "gwei"),
       }
