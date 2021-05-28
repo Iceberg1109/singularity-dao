@@ -20,13 +20,13 @@ const ForgePage = () => {
 
         <Row className="my-3">
           <Col lg={4}>
-            <ForgeBasket   />
+            <ForgeBasket  title="SDAO/USDT Pool" />
           </Col>
           <Col lg={4}>
-            <ForgeBasket />
+            <ForgeBasket title="SDAO/WETH Pool" />
           </Col>
           <Col lg={4}>
-            <ForgeBasket />
+            <ForgeBasket title="AGI/SDAO Pool" />
           </Col>
         </Row>
       </div>

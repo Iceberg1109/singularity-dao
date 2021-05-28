@@ -13,7 +13,7 @@ const CustomProgress = styled(Progress)`
   margin-bottom: 10px !important;
 `;
 
-const ForgeBasket = ({ data }) => {
+const ForgeBasket = ({ data,title }) => {
     const router = useRouter();
 
   const DepositTypography = () => (
@@ -32,14 +32,14 @@ const ForgeBasket = ({ data }) => {
       <Row>
         <Col className="col-auto">
           <img
-            src="https://singularitydao.ai/wp-content/uploads/2020/11/graphAsset-11.png"
+            src="https://www.singularitydao.ai/file/2021/04/singularitydao-image.png"
             width={40}
             height={40}
           />
         </Col>
         <Col>
           <Typography color="text1" size={24} weight={600}>
-            Uniswap Pool
+            {title}
           </Typography>
         </Col>
       </Row>
