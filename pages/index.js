@@ -1,101 +1,43 @@
-import React, { useEffect } from "react";
-// reactstrap components
-import { Card, Container, Row, Col } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
+import { useRouter } from "next/router";
+import { PropTypes } from "prop-types";
 
-// layout for this page
 import Admin from "layouts/Admin.js";
+import Typography from "../components/Typography";
+import ForgeBasket from "../components/ForgeBasket";
 
-import FeaturedSet from "../components/FeaturedSet";
-import SetsTable from "../components/SetsTable";
-import Typography, { GradientTypography } from "components/Typography";
-import styled from "styled-components";
-import { client } from "../apollo/client";
-import { INDEX_POOLS } from "../apollo/queries";
-
-const StepDescription = styled(Typography)`
-  font-size: 14px;
-  padding-left: 6px;
-`;
-
-const StepTitle = styled(GradientTypography)`
-  font-size: 18px;
-  color: #ffff;
-  font-weight: 600;
-  margin-bottom: 15px;
-`;
-
-const DetailTitle = styled(GradientTypography)`
-  font-size: 18px;
-  color: #ffff;
-  font-weight: 600;
-  margin-bottom: 15px;
-`;
-
-const SubTitle = styled(Typography)`
-  font-size: 20px;
-  color: #ffff;
-  font-weight: 600;
-`;
-
-function Dashboard({ pools }) {
+const ForgePage = () => {
   return (
-    <Container className="my-4" >
-      {pools && (
-        <div>
-          <h2>Featured Sets</h2>
-          <Row className="p-2 mb-4">
-            {pools.slice(0, 3).map((pool) => (
-              <Col lg={4} key={pool.id}>
-                <FeaturedSet pool={pool} />
-              </Col>
-            ))}
-          </Row>
-        </div>
-      )}
-      {pools && (
-        <div>
-          <h2>All Sets</h2>
-          <Row className="p-2" >
-            <Col>
-              <Card >
-                <SetsTable pools={pools} />
-              </Card>
-            </Col>
-          </Row>
-        </div>
-      )}
-
-      <Card
-        className="justify-content-center"
-        style={{
-          background: "linear-gradient(90deg, #4100CA 0%, #224BDB 100%)",
-          height: "400px",
-        }}
-      ></Card>
+    <Container className="my-4">
+      <Typography color="text1" size={32} weight={600}>
+        Staking Portal
+      </Typography>
+      <Typography color="gray80" size={14}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        <br /> eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </Typography>
+      <div className="py-4 mt-5">
+        <Typography color="text1" size={32} weight={600}>
+          Forge basket
+        </Typography>
+        <Row className="my-3">
+          <Col lg={4}>
+            <ForgeBasket   onClick={() =>
+              router.push({ pathname: `swap`})
+            }/>
+          </Col>
+          <Col lg={4}>
+            <ForgeBasket />
+          </Col>
+          <Col lg={4}>
+            <ForgeBasket />
+          </Col>
+        </Row>
+      </div>
     </Container>
   );
-}
+};
 
-export async function getServerSideProps() {
-  const res = await client.query({
-    query: INDEX_POOLS,
-  });
+ForgePage.layout = Admin;
 
-  const { data } = res;
-
-  if (!data) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: {
-      pools: data.indexPools,
-    },
-  };
-}
-
-Dashboard.layout = Admin;
-
-export default Dashboard;
+export default ForgePage;
