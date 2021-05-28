@@ -79,7 +79,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
   return (
     <>
       <Navbar
-        className="navbar-horizontal navbar-main"
+        className="navbar-horizontal navbar-main bg-white"
         expand="lg"
         id="navbar-main"
       >

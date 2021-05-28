@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { Row, Card } from "reactstrap";
 import styled from "styled-components";
- import BuyPanel from "./BuyPanel";
+import BuyPanel from "./BuyPanel";
 import MintPanel from "components/MintOptions";
-import AddLiquidityPanel from "./AddLiquidityPanel"
-import ChartPanel from "./ChartPanel"
+import AddLiquidityPanel from "./AddLiquidityPanel";
+import ChartPanel from "./ChartPanel";
 // import BurnPanel from "./BurnPanel";
 // import SwapPanel from "./SwapPanel";
 
 const MainCard = styled(Card)`
-  align-items: center;
-  padding: 70px;
-  width:80vh;
-  color: #fffff;
-  background-color:#212121;
+  padding: 40px;
+  max-width: 600px;
+  color: #ffffff;
   background-clip: padding-box;
   height: 85%;
-  margin: 0;
+  margin-left: auto;
+  margin-right: auto;
   &:before {
     content: "";
     position: absolute;
@@ -41,9 +40,9 @@ const TokenFunctionTab = styled.div`
   padding: 4px 10px;
   font-size: 16px;
   font-weight: 600;
-  width:120px;
-  text-align:center;
-  height:35px;
+  width: 120px;
+  text-align: center;
+  height: 35px;
   &:first-child {
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -62,14 +61,14 @@ const TokenFunctionTab = styled.div`
 const TokenFunctionPanel = () => {
   const [activeTab, setActiveTab] = useState(0);
 
-  
   return (
-    <div style={{backgroundColor:'#000000'}}>
-      <Row className="justify-content-center" style={{marginBottom:'5vh'}}>
+    <>
+      <Row className="justify-content-center" style={{ marginBottom: "5vh" }}>
         <TokenFunctionTab
           active={activeTab === 0}
           onClick={() => setActiveTab(0)}
-        >Swap
+        >
+          Swap
         </TokenFunctionTab>
         <TokenFunctionTab
           active={activeTab === 1}
@@ -84,33 +83,26 @@ const TokenFunctionPanel = () => {
           Chart
         </TokenFunctionTab>
       </Row>
-    <MainCard>
-    
-       <Row className="justify-content-center">
-
-       {activeTab === 0 && <BuyPanel type={true} />}
-       {activeTab === 1 && <AddLiquidityPanel type={true} />}
-       {activeTab === 2 && <ChartPanel type={true} />}
-        
-        </Row>
-
-    </MainCard>
-    </div>
+      <MainCard>
+        {activeTab === 0 && <BuyPanel type={true} />}
+        {activeTab === 1 && <AddLiquidityPanel type={true} />}
+        {activeTab === 2 && <ChartPanel type={true} />}
+      </MainCard>
+    </>
   );
 };
 
-
-        // <TokenFunctionTab
-        //   active={activeTab === 2}
-        //   onClick={() => setActiveTab(2)}
-        // >
-        //   Stake
-        // </TokenFunctionTab>
-        // <TokenFunctionTab
-        //   active={activeTab === 3}
-        //   onClick={() => setActiveTab(3)}
-        // >
-        //   Swap
-        // </TokenFunctionTab>
+// <TokenFunctionTab
+//   active={activeTab === 2}
+//   onClick={() => setActiveTab(2)}
+// >
+//   Stake
+// </TokenFunctionTab>
+// <TokenFunctionTab
+//   active={activeTab === 3}
+//   onClick={() => setActiveTab(3)}
+// >
+//   Swap
+// </TokenFunctionTab>
 
 export default TokenFunctionPanel;

@@ -1,6 +1,6 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 // reactstrap components
-import { Card, Container, Row, Col ,Input, Modal, Button} from "reactstrap";
+import { Card, Container, Row, Col, Input, Modal, Button } from "reactstrap";
 
 // layout for this page
 import Admin from "layouts/Admin.js";
@@ -9,11 +9,11 @@ import Typography, { GradientTypography } from "../components/Typography";
 import { OutlinedButton } from "../components/Buttons";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import {useUser} from 'components/UserContext';
-import web3 from 'web3';
-import {ethers} from 'ethers';
+import { useUser } from "components/UserContext";
+import web3 from "web3";
+import { ethers } from "ethers";
 import classnames from "classnames";
-import AirdropABI from '../assets/constants/abi/AirdropABI.json';
+import AirdropABI from "../assets/constants/abi/AirdropABI.json";
 import TokenFunctionPanel from "../components/TokenFunctionPanelMain/index.js";
 
 const GradientRow = styled(Row)`
@@ -40,7 +40,6 @@ const StepDescription = styled(Typography)`
   padding-left: 6px;
 `;
 
-
 const SubCard = styled(Card)`
   padding: 32px 24px;
   margin-bottom: 0px;
@@ -60,147 +59,130 @@ const AddressInput = styled(Input)`
 let minABI = [
   // balanceOf
   {
-    "constant":true,
-    "inputs":[{"name":"_owner","type":"address"}],
-    "name":"balanceOf",
-    "outputs":[{"name":"balance","type":"uint256"}],
-    "type":"function"
+    constant: true,
+    inputs: [{ name: "_owner", type: "address" }],
+    name: "balanceOf",
+    outputs: [{ name: "balance", type: "uint256" }],
+    type: "function",
   },
   // decimals
   {
-    "constant":true,
-    "inputs":[],
-    "name":"decimals",
-    "outputs":[{"name":"","type":"uint8"}],
-    "type":"function"
-  }, 
+    constant: true,
+    inputs: [],
+    name: "decimals",
+    outputs: [{ name: "", type: "uint8" }],
+    type: "function",
+  },
   {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "_spender",
-                "type": "address"
-            },
-            {
-                "name": "_value",
-                "type": "uint256"
-            }
-        ],
-        "name": "approve",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
+    constant: false,
+    inputs: [
+      {
+        name: "_spender",
+        type: "address",
+      },
+      {
+        name: "_value",
+        type: "uint256",
+      },
+    ],
+    name: "approve",
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+      },
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ];
 
-    const claimers = [{"wallet":"0xA5a9Ac3cF732DD93481E497cdBfD903aD7CdE543","reward":"1000"}];
+const claimers = [
+  { wallet: "0xA5a9Ac3cF732DD93481E497cdBfD903aD7CdE543", reward: "1000" },
+];
 
+const getreward = async (account) => {
+  const rewardamount = claimers.find((claimer) => claimer.wallet === account);
 
-    const getreward = async (account) => {
+  console.log(rewardamount);
 
-    const rewardamount = claimers.find(claimer => claimer.wallet === account);
-    
-    console.log(rewardamount);
+  if (rewardamount) {
+    return rewardamount.reward;
+  } else {
+    return null;
+  }
+};
 
-      if(rewardamount){
-
-         return rewardamount.reward
-      
-      } else {
-
-        return null;
-      }
-   
-    }
-
-  const DetailLabel = ({ name, value, isDetail = true, icon }) => (
-    <div
-      className={classnames(
-        {
-          "justify-content-center": !isDetail,
-        },
-        "d-flex"
-      )}
+const DetailLabel = ({ name, value, isDetail = true, icon }) => (
+  <div
+    className={classnames(
+      {
+        "justify-content-center": !isDetail,
+      },
+      "d-flex"
+    )}
+  >
+    <Typography
+      color="gray"
+      size={isDetail ? 14 : 18}
+      weight={400}
+      className="mr-2 flex-shrink-0"
     >
-      <Typography
-        color="gray"
-        size={isDetail ? 14 : 18}
-        weight={400}
-        className="mr-2 flex-shrink-0"
-      >
-        {name}:
-      </Typography>
-      {icon}
-      <GradientTypography
-        size={isDetail ? 14 : 18}
-        weight={400}
-        className="text-break text-align-left"
-      >
-        {value}
-      </GradientTypography>
-    </div>
-  );
-
+      {name}:
+    </Typography>
+    {icon}
+    <GradientTypography
+      size={isDetail ? 14 : 18}
+      weight={400}
+      className="text-break text-align-left"
+    >
+      {value}
+    </GradientTypography>
+  </div>
+);
 
 function SwapPage() {
-
-  const {library, account} = useUser();
+  const { library, account } = useUser();
   const router = useRouter();
 
-  const [eligible,seteligible] = useState(false);
+  const [eligible, seteligible] = useState(false);
   const [defaultModal, setDefaultModal] = useState(false);
   const [isError, setIsError] = useState(false);
   const [alreadyClaimedOpen, setAlreadyClaimedOpen] = useState(false);
   const [airdropSuccessOpen, setAirdropSucessOpen] = useState(false);
-  const [agibalance,setagibalance] = useState(0);
-  const [sdaoreward,setreward] = useState(0);
+  const [agibalance, setagibalance] = useState(0);
+  const [sdaoreward, setreward] = useState(0);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const signer = await library.getSigner(account);
 
+      const agitoken = new ethers.Contract(
+        "0xdce099640a3343497e0dd0fc9b99d1b9dda2d758",
+        minABI,
+        signer
+      );
 
-    useEffect(() => {
+      const bal = await agitoken.balanceOf(account);
 
-  const fetchData = async () => {
+      console.log(web3.utils.fromWei(bal.toString()));
 
-       const signer = await library.getSigner(account);
-    
-        const agitoken = new ethers.Contract(
-          "0xdce099640a3343497e0dd0fc9b99d1b9dda2d758",
-          minABI,
-          signer
-        );
+      setagibalance(web3.utils.fromWei(bal.toString()));
+      const reward = await getreward(account);
 
-        const bal = await agitoken.balanceOf(account);
-
-        console.log(web3.utils.fromWei(bal.toString()));
-
-        setagibalance(web3.utils.fromWei(bal.toString()));
-        const reward = await getreward(account);
-
-        if(bal > 0){
-        
+      if (bal > 0) {
         setreward(reward);
         seteligible(true);
-        
-        }else{
-         seteligible(false);
-
-        }
-
+      } else {
+        seteligible(false);
+      }
     };
 
-    fetchData();
+    // fetchData();
+  });
 
-  }, );
-
-
-    const claimTokens = async () => {
-
+  const claimTokens = async () => {
     const signer = await library.getSigner(account);
 
     const Dynaset = new ethers.Contract(
@@ -210,65 +192,48 @@ function SwapPage() {
     );
 
     try {
+      const tx = await Dynaset.claimdrop({
+        gasLimit: 210000,
+        gasPrice: web3.utils.toWei("120", "gwei"),
+      });
 
-    const tx = await Dynaset.claimdrop({gasLimit: 210000, gasPrice: web3.utils.toWei("120", "gwei")});
+      console.log(`Transaction hash: ${tx.hash}`);
 
-    console.log(`Transaction hash: ${tx.hash}`);
+      const receipt = await tx.wait();
 
-    const receipt = await tx.wait();
-      
-    console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-  
-    setAirdropSucessOpen(true);
+      console.log(`Transaction was mined in block ${receipt.blockNumber}`);
 
-    } catch (error){
-
+      setAirdropSucessOpen(true);
+    } catch (error) {
       console.log(error);
       setIsError(true);
-
     }
+  };
 
-  }
+  const calculaterewardTokens = async () => {
+    const signer = await library.getSigner(account);
 
+    const agitoken = new ethers.Contract(
+      "0xdce099640a3343497e0dd0fc9b99d1b9dda2d758",
+      minABI,
+      signer
+    );
 
-   const calculaterewardTokens = async () => {
+    const bal = await agitoken.balanceOf(account);
 
-        const signer = await library.getSigner(account);
-    
-        const agitoken = new ethers.Contract(
-          "0xdce099640a3343497e0dd0fc9b99d1b9dda2d758",
-          minABI,
-          signer
-        );
+    console.log(web3.utils.fromWei(bal.toString()));
 
-        const bal = await agitoken.balanceOf(account);
+    setagibalance(web3.utils.fromWei(bal.toString()));
+    const reward = await getreward(account);
 
-        console.log(web3.utils.fromWei(bal.toString()));
+    setreward(reward);
 
-        setagibalance(web3.utils.fromWei(bal.toString()));
-        const reward = await getreward(account);
-
-        setreward(reward);
-
-        seteligible(true);
-   }
-
-
+    seteligible(true);
+  };
 
   return (
-    <Container className="my-2" >
-      <Row className="mt-5 justify-content-between m-0">
-    
-      </Row>
-
-        <Row className="mt-3 justify-content-center m-0">
-          <Card>
-             <TokenFunctionPanel />
-           </Card>
-        </Row>
-   
-
-  
+    <Container className="my-2">
+      <TokenFunctionPanel />
     </Container>
   );
 }

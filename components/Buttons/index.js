@@ -53,11 +53,18 @@ DefaultButton.defaultProps = {
 };
 
 export const OutlinedButton = styled(Button)`
-  border: ${({ theme }) => ` 1px solid ${theme.color.default}`};
+  border: ${({ theme, color }) =>
+    ` 1px solid ${color ? theme.color[color] : theme.color.default}`};
   border-radius: 4px;
-  padding: 16px 30px;
-  color: ${({ theme }) => theme.color.default};
-  font-size: 16px;
+  padding: 10px 36px;
+  color: ${({ theme, color }) =>
+    color ? theme.color[color] : theme.color.default};
+  font-size: 14px;
+
+  &:hover {
+    color ${({ theme, color }) =>
+      color ? theme.color[color] : theme.color.default};
+  }
 `;
 
 OutlinedButton.defaultProps = {
