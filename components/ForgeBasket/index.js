@@ -39,7 +39,7 @@ const ForgeBasket = ({ data }) => {
         </Col>
         <Col>
           <Typography color="text1" size={24} weight={600}>
-            Index DEFI
+            Uniswap Pool
           </Typography>
         </Col>
       </Row>

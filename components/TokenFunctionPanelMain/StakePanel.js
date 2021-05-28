@@ -42,6 +42,7 @@ const FeeBlock = styled(Row)`
 `;
 
 const StakePanel = ({ type, token, dynasetid }) => {
+
   const [fromCurrency, setFromCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
   const [amounteth, setamountEth] = useState(0);
@@ -52,14 +53,13 @@ const StakePanel = ({ type, token, dynasetid }) => {
   const [amount, setAmount] = useState();
   const { library, account } = useUser();
 
-
-
   const stake = async () => {
+
     const signer = await library.getSigner(account);
 
     const stakingContract = new ethers.Contract(
       "0x1D37CEA62b127B42dd3D45d766289658aEcb6ea0",
-      StakingRewardABI.abi,
+      StakingRewardABI,
       signer
     );
 
@@ -84,7 +84,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
 
     const stakingContract = new ethers.Contract(
       "0x1D37CEA62b127B42dd3D45d766289658aEcb6ea0",
-      StakingRewardABI.abi,
+      StakingRewardABI,
       signer
     );
 
@@ -120,9 +120,12 @@ const StakePanel = ({ type, token, dynasetid }) => {
         <Typography size={14}>Current Reward:</Typography>
         <Typography size={14}>{fee.toFixed(2)} SDAO</Typography>
       </FeeBlock>
-
+      <Row>
       <GradientButton onClick={stake}>Stake</GradientButton>
       <GradientButton onClick={withdraw}>Claim</GradientButton>
+      <GradientButton onClick={withdraw}>Withdraw</GradientButton>
+      </Row>
+
     </>
   );
 };

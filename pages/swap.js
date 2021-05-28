@@ -220,7 +220,6 @@ function SwapPage() {
     );
 
     const bal = await agitoken.balanceOf(account);
-
     console.log(web3.utils.fromWei(bal.toString()));
 
     setagibalance(web3.utils.fromWei(bal.toString()));
