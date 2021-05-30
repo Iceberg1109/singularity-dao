@@ -74,18 +74,6 @@ const AddLiquidityPanel = ({ type,token,dynasetid }) => {
       signer
     );
 
-  //  const DAI = new Token(ChainId.ROPSTEN, dynasetid, 18);
-
-    const DYN = new Token(ChainId.ROPSTEN, "0x5e94577b949a56279637ff74dfcff2c28408f049" , 18);
-    
-      // note that you may want/need to handle this async code differently,
-      // for example if top-level await is not an option
-    const pair = await Fetcher.fetchPairData(DYN, WETH[DYN.chainId])
-
-    const route = new Route([pair], WETH[DYN.chainId])
-   
-    console.log(route.path);
-
 
     const deadline = Math.floor(Date.now()/1000)+60 *20;
     
@@ -95,12 +83,15 @@ const AddLiquidityPanel = ({ type,token,dynasetid }) => {
 
     const tx = await uniswap.addLiquidityETH(
         "0x5e94577b949a56279637ff74dfcff2c28408f049",
-        web3.utils.toWei(toCurrencyPrice.toString(),"gwei"),
+         web3.utils.toWei(toCurrencyPrice.toString(), "ether"),
         "0",
-        web3.utils.toWei(amounteth.toString(), "ether"),
-        "0x4C78b6566864Ae6304c2c2A4c43B74DAFaAc167E",
+        "0",
+        account,
         deadline,
-        {gasPrice: web3.utils.toWei("120", "gwei")}
+        {
+          gasLimit: web3.utils.toWei("30000", "wei"),
+          gasPrice: web3.utils.toWei("7000", "gwei"),
+        value:web3.utils.toWei(amounteth.toString())}
       );
 
   //     address 0x5e94577b949a56279637ff74dfcff2c28408f049,
@@ -135,9 +126,7 @@ const AddLiquidityPanel = ({ type,token,dynasetid }) => {
         </Typography>
       )}
 
-
       <CurrencyInputPanelSDAO balance={toCurrencyPrice} currency={token} label="To" />
-
 
       <GradientButton onClick={buy}>Add Liquidity {token}</GradientButton>
     </>
