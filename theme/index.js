@@ -43,8 +43,17 @@ export function colors(darkMode) {
     danger: "#F5365C",
     interactive2: darkMode ? "#00E6CC" : "#7800FF",
     interactive3: darkMode ? "#00E6CC" : "#7800FF",
+
     text1: darkMode ? "#F0F0F0" : "#212121",
     text2: darkMode ? "#6c6c6c" : "#6c6c6c",
+    text5: darkMode ? "#ABABAB" : "#ABABAB",
+
+    link1: darkMode ? "#00E6CC" : "#7800FF",
+    violet0: darkMode ? "#F3F1FF" : "#F3F1FF",
+
+    // default colors
+    text10: darkMode ? "#ffffff" : "#000000",
+    bg10: darkMode ? "#000000" : "#ffffff",
   };
 }
 

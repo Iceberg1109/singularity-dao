@@ -7,8 +7,7 @@ import {
   DropdownItem,
   UncontrolledDropdown,
 } from "reactstrap";
-import CurrencyInputPanel from "../../components/CurrencyInputPanelDropDown";
-import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelSDAO";
+import CurrencyInputPanel from "./CurrencyInputPanel";
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
 import Typography from "../Typography";
 
@@ -148,9 +147,14 @@ const BuyPanel = ({ type, token, dynasetid }) => {
         label="From"
       />
 
-      <CurrencyInputPanelSDAO
+      <div className="text-align-center">
+        <img src={arrowDownIcon} className="my-3" />
+      </div>
+
+      <CurrencyInputPanel
         balance={toCurrencyPrice}
         currency={token}
+        onChange={changeprice}
         label="To"
       />
 
@@ -161,7 +165,9 @@ const BuyPanel = ({ type, token, dynasetid }) => {
         <Typography size={14}>{fee.toFixed(2)} ETH</Typography>
       </FeeBlock>
 
-      <GradientButton onClick={buy}>Swap {token}</GradientButton>
+      <div className="d-flex justify-content-center">
+        <GradientButton onClick={buy}>Swap {token}</GradientButton>
+      </div>
     </>
   );
 };

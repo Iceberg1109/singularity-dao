@@ -59,12 +59,17 @@ const TokenFunctionTab = styled.div`
   }
 `;
 
+const TabContainer = styled(Row)`
+  justify-content: center;
+  margin-bottom: 5vh;
+`;
+
 const TokenFunctionPanel = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
     <>
-      <Row className="justify-content-center" style={{ marginBottom: "5vh" }}>
+      <TabContainer>
         <TokenFunctionTab
           active={activeTab === 0}
           onClick={() => setActiveTab(0)}
@@ -83,7 +88,7 @@ const TokenFunctionPanel = () => {
         >
           Stake
         </TokenFunctionTab>
-      </Row>
+      </TabContainer>
       <MainCard>
         {activeTab === 0 && <BuyPanel type={true} />}
         {activeTab === 1 && <AddLiquidityPanel type={true} />}
