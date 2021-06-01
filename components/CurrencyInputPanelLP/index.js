@@ -61,7 +61,7 @@ const CurrencyInputPanelSDAO = (props) => {
             src="https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg"
             style={{width:'15px'}}
           ></img>
-             LP
+             SDAO LP
         </DropdownToggle>
 
       </UncontrolledDropdown>

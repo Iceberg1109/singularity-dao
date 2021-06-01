@@ -46,14 +46,13 @@ const ForgeBasket = ({ data,title }) => {
       <div className="mt-2">
         <div className="d-flex justify-content-between">
           <Typography color="gray" size={12} weight={400}>
-            Label
+            APY
           </Typography>
           <Typography color="gray" size={12} weight={400}>
             18%
           </Typography>
         </div>
       </div>
-      <DepositTypography />
       <DepositTypography />
       <div className="text-align-center mt-3">
         <OutlinedButton color="interactive2" onClick={() =>
