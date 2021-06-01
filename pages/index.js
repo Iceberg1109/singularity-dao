@@ -26,7 +26,7 @@ const ForgePage = () => {
             <ForgeBasket title="SDAO/WETH Pool" />
           </Col>
           <Col lg={4}>
-            <ForgeBasket title="AGI/SDAO Pool" />
+            <ForgeBasket title="AGIX/SDAO Pool" />
           </Col>
         </Row>
       </div>
