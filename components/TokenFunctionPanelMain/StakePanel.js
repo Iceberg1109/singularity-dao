@@ -8,7 +8,7 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import CurrencyInputPanel from "../../components/CurrencyInputPanelDropDown";
-import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelSDAO";
+import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelLP";
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
 import Typography from "../Typography";
 
@@ -120,6 +120,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
         <Typography size={14}>Current Reward:</Typography>
         <Typography size={14}>{fee.toFixed(2)} SDAO</Typography>
       </FeeBlock>
+     
       <Row>
       <GradientButton onClick={stake}>Stake</GradientButton>
       <GradientButton onClick={withdraw}>Claim</GradientButton>

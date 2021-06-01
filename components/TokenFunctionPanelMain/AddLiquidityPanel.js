@@ -94,12 +94,7 @@ const AddLiquidityPanel = ({ type,token,dynasetid }) => {
         value:web3.utils.toWei(amounteth.toString())}
       );
 
-  //     address 0x5e94577b949a56279637ff74dfcff2c28408f049,
-  // uint web3.utils.toWei(toCurrencyPrice.toString(),"gwei"),
-  // uint 0,
-  // uint amounteth.toString(), "ether"),
-  // address 0x4C78b6566864Ae6304c2c2A4c43B74DAFaAc167E,
-  // deadline
+
 
     console.log(`Transaction hash: ${tx.hash}`);
 
