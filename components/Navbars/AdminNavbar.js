@@ -90,8 +90,26 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                 alt="SingularityDAO"
                 src={require("assets/img/brand/singdao-white.svg")}
               />
+
             </div>
           </Link>
+               <Nav className="mr-auto" navbar>
+              <NavItem>
+                <Link href="/pools">
+                  <NavLink href="#pablo">
+                    <span className="nav-link-inner--text">Add Liquidity</span>
+                  </NavLink>
+                </Link>
+              </NavItem>
+              <NavItem>
+                <Link href="/">
+                  <NavLink href="#pablo">
+                    <span className="nav-link-inner--text">Stake</span>
+                  </NavLink>
+                </Link>
+              </NavItem>
+      
+            </Nav>
           <button
             aria-controls="navbar-collapse"
             aria-expanded={false}
@@ -102,8 +120,10 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
             id="navbar-collapse"
             type="button"
           >
+
             <span className="navbar-toggler-icon" />
           </button>
+
           <UncontrolledCollapse
             className="navbar-custom-collapse"
             navbar
@@ -112,11 +132,13 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
             <div className="navbar-collapse-header">
               <Row>
                 <Col className="collapse-brand" xs="6">
+
                   <Link href="/admin/dashboard">
                     <img
                       alt="SingularityDAO"
                       src={require("assets/img/brand/singdao.svg")}
                     />
+
                   </Link>
                 </Col>
                 <Col className="collapse-close" xs="6">
@@ -145,7 +167,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                   className={classnames(
                     "pr-3 sidenav-toggler",
                     { active: sidenavOpen },
-                    { "sidenav-toggler-dark": theme === "dark" }
+                    { "sidenav-toggler-light": theme === "light" }
                   )}
                   onClick={toggleSidenav}
                 >
@@ -160,6 +182,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
               <NavItem className="d-sm-none">
                 <NavLink onClick={openSearch}>
                   <i className="ni ni-zoom-split-in" />
+
                 </NavLink>
               </NavItem>
 

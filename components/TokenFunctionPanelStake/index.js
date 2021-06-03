@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { Row, Card } from "reactstrap";
 import styled from "styled-components";
-import BuyPanel from "./BuyPanel";
-import MintPanel from "components/MintOptions";
-import AddLiquidityPanel from "./AddLiquidityPanel";
-import ChartPanel from "./ChartPanel";
 import StakePanel from "./StakePanel";
 // import BurnPanel from "./BurnPanel";
 // import SwapPanel from "./SwapPanel";
@@ -70,25 +66,16 @@ const TokenFunctionPanel = () => {
   return (
     <>
       <TabContainer>
-       <TokenFunctionTab
+
+        <TokenFunctionTab
           active={activeTab === 0}
           onClick={() => setActiveTab(0)}
         >
-          Add 
+          Stake
         </TokenFunctionTab>
-        <TokenFunctionTab
-          active={activeTab === 1}
-          onClick={() => setActiveTab(1)}
-        >
-          Swap
-        </TokenFunctionTab>
-
-
       </TabContainer>
       <MainCard>
-       
-        {activeTab === 0 && <AddLiquidityPanel type={true} />}
-         {activeTab === 1 && <BuyPanel type={true} />}
+        {activeTab === 0 && <StakePanel type={true} />}
       </MainCard>
     </>
   );

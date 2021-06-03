@@ -46,18 +46,18 @@ const ForgeBasket = ({ data,title }) => {
       <div className="mt-2">
         <div className="d-flex justify-content-between">
           <Typography color="gray" size={12} weight={400}>
-            APY
+          
           </Typography>
           <Typography color="gray" size={12} weight={400}>
-            18%
+          
           </Typography>
         </div>
       </div>
-      <DepositTypography />
+   
       <div className="text-align-center mt-3">
         <OutlinedButton color="interactive2" onClick={() =>
-              router.push({ pathname: `stake`})
-            }>Stake</OutlinedButton>
+              router.push({ pathname: `swap`})
+            }>Add Liquidity/Swap</OutlinedButton>
       </div>
     </Card>
   );
