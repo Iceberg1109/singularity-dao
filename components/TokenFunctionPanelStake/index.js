@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Row, Card } from "reactstrap";
 import styled from "styled-components";
 import StakePanel from "./StakePanel";
+import Typography from "../Typography";
 // import BurnPanel from "./BurnPanel";
 // import SwapPanel from "./SwapPanel";
 
 const MainCard = styled(Card)`
   padding: 40px;
-  max-width: 600px;
+  max-width: 800px;
   color: #ffffff;
   background-clip: padding-box;
   height: 85%;
@@ -65,14 +66,23 @@ const TokenFunctionPanel = () => {
 
   return (
     <>
+          <MainCard>
+   <div className="d-flex justify-content-between">
+        <Typography size={15} style={{ textAlign: "left" }}>
+          Total Staked
+        </Typography>
+     
+      </div>
+            <Typography size={20} style={{ textAlign: "left" }}>
+          1,250 SDAO LP 
+        </Typography>
+      </MainCard>
 
       <MainCard>
 
         {activeTab === 0 && <StakePanel type={true} />}
       </MainCard>
-       <MainCard>
-
-      </MainCard>
+ 
     </>
   );
 };

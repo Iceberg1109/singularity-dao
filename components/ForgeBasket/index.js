@@ -57,7 +57,16 @@ const ForgeBasket = ({ data,title }) => {
       <div className="text-align-center mt-3">
         <OutlinedButton color="interactive2" onClick={() =>
               router.push({ pathname: `stake`})
+            }>Withdraw</OutlinedButton>
+        <OutlinedButton color="interactive2" onClick={() =>
+              router.push({ pathname: `stake`})
             }>Stake</OutlinedButton>
+      </div>
+       <div className="text-align-center mt-3">
+
+        <OutlinedButton color="interactive2" onClick={() =>
+              router.push({ pathname: `stake`})
+            }>Claim</OutlinedButton>
       </div>
     </Card>
   );

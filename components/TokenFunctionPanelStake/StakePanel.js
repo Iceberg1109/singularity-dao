@@ -106,7 +106,6 @@ const StakePanel = ({ type, token, dynasetid }) => {
         <Typography size={20} style={{ textAlign: "left" }}>
           Start Staking
         </Typography>
-        <img src={settingsIcon} />
       </div>
 
         <CurrencyInputPanelSDAO

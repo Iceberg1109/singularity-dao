@@ -86,28 +86,11 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
         <Container>
           <Link href="/">
             <div className="header-brand mr-4">
-              <img
-                alt="SingularityDAO"
-                src={require("assets/img/brand/singdao-white.svg")}
-              />
-
+           
             </div>
           </Link>
                <Nav className="mr-auto" navbar>
-              <NavItem>
-                <Link href="/pools">
-                  <NavLink href="#pablo">
-                    <span className="nav-link-inner--text">Add Liquidity</span>
-                  </NavLink>
-                </Link>
-              </NavItem>
-              <NavItem>
-                <Link href="/">
-                  <NavLink href="#pablo">
-                    <span className="nav-link-inner--text">Stake</span>
-                  </NavLink>
-                </Link>
-              </NavItem>
+       
       
             </Nav>
           <button
