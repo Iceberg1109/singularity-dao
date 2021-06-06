@@ -61,16 +61,19 @@ function Admin({ router, children }) {
   };
 
   return (
-    <div className="main-content">
-    <Sidebar
+    <>
+    <>
+       <Sidebar
           routes={routes}
           logo={{
-            innerLink: "/admin/index",
-            imgSrc: "",
+            innerLink: "/",
+            imgSrc: require("assets/img/brand/singdao-white.svg"),
             imgAlt: "...",
           }}
          
         />
+    <div className="main-content">
+ 
       <AdminNavbar
         theme={getNavbarTheme()}
         toggleSidenav={toggleSidenav}
@@ -80,6 +83,8 @@ function Admin({ router, children }) {
       <div className="p-4 minh-100">{children}</div>
       <AdminFooter />
     </div>
+    </>
+    </>
   );
 }
 
