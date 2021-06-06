@@ -5,10 +5,15 @@ import { PropTypes } from "prop-types";
 import Admin from "layouts/Admin.js";
 import Typography from "../components/Typography";
 import ForgeBasket from "../components/ForgeBasket";
+import Sidebar from "components/Sidebar/Sidebar.js";
+
 
 const ForgePage = () => {
+
+
   return (
     <Container className="my-4">
+
       <Typography color="text1" size={32} weight={600}>
         Staking Portal
       </Typography>

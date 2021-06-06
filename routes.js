@@ -17,7 +17,7 @@
 const routes = [
   {
     collapse: true,
-    name: "Dashboards",
+    name: "Home",
     icon: "ni ni-shop text-primary",
     state: "dashboardsCollapse",
     views: [
@@ -26,18 +26,12 @@ const routes = [
         name: "Dashboard",
         miniName: "D",
         layout: "/admin",
-      },
-      {
-        path: "/alternative",
-        name: "Alternative",
-        miniName: "A",
-        layout: "/admin",
-      },
+      }
     ],
   },
   {
     collapse: true,
-    name: "Examples",
+    name: "Swap",
     icon: "ni ni-ungroup text-orange",
     state: "examplesCollapse",
     views: [
@@ -46,48 +40,12 @@ const routes = [
         name: "Pricing",
         miniName: "P",
         layout: "/auth",
-      },
-      {
-        path: "/login",
-        name: "Login",
-        miniName: "L",
-        layout: "/auth",
-      },
-      {
-        path: "/register",
-        name: "Register",
-        miniName: "R",
-        layout: "/auth",
-      },
-      {
-        path: "/lock",
-        name: "Lock",
-        miniName: "L",
-        layout: "/auth",
-      },
-      {
-        path: "/timeline",
-        name: "Timeline",
-        miniName: "T",
-        layout: "/admin",
-      },
-      {
-        path: "/profile",
-        name: "Profile",
-        miniName: "P",
-        layout: "/admin",
-      },
-      {
-        path: "/rtl-support",
-        name: "RTL Support",
-        miniName: "RS",
-        layout: "/rtl",
-      },
+      }
     ],
   },
   {
     collapse: true,
-    name: "Components",
+    name: "Liquidity",
     icon: "ni ni-ui-04 text-info",
     state: "componentsCollapse",
     views: [
@@ -96,65 +54,12 @@ const routes = [
         name: "Buttons",
         miniName: "B",
         layout: "/admin",
-      },
-      {
-        path: "/cards",
-        name: "Cards",
-        miniName: "C",
-        layout: "/admin",
-      },
-      {
-        path: "/grid",
-        name: "Grid",
-        miniName: "G",
-        layout: "/admin",
-      },
-      {
-        path: "/notifications",
-        name: "Notifications",
-        miniName: "N",
-        layout: "/admin",
-      },
-      {
-        path: "/icons",
-        name: "Icons",
-        miniName: "I",
-        layout: "/admin",
-      },
-      {
-        path: "/typography",
-        name: "Typography",
-        miniName: "T",
-        layout: "/admin",
-      },
-      {
-        collapse: true,
-        name: "Multi Level",
-        miniName: "M",
-        state: "multiCollapse",
-        views: [
-          {
-            path: "#pablo",
-            name: "Third level menu",
-            layout: "/",
-          },
-          {
-            path: "#pablo",
-            name: "Just another link",
-            layout: "/",
-          },
-          {
-            path: "#pablo",
-            name: "One last link",
-            layout: "/",
-          },
-        ],
-      },
+      }
     ],
   },
   {
     collapse: true,
-    name: "Forms",
+    name: "Stake",
     icon: "ni ni-single-copy-04 text-pink",
     state: "formsCollapse",
     views: [
@@ -163,24 +68,12 @@ const routes = [
         name: "Elements",
         miniName: "E",
         layout: "/admin",
-      },
-      {
-        path: "/components",
-        name: "Components",
-        miniName: "C",
-        layout: "/admin",
-      },
-      {
-        path: "/validation",
-        name: "Validation",
-        miniName: "V",
-        layout: "/admin",
-      },
+      }
     ],
   },
   {
     collapse: true,
-    name: "Tables",
+    name: "Farms",
     icon: "ni ni-align-left-2 text-default",
     state: "tablesCollapse",
     views: [
@@ -189,58 +82,8 @@ const routes = [
         name: "Tables",
         miniName: "T",
         layout: "/admin",
-      },
-      {
-        path: "/sortable",
-        name: "Sortable",
-        miniName: "S",
-        layout: "/admin",
-      },
-      {
-        path: "/react-bs-tables",
-        name: "React BS Tables",
-        miniName: "RBT",
-        layout: "/admin",
-      },
+      }
     ],
-  },
-  {
-    collapse: true,
-    name: "Maps",
-    icon: "ni ni-map-big text-primary",
-    state: "mapsCollapse",
-    views: [
-      {
-        path: "/google",
-        name: "Google",
-        miniName: "G",
-        layout: "/admin",
-      },
-      {
-        path: "/vector",
-        name: "Vector",
-        miniName: "V",
-        layout: "/admin",
-      },
-    ],
-  },
-  {
-    path: "/widgets",
-    name: "Widgets",
-    icon: "ni ni-archive-2 text-green",
-    layout: "/admin",
-  },
-  {
-    path: "/charts",
-    name: "Charts",
-    icon: "ni ni-chart-pie-35 text-info",
-    layout: "/admin",
-  },
-  {
-    path: "/calendar",
-    name: "Calendar",
-    icon: "ni ni-calendar-grid-58 text-red",
-    layout: "/admin",
   },
 ];
 

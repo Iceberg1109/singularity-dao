@@ -211,49 +211,6 @@ function Sidebar({
       <div className="navbar-inner">
         <Collapse navbar isOpen={true}>
           <Nav navbar>{createLinks(routes)}</Nav>
-          <hr className="my-3" />
-          <h6 className="navbar-heading p-0 text-muted">
-            <span className="docs-normal">Documentation</span>
-            <span className="docs-mini">D</span>
-          </h6>
-          <Nav className="mb-md-3" navbar>
-            <NavItem>
-              <NavLink
-                href="https://www.creative-tim.com/learning-lab/nextjs/overview/argon-dashboard?ref=njsadp-sidebar"
-                target="_blank"
-              >
-                <i className="ni ni-spaceship" />
-                <span className="nav-link-text">Getting started</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                href="https://www.creative-tim.com/learning-lab/nextjs/colors/argon-dashboard?ref=njsadp-sidebar"
-                target="_blank"
-              >
-                <i className="ni ni-palette" />
-                <span className="nav-link-text">Foundation</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                href="https://www.creative-tim.com/learning-lab/nextjs/alerts/argon-dashboard?ref=njsadp-sidebar"
-                target="_blank"
-              >
-                <i className="ni ni-ui-04" />
-                <span className="nav-link-text">Components</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                href="https://www.creative-tim.com/learning-lab/nextjs/react-chartjs-2/argon-dashboard?ref=njsadp-sidebar"
-                target="_blank"
-              >
-                <i className="ni ni-chart-pie-35" />
-                <span className="nav-link-text">Plugins</span>
-              </NavLink>
-            </NavItem>
-          </Nav>
         </Collapse>
       </div>
     </div>

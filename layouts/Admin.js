@@ -5,6 +5,7 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
+
 import routes from "routes.js";
 import Web3 from "web3";
 
@@ -61,6 +62,15 @@ function Admin({ router, children }) {
 
   return (
     <div className="main-content">
+    <Sidebar
+          routes={routes}
+          logo={{
+            innerLink: "/admin/index",
+            imgSrc: "",
+            imgAlt: "...",
+          }}
+         
+        />
       <AdminNavbar
         theme={getNavbarTheme()}
         toggleSidenav={toggleSidenav}
