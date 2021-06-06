@@ -23,7 +23,7 @@ const routes = [
     views: [
       {
         path: "/dashboard",
-        name: "Dashboard",
+        name: "view",
         miniName: "D",
         layout: "/admin",
       }
@@ -36,10 +36,10 @@ const routes = [
     state: "examplesCollapse",
     views: [
       {
-        path: "/pricing",
-        name: "Pricing",
+        path: "/swap",
+        name: "view",
         miniName: "P",
-        layout: "/auth",
+        layout: "",
       }
     ],
   },
@@ -50,10 +50,10 @@ const routes = [
     state: "componentsCollapse",
     views: [
       {
-        path: "/buttons",
-        name: "Buttons",
+        path: "/pools",
+        name: "view",
         miniName: "B",
-        layout: "/admin",
+        layout: "",
       }
     ],
   },
@@ -64,10 +64,10 @@ const routes = [
     state: "formsCollapse",
     views: [
       {
-        path: "/elements",
-        name: "Elements",
+        path: "/",
+        name: "view",
         miniName: "E",
-        layout: "/admin",
+        layout: "",
       }
     ],
   },

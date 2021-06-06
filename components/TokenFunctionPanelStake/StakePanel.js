@@ -101,9 +101,10 @@ const StakePanel = ({ type, token, dynasetid }) => {
 
   return (
     <>
+        <>
       <div className="d-flex justify-content-between">
         <Typography size={20} style={{ textAlign: "left" }}>
-          Stake
+          Start Staking
         </Typography>
         <img src={settingsIcon} />
       </div>
@@ -114,20 +115,17 @@ const StakePanel = ({ type, token, dynasetid }) => {
           label="To"
         />
 
-      <FeeBlock>
-        <Typography size={14}>APY:</Typography>
-        <Typography size={14}>{fee.toFixed(2)} LP</Typography>
-        <Typography size={14}>Current Reward:</Typography>
-        <Typography size={14}>{fee.toFixed(2)} SDAO</Typography>
-      </FeeBlock>
+
      
       <Row>
-       <GradientButton onClick={stake}>Approve</GradientButton>
+
       <GradientButton onClick={stake}>Stake</GradientButton>
-      <GradientButton onClick={withdraw}>Claim</GradientButton>
-      <GradientButton onClick={withdraw}>Withdraw</GradientButton>
+
       </Row>
 
+
+
+       </>
     </>
   );
 };

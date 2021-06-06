@@ -65,17 +65,13 @@ const TokenFunctionPanel = () => {
 
   return (
     <>
-      <TabContainer>
 
-        <TokenFunctionTab
-          active={activeTab === 0}
-          onClick={() => setActiveTab(0)}
-        >
-          Stake
-        </TokenFunctionTab>
-      </TabContainer>
       <MainCard>
+
         {activeTab === 0 && <StakePanel type={true} />}
+      </MainCard>
+       <MainCard>
+
       </MainCard>
     </>
   );
