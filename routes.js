@@ -59,7 +59,7 @@ const routes = [
   },
   {
     collapse: true,
-    name: "Stake",
+    name: "Farms",
     icon: "ni ni-single-copy-04 text-pink",
     state: "formsCollapse",
     views: [
@@ -71,20 +71,20 @@ const routes = [
       }
     ],
   },
-  {
-    collapse: true,
-    name: "Farms",
-    icon: "ni ni-align-left-2 text-default",
-    state: "tablesCollapse",
-    views: [
-      {
-        path: "/tables",
-        name: "Tables",
-        miniName: "T",
-        layout: "/admin",
-      }
-    ],
-  },
+  // {
+  //   collapse: true,
+  //   name: "Farms",
+  //   icon: "ni ni-align-left-2 text-default",
+  //   state: "tablesCollapse",
+  //   views: [
+  //     {
+  //       path: "/tables",
+  //       name: "Tables",
+  //       miniName: "T",
+  //       layout: "/admin",
+  //     }
+  //   ],
+  // },
 ];
 
 export default routes;
