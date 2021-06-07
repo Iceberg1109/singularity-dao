@@ -70,7 +70,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
     <>
       <>
         <div className="d-flex justify-content-center">
-          <Typography size={32} style={{ textAlign: "left" }}>
+          <Typography size={24} style={{ textAlign: "left" }}>
             Start Staking
           </Typography>
         </div>

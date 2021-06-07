@@ -84,27 +84,27 @@ const TokenFunctionPanel = () => {
       <Col lg={7}>
         {/* <TokenFunctionPanel /> */}
         <Card className="p-4">
-          <Typography>Total Staked</Typography>
-          <Typography>1250 SDAO LP</Typography>
-          <div className="d-flex justify-content-between p-2">
-            <Typography>SDAO Earned</Typography>
-            <Typography>0.000</Typography>
+          <Typography size={14}>Total Staked</Typography>
+          <Typography size={24}>1250 SDAO LP</Typography>
+          <div className="d-flex justify-content-between mt-3">
+            <Typography size={14}>SDAO Earned</Typography>
+            <Typography size={14}>0.000</Typography>
           </div>
-          <div className="d-flex justify-content-between p-2">
-            <Typography>Withdrawable stake</Typography>
-            <Typography>1250 SDAO LP</Typography>
+          <div className="d-flex justify-content-between">
+            <Typography size={14}>Withdrawable stake</Typography>
+            <Typography size={14}>1250 SDAO LP</Typography>
           </div>
-          <div className="d-flex justify-content-between p-2">
-            <Typography>Max stake per user</Typography>
-            <Typography>1500 SDAO LP</Typography>
+          <div className="d-flex justify-content-between mt-3">
+            <Typography size={14}>Max stake per user</Typography>
+            <Typography size={14}>1500 SDAO LP</Typography>
           </div>
-          <div className="d-flex justify-content-between p-2">
-            <Typography>APY return</Typography>
-            <Typography>34.7%</Typography>
+          <div className="d-flex justify-content-between">
+            <Typography size={14}>APY return</Typography>
+            <Typography size={14}>34.7%</Typography>
           </div>
-          <div className="d-flex justify-content-between p-2">
-            <Typography>Ends in</Typography>
-            <Typography>1703000 block</Typography>
+          <div className="d-flex justify-content-between">
+            <Typography size={14}>Ends in</Typography>
+            <Typography size={14}>1703000 block</Typography>
           </div>
         </Card>
       </Col>
