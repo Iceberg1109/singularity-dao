@@ -70,7 +70,8 @@ function Admin({ router, children }) {
             imgSrc: require("assets/img/brand/singdao-white.svg"),
             imgAlt: "...",
           }}
-         
+          toggleSidenav={toggleSidenav}
+          sidenavOpen={sidenavOpen}
         />
     <div className="main-content">
  
