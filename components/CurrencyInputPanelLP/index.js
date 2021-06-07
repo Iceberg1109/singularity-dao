@@ -8,7 +8,6 @@ import {
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
-
 } from "reactstrap";
 import classnames from "classnames";
 import { useState } from "react";
@@ -24,15 +23,13 @@ const Input = styled(DefaultInput)`
 const CurrencyInputPanelSDAO = (props) => {
   const [focused, setFocused] = useState();
 
-  const [balance,setBalance] = useState(props.balance);
+  const [balance, setBalance] = useState(props.balance);
 
-    const changeprice  = async (e) => {
-     // console.log(e.target.value);
+  const changeprice = async (e) => {
+    // console.log(e.target.value);
 
-      props.onChange(e.target.value);
-    }
-
-
+    props.onChange(e.target.value);
+  };
 
   return (
     <FormGroup className="my-4 w-100">
@@ -48,23 +45,22 @@ const CurrencyInputPanelSDAO = (props) => {
           onBlur={(e) => setFocused(false)}
           defaultValue={props.balance}
         />
-        <UncontrolledDropdown >
-        <DropdownToggle
-          caret
-          color="secondary"
-          id="dropdownMenuButton"
-          type="button"
-           style={{backgroundColor:"#000000",color:'#ffff'}}
-        >
-            <img
-            alt="..."
-            src="https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg"
-            style={{width:'15px'}}
-          ></img>
-             SDAO LP
-        </DropdownToggle>
-
-      </UncontrolledDropdown>
+        <UncontrolledDropdown>
+          <DropdownToggle
+            caret
+            color="secondary"
+            id="dropdownMenuButton"
+            type="button"
+            style={{ backgroundColor: "#000000", color: "#ffff" }}
+          >
+            {/* <img
+              alt="..."
+              src="https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg"
+              style={{ width: "15px" }}
+            ></img> */}
+            SDAO LP
+          </DropdownToggle>
+        </UncontrolledDropdown>
       </InputGroup>
       <Typography size={14} weight={400} className="pl-1 mt-1">
         Balance: {props.balance}
@@ -72,6 +68,5 @@ const CurrencyInputPanelSDAO = (props) => {
     </FormGroup>
   );
 };
-
 
 export default CurrencyInputPanelSDAO;

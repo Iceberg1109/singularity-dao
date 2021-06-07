@@ -1,12 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import {
-  Row,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-} from "reactstrap";
+import { Row, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
 import CurrencyInputPanel from "../../components/CurrencyInputPanelDropDown";
 import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelLP";
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
@@ -16,17 +10,7 @@ import { GradientButton } from "../Buttons";
 import PropTypes from "prop-types";
 import { useUser } from "../../components/UserContext";
 import web3 from "web3";
-import {
-  ChainId,
-  Token,
-  WETH,
-  Trade,
-  TokenAmount,
-  TradeType,
-  Fetcher,
-  Route,
-  Percent,
-} from "@uniswap/sdk";
+import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Percent } from "@uniswap/sdk";
 
 import { ethers } from "ethers";
 import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
@@ -42,7 +26,6 @@ const FeeBlock = styled(Row)`
 `;
 
 const StakePanel = ({ type, token, dynasetid }) => {
-
   const [fromCurrency, setFromCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
   const [amounteth, setamountEth] = useState(0);
@@ -54,21 +37,13 @@ const StakePanel = ({ type, token, dynasetid }) => {
   const { library, account } = useUser();
 
   const stake = async () => {
-
     const signer = await library.getSigner(account);
 
-    const stakingContract = new ethers.Contract(
-      "0x1D37CEA62b127B42dd3D45d766289658aEcb6ea0",
-      StakingRewardABI,
-      signer
-    );
+    const stakingContract = new ethers.Contract("0x1D37CEA62b127B42dd3D45d766289658aEcb6ea0", StakingRewardABI, signer);
 
-    const tx = await stakingContract.stake(
-      web3.utils.toWei("1", "gwei"),
-      {
-        gasPrice: web3.utils.toWei("60", "gwei"),
-      }
-    );
+    const tx = await stakingContract.stake(web3.utils.toWei("1", "gwei"), {
+      gasPrice: web3.utils.toWei("60", "gwei"),
+    });
 
     console.log(`Transaction hash: ${tx.hash}`);
 
@@ -77,22 +52,14 @@ const StakePanel = ({ type, token, dynasetid }) => {
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
 
-
   const withdraw = async () => {
-
     const signer = await library.getSigner(account);
 
-    const stakingContract = new ethers.Contract(
-      "0x1D37CEA62b127B42dd3D45d766289658aEcb6ea0",
-      StakingRewardABI,
-      signer
-    );
+    const stakingContract = new ethers.Contract("0x1D37CEA62b127B42dd3D45d766289658aEcb6ea0", StakingRewardABI, signer);
 
-    const tx = await stakingContract.getReward(
-      {
-        gasPrice: web3.utils.toWei("60", "gwei"),
-      }
-    );
+    const tx = await stakingContract.getReward({
+      gasPrice: web3.utils.toWei("60", "gwei"),
+    });
 
     const receipt = await tx.wait();
 
@@ -101,30 +68,17 @@ const StakePanel = ({ type, token, dynasetid }) => {
 
   return (
     <>
-        <>
-      <div className="d-flex justify-content-between">
-        <Typography size={20} style={{ textAlign: "left" }}>
-          Start Staking
-        </Typography>
-      </div>
-
-        <CurrencyInputPanelSDAO
-          balance={toCurrencyPrice}
-          currency={token}
-          label="To"
-        />
-
-
-     
-      <Row>
-
-      <GradientButton onClick={stake}>Stake</GradientButton>
-
-      </Row>
-
-
-
-       </>
+      <>
+        <div className="d-flex justify-content-center">
+          <Typography size={32} style={{ textAlign: "left" }}>
+            Start Staking
+          </Typography>
+        </div>
+        <CurrencyInputPanelSDAO balance={toCurrencyPrice} currency={token} label="To" />
+        <Row className="d-flex justify-content-center">
+          <GradientButton onClick={stake} className="m">Stake</GradientButton>
+        </Row>
+      </>
     </>
   );
 };

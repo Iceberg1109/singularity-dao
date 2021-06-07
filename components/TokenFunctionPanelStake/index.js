@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Row, Card } from "reactstrap";
+import { Row, Card, Col } from "reactstrap";
 import styled from "styled-components";
 import StakePanel from "./StakePanel";
 import Typography from "../Typography";
@@ -30,10 +30,8 @@ const MainCard = styled(Card)`
 
 const TokenFunctionTab = styled.div`
   border: ${({ theme }) => `1px solid ${theme.color.default}`};
-  background-color: ${({ theme, active }) =>
-    active ? theme.color.default : ""};
-  color: ${({ theme, active }) =>
-    active ? theme.color.white : theme.color.default};
+  background-color: ${({ theme, active }) => (active ? theme.color.default : "")};
+  color: ${({ theme, active }) => (active ? theme.color.white : theme.color.default)};
   cursor: pointer;
   padding: 4px 10px;
   font-size: 16px;
@@ -66,7 +64,7 @@ const TokenFunctionPanel = () => {
 
   return (
     <>
-          <MainCard>
+      {/* <MainCard>
    <div className="d-flex justify-content-between">
         <Typography size={15} style={{ textAlign: "left" }}>
           Total Staked
@@ -81,8 +79,41 @@ const TokenFunctionPanel = () => {
       <MainCard>
 
         {activeTab === 0 && <StakePanel type={true} />}
-      </MainCard>
- 
+      </MainCard> */}
+
+      <Col lg={7}>
+        {/* <TokenFunctionPanel /> */}
+        <Card className="p-4">
+          <Typography>Total Staked</Typography>
+          <Typography>1250 SDAO LP</Typography>
+          <div className="d-flex justify-content-between p-2">
+            <Typography>SDAO Earned</Typography>
+            <Typography>0.000</Typography>
+          </div>
+          <div className="d-flex justify-content-between p-2">
+            <Typography>Withdrawable stake</Typography>
+            <Typography>1250 SDAO LP</Typography>
+          </div>
+          <div className="d-flex justify-content-between p-2">
+            <Typography>Max stake per user</Typography>
+            <Typography>1500 SDAO LP</Typography>
+          </div>
+          <div className="d-flex justify-content-between p-2">
+            <Typography>APY return</Typography>
+            <Typography>34.7%</Typography>
+          </div>
+          <div className="d-flex justify-content-between p-2">
+            <Typography>Ends in</Typography>
+            <Typography>1703000 block</Typography>
+          </div>
+        </Card>
+      </Col>
+      <Col lg={5}>
+        {/* <TokenFunctionPanel /> */}
+        <Card className="p-4">
+          <StakePanel />
+        </Card>
+      </Col>
     </>
   );
 };
