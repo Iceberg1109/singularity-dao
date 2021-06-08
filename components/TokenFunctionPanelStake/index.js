@@ -62,7 +62,7 @@ const TabContainer = styled(Row)`
 `;
 
 const TokenFunctionPanel = () => {
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(0);
 
   return (
     <>
