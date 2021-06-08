@@ -23,12 +23,10 @@ const Input = styled(DefaultInput)`
 const CurrencyInputPanelSDAO = (props) => {
   const [focused, setFocused] = useState();
 
-  const [balance, setBalance] = useState(props.balance);
-
   const changeprice = async (e) => {
-    // console.log(e.target.value);
-
-    props.onChange(e.target.value);
+    let { value } = e.target;
+    value = value && value > 0 ? value : 0;
+    props.onChange(value);
   };
 
   return (
@@ -43,7 +41,7 @@ const CurrencyInputPanelSDAO = (props) => {
           type="number"
           onFocus={(e) => setFocused(true)}
           onBlur={(e) => setFocused(false)}
-          defaultValue={props.balance}
+          value={props.toCurrencyPrice}
         />
         <UncontrolledDropdown>
           <DropdownToggle

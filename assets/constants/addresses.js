@@ -1,0 +1,4 @@
+export const ContractAddress = {
+  STAKING_REWARD: "0x1D37CEA62b127B42dd3D45d766289658aEcb6ea0",
+  DYNASET: "0x5e94577b949a56279637ff74dfcff2c28408f049",
+};
