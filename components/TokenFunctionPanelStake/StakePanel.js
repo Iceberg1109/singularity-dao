@@ -42,7 +42,6 @@ const FeeBlock = styled(Row)`
 `;
 
 const StakePanel = ({ type, token, dynasetid }) => {
-
   const [fromCurrency, setFromCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
   const [amounteth, setamountEth] = useState(0);
@@ -54,7 +53,6 @@ const StakePanel = ({ type, token, dynasetid }) => {
   const { library, account } = useUser();
 
   const stake = async () => {
-
     const signer = await library.getSigner(account);
 
     const stakingContract = new ethers.Contract(
@@ -63,12 +61,9 @@ const StakePanel = ({ type, token, dynasetid }) => {
       signer
     );
 
-    const tx = await stakingContract.stake(
-      web3.utils.toWei("1", "gwei"),
-      {
-        gasPrice: web3.utils.toWei("60", "gwei"),
-      }
-    );
+    const tx = await stakingContract.stake(web3.utils.toWei("1", "gwei"), {
+      gasPrice: web3.utils.toWei("60", "gwei"),
+    });
 
     console.log(`Transaction hash: ${tx.hash}`);
 
@@ -77,9 +72,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
 
-
   const withdraw = async () => {
-
     const signer = await library.getSigner(account);
 
     const stakingContract = new ethers.Contract(
@@ -88,11 +81,9 @@ const StakePanel = ({ type, token, dynasetid }) => {
       signer
     );
 
-    const tx = await stakingContract.getReward(
-      {
-        gasPrice: web3.utils.toWei("60", "gwei"),
-      }
-    );
+    const tx = await stakingContract.getReward({
+      gasPrice: web3.utils.toWei("60", "gwei"),
+    });
 
     const receipt = await tx.wait();
 
@@ -101,12 +92,12 @@ const StakePanel = ({ type, token, dynasetid }) => {
 
   return (
     <>
-        <>
-      <div className="d-flex justify-content-between">
-        <Typography size={20} style={{ textAlign: "left" }}>
-          Start Staking
-        </Typography>
-      </div>
+      <>
+        <div className="d-flex justify-content-between">
+          <Typography size={20} style={{ textAlign: "left" }}>
+            Start Staking
+          </Typography>
+        </div>
 
         <CurrencyInputPanelSDAO
           balance={toCurrencyPrice}
@@ -114,17 +105,10 @@ const StakePanel = ({ type, token, dynasetid }) => {
           label="To"
         />
 
-
-     
-      <Row>
-
-      <GradientButton onClick={stake}>Stake</GradientButton>
-
-      </Row>
-
-
-
-       </>
+        <div className="text-align-center">
+          <GradientButton onClick={stake}>Stake</GradientButton>
+        </div>
+      </>
     </>
   );
 };

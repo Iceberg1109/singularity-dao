@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Row, Card } from "reactstrap";
+import { Row, Card, Col } from "reactstrap";
 import styled from "styled-components";
 import StakePanel from "./StakePanel";
 import Typography from "../Typography";
+import DetailLabel from "./DetailLabel";
 // import BurnPanel from "./BurnPanel";
 // import SwapPanel from "./SwapPanel";
 
 const MainCard = styled(Card)`
   padding: 40px;
-  max-width: 800px;
   color: #ffffff;
   background-clip: padding-box;
   height: 85%;
@@ -62,42 +62,93 @@ const TabContainer = styled(Row)`
 `;
 
 const TokenFunctionPanel = () => {
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
 
   return (
     <>
+      {activeTab === 0 ? (
+        <div>
+          <Typography size={32} weight={600}>
+            Stake
+          </Typography>
+          <Typography size={16} weight={400} className="mb-4">
+            Maximize your return by staking your SDAO LP tokens.
+          </Typography>
+          <Row>
+            <Col lg={6}>
+              <MainCard>
+                <div className="d-flex justify-content-between">
+                  <Typography size={15} style={{ textAlign: "left" }}>
+                    Total Staked
+                  </Typography>
+                </div>
+                <Typography
+                  size={20}
+                  style={{ textAlign: "left" }}
+                  className="mb-3"
+                >
+                  1,250 SDAO LP
+                </Typography>
+                <DetailLabel title="SDAO earned" desc="0.0000" />
+                <DetailLabel title="Withdrawable stake" desc="1,250 SDAO LP" />
+                <div className="mb-3"></div>
+                <DetailLabel title="Max stake per user" desc="1,500 SDAO LP" />
+                <DetailLabel title="Max stake per user" desc="34.74 %" />
+                <DetailLabel title="Ends in" desc="1,703,000 blocks" />
+              </MainCard>
+            </Col>
+
+            <Col lg={6}>
+              <MainCard>
+                <StakePanel type={true} />
+              </MainCard>
+            </Col>
+          </Row>
+        </div>
+      ) : (
+        <div>
           <MainCard>
-   <div className="d-flex justify-content-between">
-        <Typography size={15} style={{ textAlign: "left" }}>
-          Total Staked
-        </Typography>
-     
-      </div>
-            <Typography size={20} style={{ textAlign: "left" }}>
-          1,250 SDAO LP 
-        </Typography>
-      </MainCard>
-
-      <MainCard>
-
-        {activeTab === 0 && <StakePanel type={true} />}
-      </MainCard>
- 
+            <div className="d-flex justify-content-between">
+              <div>
+                <Typography size={15} style={{ textAlign: "left" }}>
+                  Total Staked
+                </Typography>
+                <Typography
+                  size={20}
+                  style={{ textAlign: "left" }}
+                  className="mb-3"
+                >
+                  1,250 SDAO LP
+                </Typography>
+              </div>
+              <div>
+                <Typography>Withdrawable stake</Typography>
+                <Typography>1,250 SDAO LP</Typography>
+              </div>
+            </div>
+          </MainCard>
+          <Row>
+            <Col lg={6}>
+              <MainCard>
+                <StakePanel type={true} />
+              </MainCard>
+            </Col>
+            <Col lg={6}>
+              <MainCard>
+                <Typography size={20}>SDAO earned</Typography>
+                <Typography size={24} weight={600} className="mb-3">
+                  0.0000
+                </Typography>
+                <DetailLabel title="Max stake per user" desc="1,500 SDAO LP" />
+                <DetailLabel title="APY return" desc="34.74 %" />
+                <DetailLabel title="Ends in" desc="1,703,000 blocks" />
+              </MainCard>
+            </Col>
+          </Row>
+        </div>
+      )}
     </>
   );
 };
-
-// <TokenFunctionTab
-//   active={activeTab === 2}
-//   onClick={() => setActiveTab(2)}
-// >
-//   Stake
-// </TokenFunctionTab>
-// <TokenFunctionTab
-//   active={activeTab === 3}
-//   onClick={() => setActiveTab(3)}
-// >
-//   Swap
-// </TokenFunctionTab>
 
 export default TokenFunctionPanel;
