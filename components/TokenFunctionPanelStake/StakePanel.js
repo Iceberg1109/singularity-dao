@@ -107,22 +107,23 @@ const StakePanel = ({ type, token, dynasetid }) => {
 
   return (
     <>
-      <div className="d-flex justify-content-center">
-        <Typography size={24} style={{ textAlign: "left" }}>
-          Start Staking
-        </Typography>
-      </div>
-      <CurrencyInputPanelSDAO
-        toCurrencyPrice={toCurrencyPrice}
-        currency={token}
-        label="To"
-        onChange={setToCurrencyPrice}
-      />
-      <Row className="d-flex justify-content-center">
-        <GradientButton onClick={handleSubmit} className="m">
-          {approved ? "Stake" : "Approve"}
-        </GradientButton>
-      </Row>
+      <>
+        <div className="d-flex justify-content-between">
+          <Typography size={20} style={{ textAlign: "left" }}>
+            Start Staking
+          </Typography>
+        </div>
+
+        <CurrencyInputPanelSDAO
+          balance={toCurrencyPrice}
+          currency={token}
+          label="To"
+        />
+
+        <div className="text-align-center">
+          <GradientButton onClick={handleSubmit}>Stake</GradientButton>
+        </div>
+      </>
     </>
   );
 };
