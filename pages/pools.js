@@ -6,6 +6,31 @@ import Admin from "layouts/Admin.js";
 import Typography from "../components/Typography";
 import ForgeBasket from "../components/PoolBasket";
 
+const baskets = [
+  {
+    poolId: "SDAO-WETH",
+    liquidity: "407004",
+    apy: "4.82",
+    share: "0.005",
+    balance: "960.0",
+  },
+  {
+    poolId: "SDAO-USDT",
+    liquidity: "407004",
+    apy: "4.82",
+    share: "0.005",
+    balance: "960.0",
+  },
+  {
+    key: "SDAO-AGIX",
+    poolId: "SDAO-AGIX",
+    liquidity: "407004",
+    apy: "4.82",
+    share: "0.005",
+    balance: "960.0",
+  },
+];
+
 const ForgePage = () => {
   return (
     <Container className="my-4">
@@ -18,15 +43,18 @@ const ForgePage = () => {
       <a href="#">Learn more.</a>
       <div className="py-4 mt-5">
         <Row className="my-3">
-          <Col lg={4}>
-            <ForgeBasket title="SDAO/USDT Pool" />
-          </Col>
-          <Col lg={4}>
-            <ForgeBasket title="SDAO/WETH Pool" />
-          </Col>
-          <Col lg={4}>
-            <ForgeBasket title="AGIX/SDAO Pool" />
-          </Col>
+          {baskets.map((basket) => (
+            <Col lg={4} key={basket.poolId}>
+              <ForgeBasket
+                title={basket.poolId}
+                pool={basket.poolId}
+                liquidity={basket.liquidity}
+                apy={basket.apy}
+                share={basket.share}
+                balance={basket.share}
+              />
+            </Col>
+          ))}
         </Row>
       </div>
     </Container>

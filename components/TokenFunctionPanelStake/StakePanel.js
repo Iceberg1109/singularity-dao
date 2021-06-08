@@ -79,6 +79,13 @@ const StakePanel = ({ type, token, dynasetid }) => {
   //   console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   // };
 
+  const getAllowance = async () => {
+    const signer = await library.getSigner(account);
+    const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+    const allowance = await tokenContract.allowance(account, ContractAddress.STAKING_REWARD);
+    console.log("allowance", allowance.toString());
+  };
+
   const approveTokens = async () => {
     const signer = await library.getSigner(account);
     const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
@@ -90,16 +97,20 @@ const StakePanel = ({ type, token, dynasetid }) => {
     });
     console.log(`Transaction hash: ${tx.hash}`);
     const receipt = await tx.wait();
-    console.log(`Approved ${amountToBeApproved} for staking`)
+    console.log(`Approved ${amountToBeApproved} for staking`);
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
 
   const handleSubmit = async () => {
+    await getAllowance();
     if (typeof approved === "undefined") {
       try {
         await approveTokens();
         setApproved(toCurrencyPrice);
-      } catch (error) {}
+      } catch (error) {
+        console.log("error", error);
+        alert("error: look console for details");
+      }
     } else {
       await stakeToken();
     }
@@ -113,15 +124,9 @@ const StakePanel = ({ type, token, dynasetid }) => {
             Start Staking
           </Typography>
         </div>
-
-        <CurrencyInputPanelSDAO
-          balance={toCurrencyPrice}
-          currency={token}
-          label="To"
-        />
-
+        <CurrencyInputPanelSDAO balance={toCurrencyPrice} onChange={setToCurrencyPrice} currency={token} label="To" />
         <div className="text-align-center">
-          <GradientButton onClick={handleSubmit}>Stake</GradientButton>
+          <GradientButton onClick={handleSubmit}>{!approved ? "Approve" : "Stake"}</GradientButton>
         </div>
       </>
     </>

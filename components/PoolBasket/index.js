@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { OutlinedButton } from "../Buttons";
 import Typography from "../Typography";
 import { useRouter } from "next/router";
+import DetailLabel from "../TokenFunctionPanelStake/DetailLabel";
 
 const CustomProgress = styled(Progress)`
   .progress-bar {
@@ -12,7 +13,7 @@ const CustomProgress = styled(Progress)`
   margin-bottom: 10px !important;
 `;
 
-const ForgeBasket = ({ data, title, liquidity, apy, share, balance }) => {
+const ForgeBasket = ({ data, title, poolId, liquidity, apy, share, balance }) => {
   const router = useRouter();
 
   const DepositTypography = () => (
@@ -39,10 +40,10 @@ const ForgeBasket = ({ data, title, liquidity, apy, share, balance }) => {
         </Col>
       </Row>
       <div className="mt-2">
-        <div className="d-flex justify-content-between">
-          <Typography color="gray" size={12} weight={400}>Liquidity</Typography>
-          <Typography color="gray" size={12} weight={400}>123</Typography>
-        </div>
+        <DetailLabel title="Liquidity" desc={`$ ${liquidity}`} />
+        <DetailLabel title="APY(approx.)" desc={`${apy} %`} />
+        <DetailLabel title="Your share" desc={`${share} %`} />
+        <DetailLabel title="Balance" desc={`${balance} SDAO LP`} />
       </div>
 
       <div className="text-align-center mt-3">
