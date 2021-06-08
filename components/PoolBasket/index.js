@@ -6,15 +6,14 @@ import { useRouter } from "next/router";
 
 const CustomProgress = styled(Progress)`
   .progress-bar {
-    background-color: ${({ theme }) =>
-      `${theme.color.interactive3} !important`};
+    background-color: ${({ theme }) => `${theme.color.interactive3} !important`};
   }
   height: 8px !important;
   margin-bottom: 10px !important;
 `;
 
-const ForgeBasket = ({ data,title }) => {
-    const router = useRouter();
+const ForgeBasket = ({ data, title, liquidity, apy, share, balance }) => {
+  const router = useRouter();
 
   const DepositTypography = () => (
     <div className="d-flex justify-content-between">
@@ -31,11 +30,7 @@ const ForgeBasket = ({ data,title }) => {
     <Card className="p-4 forge-card">
       <Row>
         <Col className="col-auto">
-          <img
-            src="https://www.singularitydao.ai/file/2021/04/singularitydao-image.png"
-            width={40}
-            height={40}
-          />
+          <img src="https://www.singularitydao.ai/file/2021/04/singularitydao-image.png" width={40} height={40} />
         </Col>
         <Col>
           <Typography color="text1" size={24} weight={600}>
@@ -45,19 +40,15 @@ const ForgeBasket = ({ data,title }) => {
       </Row>
       <div className="mt-2">
         <div className="d-flex justify-content-between">
-          <Typography color="gray" size={12} weight={400}>
-          
-          </Typography>
-          <Typography color="gray" size={12} weight={400}>
-          
-          </Typography>
+          <Typography color="gray" size={12} weight={400}>Liquidity</Typography>
+          <Typography color="gray" size={12} weight={400}>123</Typography>
         </div>
       </div>
-   
+
       <div className="text-align-center mt-3">
-        <OutlinedButton color="interactive2" onClick={() =>
-              router.push({ pathname: `swap`})
-            }>Add Liquidity/Swap</OutlinedButton>
+        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `swap` })}>
+          Add Liquidity/Swap
+        </OutlinedButton>
       </div>
     </Card>
   );

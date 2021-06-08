@@ -13,9 +13,9 @@ const ForgePage = () => {
         Liquidity
       </Typography>
       <Typography color="gray80" size={14}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-        <br /> eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Select one of the liquidity pools available, then add liquidity and start to earn fees.
       </Typography>
+      <a href="#">Learn more.</a>
       <div className="py-4 mt-5">
         <Row className="my-3">
           <Col lg={4}>
