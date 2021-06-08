@@ -98,9 +98,7 @@ let minABI = [
   },
 ];
 
-const claimers = [
-  { wallet: "0xA5a9Ac3cF732DD93481E497cdBfD903aD7CdE543", reward: "1000" },
-];
+const claimers = [{ wallet: "0xA5a9Ac3cF732DD93481E497cdBfD903aD7CdE543", reward: "1000" }];
 
 const getreward = async (account) => {
   const rewardamount = claimers.find((claimer) => claimer.wallet === account);
@@ -123,20 +121,11 @@ const DetailLabel = ({ name, value, isDetail = true, icon }) => (
       "d-flex"
     )}
   >
-    <Typography
-      color="gray"
-      size={isDetail ? 14 : 18}
-      weight={400}
-      className="mr-2 flex-shrink-0"
-    >
+    <Typography color="gray" size={isDetail ? 14 : 18} weight={400} className="mr-2 flex-shrink-0">
       {name}:
     </Typography>
     {icon}
-    <GradientTypography
-      size={isDetail ? 14 : 18}
-      weight={400}
-      className="text-break text-align-left"
-    >
+    <GradientTypography size={isDetail ? 14 : 18} weight={400} className="text-break text-align-left">
       {value}
     </GradientTypography>
   </div>
@@ -158,11 +147,7 @@ function StakePage() {
     const fetchData = async () => {
       const signer = await library.getSigner(account);
 
-      const agitoken = new ethers.Contract(
-        "0xdce099640a3343497e0dd0fc9b99d1b9dda2d758",
-        minABI,
-        signer
-      );
+      const agitoken = new ethers.Contract("0xdce099640a3343497e0dd0fc9b99d1b9dda2d758", minABI, signer);
 
       const bal = await agitoken.balanceOf(account);
 
@@ -185,11 +170,7 @@ function StakePage() {
   const claimTokens = async () => {
     const signer = await library.getSigner(account);
 
-    const Dynaset = new ethers.Contract(
-      "0x63558477E7E2C9DF4267988BB7D6a38f18b5053E",
-      AirdropABI,
-      signer
-    );
+    const Dynaset = new ethers.Contract("0x63558477E7E2C9DF4267988BB7D6a38f18b5053E", AirdropABI, signer);
 
     try {
       const tx = await Dynaset.claimdrop({
@@ -213,11 +194,7 @@ function StakePage() {
   const calculaterewardTokens = async () => {
     const signer = await library.getSigner(account);
 
-    const agitoken = new ethers.Contract(
-      "0xdce099640a3343497e0dd0fc9b99d1b9dda2d758",
-      minABI,
-      signer
-    );
+    const agitoken = new ethers.Contract("0xdce099640a3343497e0dd0fc9b99d1b9dda2d758", minABI, signer);
 
     const bal = await agitoken.balanceOf(account);
     console.log(web3.utils.fromWei(bal.toString()));
@@ -231,8 +208,20 @@ function StakePage() {
   };
 
   return (
-    <Container className="my-2">
-      <TokenFunctionPanel />
+    <Container className="my-4">
+      <Typography color="text1" size={32} weight={600}>
+        Staking Portal
+      </Typography>
+      <Typography color="gray80" size={14}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        <br /> eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </Typography>
+      {/* <TokenFunctionPanel /> */}
+      <div className="py-4 mt-5">
+        <Row className="my-3">
+          <TokenFunctionPanel />
+        </Row>
+      </div>
     </Container>
   );
 }

@@ -30,10 +30,8 @@ const MainCard = styled(Card)`
 
 const TokenFunctionTab = styled.div`
   border: ${({ theme }) => `1px solid ${theme.color.default}`};
-  background-color: ${({ theme, active }) =>
-    active ? theme.color.default : ""};
-  color: ${({ theme, active }) =>
-    active ? theme.color.white : theme.color.default};
+  background-color: ${({ theme, active }) => (active ? theme.color.default : "")};
+  color: ${({ theme, active }) => (active ? theme.color.white : theme.color.default)};
   cursor: pointer;
   padding: 4px 10px;
   font-size: 16px;

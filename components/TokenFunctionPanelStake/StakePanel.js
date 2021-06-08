@@ -1,12 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import {
-  Row,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-} from "reactstrap";
+import { Row, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
 import CurrencyInputPanel from "../../components/CurrencyInputPanelDropDown";
 import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelLP";
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
@@ -16,21 +10,14 @@ import { GradientButton } from "../Buttons";
 import PropTypes from "prop-types";
 import { useUser } from "../../components/UserContext";
 import web3 from "web3";
-import {
-  ChainId,
-  Token,
-  WETH,
-  Trade,
-  TokenAmount,
-  TradeType,
-  Fetcher,
-  Route,
-  Percent,
-} from "@uniswap/sdk";
+import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Percent } from "@uniswap/sdk";
 
 import { ethers } from "ethers";
 import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
+import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
+import { defaultGasLimit, getGasPrice } from "../../utils/gasPrice";
+import { ContractAddress } from "../../assets/constants/addresses";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -47,47 +34,75 @@ const StakePanel = ({ type, token, dynasetid }) => {
   const [amounteth, setamountEth] = useState(0);
   const [toCurrency, setToCurrency] = useState("AGI");
   const [toCurrencyPrice, setToCurrencyPrice] = useState(0);
+  const [approved, setApproved] = useState(undefined);
 
   const [fee, setFee] = useState(0);
   const [amount, setAmount] = useState();
   const { library, account } = useUser();
 
-  const stake = async () => {
+  const stakeToken = async () => {
+    if (typeof approved === "undefined") {
+      return alert("Please Approve before staking");
+    }
+    try {
+      const signer = await library.getSigner(account);
+
+      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, StakingRewardABI, signer);
+
+      const stakeAmount = web3.utils.toWei(toCurrencyPrice.toString());
+      const gasPrice = await getGasPrice();
+
+      const tx = await stakingContract.stake(stakeAmount, { gasLimit: defaultGasLimit, gasPrice });
+
+      console.log(`Transaction hash: ${tx.hash}`);
+
+      const receipt = await tx.wait();
+
+      console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+    } catch (error) {
+      console.log("error", error);
+      alert("error: look console for details");
+    }
+  };
+
+  // const withdraw = async () => {
+  //   const signer = await library.getSigner(account);
+
+  //   const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, StakingRewardABI, signer);
+
+  //   const tx = await stakingContract.getReward({
+  //     gasPrice: web3.utils.toWei("60", "gwei"),
+  //   });
+
+  //   const receipt = await tx.wait();
+
+  //   console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+  // };
+
+  const approveTokens = async () => {
     const signer = await library.getSigner(account);
-
-    const stakingContract = new ethers.Contract(
-      "0x1D37CEA62b127B42dd3D45d766289658aEcb6ea0",
-      StakingRewardABI,
-      signer
-    );
-
-    const tx = await stakingContract.stake(web3.utils.toWei("1", "gwei"), {
-      gasPrice: web3.utils.toWei("60", "gwei"),
+    const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+    const amountToBeApproved = web3.utils.toWei(toCurrencyPrice.toString());
+    const gasPrice = await getGasPrice();
+    const tx = await tokenContract.approve(ContractAddress.STAKING_REWARD, amountToBeApproved, {
+      gasLimit: defaultGasLimit,
+      gasPrice,
     });
-
     console.log(`Transaction hash: ${tx.hash}`);
-
     const receipt = await tx.wait();
-
+    console.log(`Approved ${amountToBeApproved} for staking`)
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
 
-  const withdraw = async () => {
-    const signer = await library.getSigner(account);
-
-    const stakingContract = new ethers.Contract(
-      "0x1D37CEA62b127B42dd3D45d766289658aEcb6ea0",
-      StakingRewardABI,
-      signer
-    );
-
-    const tx = await stakingContract.getReward({
-      gasPrice: web3.utils.toWei("60", "gwei"),
-    });
-
-    const receipt = await tx.wait();
-
-    console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+  const handleSubmit = async () => {
+    if (typeof approved === "undefined") {
+      try {
+        await approveTokens();
+        setApproved(toCurrencyPrice);
+      } catch (error) {}
+    } else {
+      await stakeToken();
+    }
   };
 
   return (
@@ -106,7 +121,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
         />
 
         <div className="text-align-center">
-          <GradientButton onClick={stake}>Stake</GradientButton>
+          <GradientButton onClick={handleSubmit}>Stake</GradientButton>
         </div>
       </>
     </>

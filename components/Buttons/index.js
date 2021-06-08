@@ -22,7 +22,7 @@ export const GradientButton = styled(Button)`
   color: ${({ theme }) => `${theme.color.white} !important`};
   font-weight: 600;
   font-size: 16px;
-  padding: 15px 36px;
+  padding: 5px 36px;
 `;
 
 export const AirdropButton = styled(Button)`

@@ -235,7 +235,7 @@ function Sidebar({
 
 Sidebar.defaultProps = {
   routes: [{}],
-  toggleSidenav: () => {},
+  toggleSidenav: () => {console.log("toggleSidenav not implemented")},
   sidenavOpen: false,
   rtlActive: false,
 };
