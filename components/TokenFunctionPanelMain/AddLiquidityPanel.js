@@ -97,7 +97,7 @@ const AddLiquidityPanel = ({ type, token, dynasetid }) => {
   return (
     <>
       <Typography size={20} style={{ textAlign: "left" }}>
-        Liquidity{" "}
+        Liquidity
       </Typography>
 
       <CurrencyInputPanel balance={balance} currency={fromCurrency} onChange={changeprice} label="From" />
