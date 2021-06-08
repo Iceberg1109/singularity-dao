@@ -4,6 +4,7 @@ import styled from "styled-components";
 import StakePanel from "./StakePanel";
 import Typography from "../Typography";
 import DetailLabel from "./DetailLabel";
+import RewardStakePanel from "./RewardStakePanel";
 // import BurnPanel from "./BurnPanel";
 // import SwapPanel from "./SwapPanel";
 
@@ -11,7 +12,6 @@ const MainCard = styled(Card)`
   padding: 40px;
   color: #ffffff;
   background-clip: padding-box;
-  height: 85%;
   margin-left: auto;
   margin-right: auto;
   &:before {
@@ -30,8 +30,10 @@ const MainCard = styled(Card)`
 
 const TokenFunctionTab = styled.div`
   border: ${({ theme }) => `1px solid ${theme.color.default}`};
-  background-color: ${({ theme, active }) => (active ? theme.color.default : "")};
-  color: ${({ theme, active }) => (active ? theme.color.white : theme.color.default)};
+  background-color: ${({ theme, active }) =>
+    active ? theme.color.default : ""};
+  color: ${({ theme, active }) =>
+    active ? theme.color.white : theme.color.default};
   cursor: pointer;
   padding: 4px 10px;
   font-size: 16px;
@@ -60,7 +62,7 @@ const TabContainer = styled(Row)`
 `;
 
 const TokenFunctionPanel = () => {
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
 
   return (
     <>
@@ -128,7 +130,7 @@ const TokenFunctionPanel = () => {
           <Row>
             <Col lg={6}>
               <MainCard>
-                <StakePanel type={true} />
+                <RewardStakePanel type={true} />
               </MainCard>
             </Col>
             <Col lg={6}>
