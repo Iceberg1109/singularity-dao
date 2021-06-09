@@ -23,14 +23,12 @@ const ForgePage = () => {
       </Typography>
       <div className="py-4 mt-5">
         <Row className="my-3">
-          <Col lg={4}>
-            <ForgeBasket  title="SDAO/USDT Pool" />
-          </Col>
+  
           <Col lg={4}>
             <ForgeBasket title="SDAO/WETH Pool" />
           </Col>
           <Col lg={4}>
-            <ForgeBasket title="SDAO/AGIX Pool" />
+            <ForgeBasket title="AGIX/WETH Pool" />
           </Col>
         </Row>
       </div>

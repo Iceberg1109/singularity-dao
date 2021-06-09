@@ -16,60 +16,37 @@
 */
 const routes = [
   {
-    collapse: true,
+    collapse: false,
     name: "Home",
     icon: "ni ni-shop text-primary",
     state: "dashboardsCollapse",
-    views: [
-      {
-        path: "/dashboard",
-        name: "view",
-        miniName: "D",
-        layout: "/admin",
-      }
-    ],
+     path: "/dashboard",
+     layout: "/admin",
+
   },
   {
-    collapse: true,
+    collapse: false,
     name: "Swap",
     icon: "ni ni-ungroup text-orange",
     state: "examplesCollapse",
-    views: [
-      {
-        path: "/swap",
-        name: "view",
-        miniName: "P",
-        layout: "",
-      }
-    ],
+    path: "/swap",
+    layout: "",
   },
   {
-    collapse: true,
+    collapse: false,
     name: "Liquidity",
     icon: "ni ni-ui-04 text-info",
     state: "componentsCollapse",
-    views: [
-      {
-        path: "/pools",
-        name: "view",
-        miniName: "B",
-        layout: "",
-      }
-    ],
+    path: "/pools",
+    layout: "",
   },
   {
-    collapse: true,
+    collapse: false,
     name: "Farms",
     icon: "ni ni-single-copy-04 text-pink",
     state: "formsCollapse",
-    views: [
-      {
-        path: "/",
-        name: "view",
-        miniName: "E",
-        layout: "",
-      }
-    ],
+    path: "/",
+     layout: "",
   },
   // {
   //   collapse: true,

@@ -3,9 +3,6 @@ import { Row, Card } from "reactstrap";
 import styled from "styled-components";
 import BuyPanel from "./BuyPanel";
 import MintPanel from "components/MintOptions";
-import AddLiquidityPanel from "./AddLiquidityPanel";
-import ChartPanel from "./ChartPanel";
-import StakePanel from "./StakePanel";
 // import BurnPanel from "./BurnPanel";
 // import SwapPanel from "./SwapPanel";
 
@@ -71,7 +68,8 @@ const TokenFunctionPanel = () => {
     <>
 
       <MainCard>
-       <AddLiquidityPanel type={true} />
+       
+        <BuyPanel type={true} />
       </MainCard>
     </>
   );
