@@ -2,7 +2,7 @@ import React from "react";
 import Admin from "layouts/Admin.js";
 import {  Col, Container, Row } from "reactstrap";
 import Typography from "components/Typography";
-import AddLiquidityPanel from "components/AddLiquidityPanel";
+import AddLiquidityPanel from "../../components/AddLiquidityPanel";
 import PoolInfoPanel from "components/PoolInfoPanel";
 
 export default function Add() {

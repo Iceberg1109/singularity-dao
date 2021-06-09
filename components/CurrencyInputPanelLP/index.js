@@ -69,7 +69,7 @@ const CurrencyInputPanelSDAO = ({ label, balance, toCurrencyPrice, onChange }) =
               src="https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg"
               style={{ width: "15px" }}
             ></img> */}
-            SDAO LP
+            {label}
           </DropdownToggle>
         </UncontrolledDropdown>
       </InputGroup>
