@@ -12,7 +12,7 @@ const Card = styled(DefaultCard)`
 const AddLiquidityPanel = () => {
   return (
     <Card className="p-4">
-      <Typography color="text1" size={32} weight={600} className="d-flex justify-content-center">
+      <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
         Add Liquidity
       </Typography>
       <CurrencyInputPanelSDAO label="SDAO" balance="123" onChange={console.log} toCurrencyPrice={456} />

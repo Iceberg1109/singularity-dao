@@ -27,8 +27,8 @@ const DetailLabel = ({ title, desc }) => {
 const PoolInfoPanel = () => {
   return (
     <Card className="p-4">
-      <Typography color="text1" size={32} weight={600} className="d-flex justify-content-center">
-        Add Liquidity
+      <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
+        Pool Info
       </Typography>
       <DetailLabel title="SDAO→WETH" desc="$ 407,004,574" />
       <DetailLabel title="WETH→SDAO" desc="4.82%" />
