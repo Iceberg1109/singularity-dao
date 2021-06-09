@@ -10,6 +10,8 @@ import web3 from "web3";
 import { useUser } from "../UserContext";
 import { ethers } from "ethers";
 import axios from "axios";
+import { defaultGasLimit, getGasPrice } from "../../utils/gasPrice";
+import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 
 const etherscanBaseAPI = {};
 
@@ -87,6 +89,55 @@ const AddLiquidityPanel = () => {
     setToBalance(web3.utils.fromWei(balance.toString()));
   };
 
+  const approveLiquidity = async () => {
+    const signer = await library.getSigner(account);
+    const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+    const amountToBeApproved = web3.utils.toWei(toAmount.toString());
+    const gasPrice = await getGasPrice();
+    const tx = await tokenContract.approve(ContractAddress.UNISWAP, amountToBeApproved, {
+      gasLimit: defaultGasLimit,
+      gasPrice,
+    });
+    console.log(`Transaction hash: ${tx.hash}`);
+    const receipt = await tx.wait();
+    console.log(`Approved ${amountToBeApproved} for staking`);
+    console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+  };
+
+  const buyLiquidity = async () => {
+    console.log("Adding ", web3.utils.toWei(toAmount.toString(), "ether"), " ", toCurrency, " to liquidity pool");
+    const signer = await library.getSigner(account);
+    const uniswap = new ethers.Contract(ContractAddress.UNISWAP, IUniswapV2Router02ABI, signer);
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
+    const gasPrice = await getGasPrice();
+    const tx = await uniswap.addLiquidityETH(
+      ContractAddress.DYNASET,
+      web3.utils.toWei(toAmount.toString(), "ether"),
+      "0",
+      "0",
+      account,
+      deadline,
+      {
+        gasLimit: defaultGasLimit,
+        gasPrice,
+        value: web3.utils.toWei(fromAmount.toString()),
+      }
+    );
+    console.log(`Transaction hash: ${tx.hash}`);
+    const receipt = await tx.wait();
+    console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+  };
+
+  const handleClick = async () => {
+    try {
+      await approveLiquidity();
+      await buyLiquidity();
+    } catch (error) {
+      alert("Errr: look console");
+      console.log("errrrrrrrrrr", error);
+    }
+  };
+
   return (
     <Card className="p-4" style={{ borderRadius: 8 }}>
       <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
@@ -105,7 +156,9 @@ const AddLiquidityPanel = () => {
         onChange={handleToAmountChange}
         toCurrencyPrice={toAmount}
       />
-      <GradientButton>Add Liquidity</GradientButton>
+      <GradientButton onClick={handleClick} disabled={!toAmount}>
+        Add Liquidity
+      </GradientButton>
     </Card>
   );
 };
