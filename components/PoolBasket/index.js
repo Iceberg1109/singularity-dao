@@ -47,8 +47,8 @@ const ForgeBasket = ({ data, title, poolId, liquidity, apy, share, balance }) =>
       </div>
 
       <div className="text-align-center mt-3">
-        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `add_liquidity` })}>
-          Add Liquidity
+        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: "pools/add" })}>
+          Add Liquidity/Swap
         </OutlinedButton>
       </div>
     </Card>

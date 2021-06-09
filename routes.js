@@ -20,9 +20,8 @@ const routes = [
     name: "Home",
     icon: "ni ni-shop text-primary",
     state: "dashboardsCollapse",
-     path: "/dashboard",
-     layout: "/admin",
-
+    path: "/dashboard",
+    layout: "/admin",
   },
   {
     collapse: false,
