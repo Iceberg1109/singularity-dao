@@ -55,7 +55,7 @@ DefaultButton.defaultProps = {
 export const OutlinedButton = styled(Button)`
   border: ${({ theme, color }) =>
     ` 1px solid ${color ? theme.color[color] : theme.color.default}`};
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 10px 36px;
   color: ${({ theme, color }) =>
     color ? theme.color[color] : theme.color.default};

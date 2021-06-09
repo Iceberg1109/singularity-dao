@@ -2,27 +2,12 @@ import React from "react";
 import { Card as DefaultCard } from "reactstrap";
 import Typography from "components/Typography";
 import { GradientButton } from "components/Buttons";
-import { useContext } from "react";
-import styled, { ThemeContext } from "styled-components";
+import styled from "styled-components";
+import DetailLabel from "../TokenFunctionPanelStake/DetailLabel";
 
 const Card = styled(DefaultCard)`
   border-radius: 8px;
 `;
-
-const DetailLabel = ({ title, desc }) => {
-  const themeContext = useContext(ThemeContext);
-  console.log("themeContext", themeContext);
-  return (
-    <div className="d-flex justify-content-between">
-      <Typography size="14" weight="400" style={{ color: themeContext.color.text2 }}>
-        {title}
-      </Typography>
-      <Typography size="14" weight="600" style={{ color: themeContext.color.text1 }}>
-        {desc}
-      </Typography>
-    </div>
-  );
-};
 
 const PoolInfoPanel = () => {
   return (
