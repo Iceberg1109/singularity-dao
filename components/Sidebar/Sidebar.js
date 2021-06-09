@@ -14,7 +14,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { withRouter } from "next/router";
 // nodejs library that concatenates classes
@@ -24,23 +24,9 @@ import { PropTypes } from "prop-types";
 // react library that creates nice scrollbar on windows devices
 import PerfectScrollbar from "react-perfect-scrollbar";
 // reactstrap components
-import {
-  Collapse,
-  NavbarBrand,
-  Navbar,
-  NavItem,
-  NavLink,
-  Nav,
-} from "reactstrap";
+import { Collapse, NavbarBrand, Navbar, NavItem, NavLink, Nav } from "reactstrap";
 
-function Sidebar({
-  toggleSidenav,
-  sidenavOpen,
-  routes,
-  logo,
-  rtlActive,
-  router,
-}) {
+function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive, router }) {
   const [state, setState] = React.useState({});
   const [windowWidth, setWindowWidth] = React.useState(0);
   const [navigatorPlatform, setNavigatorPlatform] = React.useState("");
@@ -111,6 +97,7 @@ function Sidebar({
       if (prop.collapse) {
         var st = {};
         st[prop["state"]] = !state[prop.state];
+        console.log(`st[prop["state"]]`, st);
         return (
           <NavItem key={key}>
             <NavLink
@@ -138,9 +125,7 @@ function Sidebar({
               ) : null}
             </NavLink>
             <Collapse isOpen={state[prop.state]}>
-              <Nav className="nav-sm flex-column">
-                {createLinks(prop.views)}
-              </Nav>
+              <Nav className="nav-sm flex-column">{createLinks(prop.views)}</Nav>
             </Collapse>
           </NavItem>
         );
@@ -148,7 +133,7 @@ function Sidebar({
       return (
         <NavItem className={activeRoute(prop.layout + prop.path)} key={key}>
           <Link href={prop.layout + prop.path}>
-            <NavLink href="#pablo" onClick={closeSidenav}>
+            <NavLink href="#pablo" onClick={closeSidenav} className={activeRoute(prop.layout + prop.path)}>
               {prop.icon !== undefined ? (
                 <>
                   <i className={prop.icon} />
@@ -175,22 +160,14 @@ function Sidebar({
           <Link href={logo.innerLink}>
             <span>
               <NavbarBrand href="#pablo">
-                <img
-                  alt={logo.imgAlt}
-                  className="navbar-brand-img"
-                  src={logo.imgSrc}
-                />
+                <img alt={logo.imgAlt} className="navbar-brand-img" src={logo.imgSrc} />
               </NavbarBrand>
             </span>
           </Link>
         ) : null}
         {logo && logo.outterLink ? (
           <NavbarBrand href={logo.outterLink} target="_blank">
-            <img
-              alt={logo.imgAlt}
-              className="navbar-brand-img"
-              src={logo.imgSrc}
-            />
+            <img alt={logo.imgAlt} className="navbar-brand-img" src={logo.imgSrc} />
           </NavbarBrand>
         ) : null}
         <div className="ml-auto">
@@ -217,10 +194,7 @@ function Sidebar({
   );
   return (
     <Navbar
-      className={
-        "sidenav navbar-vertical navbar-expand-xs navbar-light bg-white " +
-        (rtlActive ? "" : "fixed-left")
-      }
+      className={"sidenav navbar-vertical navbar-expand-xs navbar-light bg-white " + (rtlActive ? "" : "fixed-left")}
       onMouseEnter={onMouseEnterSidenav}
       onMouseLeave={onMouseLeaveSidenav}
     >
@@ -235,7 +209,9 @@ function Sidebar({
 
 Sidebar.defaultProps = {
   routes: [{}],
-  toggleSidenav: () => {console.log("toggleSidenav not implemented")},
+  toggleSidenav: () => {
+    console.log("toggleSidenav not implemented");
+  },
   sidenavOpen: false,
   rtlActive: false,
 };

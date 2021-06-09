@@ -47,7 +47,8 @@ const CurrencyItem = styled.div`
 `;
 
 const InputGroup = styled.div`
-  background: ${({ theme }) => `${theme.color.violet0} !important`};
+
+  background: ${({ theme }) => `${theme.color.violet0} !important ${console.log(theme)}`};
   position: relative;
   border-radius: 10px;
 `;

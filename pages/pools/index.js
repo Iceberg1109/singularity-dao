@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { PropTypes } from "prop-types";
 
 import Admin from "layouts/Admin.js";
-import Typography from "../components/Typography";
-import ForgeBasket from "../components/PoolBasket";
+import Typography from "../../components/Typography";
+import ForgeBasket from "../../components/PoolBasket";
 
 const baskets = [
   {

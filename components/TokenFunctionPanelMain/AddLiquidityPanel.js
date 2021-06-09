@@ -110,7 +110,6 @@ const AddLiquidityPanel = ({ type, token, dynasetid }) => {
     await approveDynasetToken()
 
     console.log("uniswap", uniswap);
-    debugger;
 
     const tx = await uniswap.addLiquidityETH(
       "0x5e94577b949a56279637ff74dfcff2c28408f049",
