@@ -3,8 +3,8 @@ import {
   Input as DefaultInput,
   InputGroupAddon,
   InputGroupText,
-  InputGroup,
-  DropdownToggle,
+  InputGroup as DefaultInputGroup,
+  DropdownToggle as DefaultDropdownToggle,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
@@ -18,6 +18,19 @@ import Typography from "../Typography";
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
   font-weight: 600;
+  background: transparent;
+  border-radius: 8px;
+`;
+
+const InputGroup = styled(DefaultInputGroup)`
+  background: ${({ theme }) => theme.color.violet0};
+  border-radius: 8px;
+`;
+
+const DropdownToggle = styled(DefaultDropdownToggle)`
+  background: white !important;
+  color: black !important;
+  border-radius: 8px;
 `;
 
 const CurrencyInputPanelSDAO = ({ label, balance, toCurrencyPrice, onChange }) => {

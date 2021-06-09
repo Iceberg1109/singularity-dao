@@ -1,8 +1,13 @@
 import React from "react";
-import { Card } from "reactstrap";
+import { Card as DefaultCard } from "reactstrap";
 import Typography from "components/Typography";
 import { GradientButton } from "components/Buttons";
 import CurrencyInputPanelSDAO from "components/CurrencyInputPanelLP";
+import styled, { ThemeContext } from "styled-components";
+
+const Card = styled(DefaultCard)`
+  border-radius: 8px;
+`;
 
 const AddLiquidityPanel = () => {
   return (
