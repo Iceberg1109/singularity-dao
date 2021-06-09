@@ -15,14 +15,7 @@ const baskets = [
     balance: "960.0",
   },
   {
-    poolId: "SDAO-USDT",
-    liquidity: "407004",
-    apy: "4.82",
-    share: "0.005",
-    balance: "960.0",
-  },
-  {
-    key: "SDAO-AGIX",
+    key: "WETH-AGIX",
     poolId: "SDAO-AGIX",
     liquidity: "407004",
     apy: "4.82",

@@ -22,14 +22,6 @@ const routes = [
     state: "dashboardsCollapse",
     path: "/dashboard",
     layout: "/admin",
-    // views: [
-    //   {
-    //     path: "/dashboard",
-    //     name: "view",
-    //     miniName: "D",
-    //     layout: "/admin",
-    //   }
-    // ],
   },
   {
     collapse: false,
@@ -38,14 +30,6 @@ const routes = [
     state: "examplesCollapse",
     path: "/swap",
     layout: "",
-    // views: [
-    //   {
-    //     path: "/swap",
-    //     name: "view",
-    //     miniName: "P",
-    //     layout: "",
-    //   }
-    // ],
   },
   {
     collapse: false,
@@ -54,14 +38,6 @@ const routes = [
     state: "componentsCollapse",
     path: "/pools",
     layout: "",
-    // views: [
-    //   {
-    //     path: "/pools",
-    //     name: "view",
-    //     miniName: "B",
-    //     layout: "",
-    //   }
-    // ],
   },
   {
     collapse: false,
@@ -69,15 +45,7 @@ const routes = [
     icon: "ni ni-single-copy-04 text-pink",
     state: "formsCollapse",
     path: "/",
-    layout: "",
-    // views: [
-    //   {
-    //     path: "/",
-    //     name: "view",
-    //     miniName: "E",
-    //     layout: "",
-    //   }
-    // ],
+     layout: "",
   },
   // {
   //   collapse: true,

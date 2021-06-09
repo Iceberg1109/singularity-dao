@@ -25,6 +25,10 @@ export const GradientButton = styled(Button)`
   padding: 5px 36px;
 `;
 
+GradientButton.defaultProps = {
+  color: "",
+};
+
 export const AirdropButton = styled(Button)`
   justify-content: center;
   align-items: center;
@@ -42,6 +46,8 @@ export const DefaultButton = styled(Button)`
     background ? theme.color[background] : theme.color.primary1};
   color: ${({ theme, color }) =>
     `${color ? theme.color[color] : theme.color.white} !important`};
+  border-color: ${({ theme, borderColor }) =>
+    `${borderColor ? theme.color[borderColor] : theme.color.white} !important`};
   font-weight: 600;
   font-size: 16px;
   padding: 12px 36px;

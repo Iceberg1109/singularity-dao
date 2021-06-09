@@ -14,7 +14,7 @@ import web3 from "web3";
 import { ethers } from "ethers";
 import classnames from "classnames";
 import AirdropABI from "../assets/constants/abi/AirdropABI.json";
-import TokenFunctionPanel from "../components/TokenFunctionPanelSwap/index.js";
+import TokenFunctionPanel from "../components/TokenFunctionPanelMain/index.js";
 
 const GradientRow = styled(Row)`
   background: ${({ theme }) => theme.color.gradient2};
