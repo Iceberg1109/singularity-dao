@@ -13,7 +13,8 @@ import web3 from "web3";
 import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Percent } from "@uniswap/sdk";
 
 import { ethers } from "ethers";
-import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
+// import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
+import SDAOTokenStakingABI from "../../assets/constants/abi/SDAOTokenStaking.json";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
 import { defaultGasLimit, getGasPrice } from "../../utils/gasPrice";
@@ -47,7 +48,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
     try {
       const signer = await library.getSigner(account);
 
-      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, StakingRewardABI, signer);
+      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
 
       const stakeAmount = web3.utils.toWei(toCurrencyPrice.toString());
       const gasPrice = await getGasPrice();
@@ -68,7 +69,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
   // const withdraw = async () => {
   //   const signer = await library.getSigner(account);
 
-  //   const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, StakingRewardABI, signer);
+  //   const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
 
   //   const tx = await stakingContract.getReward({
   //     gasPrice: web3.utils.toWei("60", "gwei"),
@@ -101,7 +102,20 @@ const StakePanel = ({ type, token, dynasetid }) => {
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
 
+  const getPoolInfo = async () => {
+    try {
+      const signer = await library.getSigner(account);
+      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+      const tx = await stakingContract.poolInfo();
+      console.log("tx", tx);
+    } catch (error) {
+      console.log("error getpoolInfo", error);
+      alert("error: look console for details");
+    }
+  };
+
   const handleSubmit = async () => {
+    return await getPoolInfo();
     await getAllowance();
     if (typeof approved === "undefined") {
       try {
