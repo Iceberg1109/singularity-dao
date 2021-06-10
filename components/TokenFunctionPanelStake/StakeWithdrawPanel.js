@@ -32,45 +32,46 @@ const FeeBlock = styled(Row)`
 `;
 
 const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
-  const [fromCurrency, setFromCurrency] = useState("ETH");
-  const [balance, setBalance] = useState(0);
-  const [amounteth, setamountEth] = useState(0);
-  const [toCurrency, setToCurrency] = useState("AGI");
+  // const [fromCurrency, setFromCurrency] = useState("ETH");
+  // const [balance, setBalance] = useState(0);
+  // const [amounteth, setamountEth] = useState(0);
+  // const [toCurrency, setToCurrency] = useState("AGI");
   const [toCurrencyPrice, setToCurrencyPrice] = useState(0);
   const [approved, setApproved] = useState(undefined);
 
-  const [fee, setFee] = useState(0);
-  const [amount, setAmount] = useState();
+  // const [fee, setFee] = useState(0);
+  const [amount, setAmount] = useState("0");
+  const [balance, setBalance] = useState("0");
   const { library, account } = useUser();
   const [showStakeSuccessModal, setShowStakeSuccessModal] = useState(false);
 
-  const stakeToken = async () => {
-    if (typeof approved === "undefined") {
-      return alert("Please Approve before staking");
-    }
-    try {
-      const signer = await library.getSigner(account);
+  // const stakeToken = async () => {
+  //   if (typeof approved === "undefined") {
+  //     return alert("Please Approve before staking");
+  //   }
+  //   try {
+  //     const signer = await library.getSigner(account);
 
-      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
-      const poolId = 0;
-      const stakeAmount = web3.utils.toWei(toCurrencyPrice.toString());
-      const gasPrice = await getGasPrice();
+  //     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+  //     const poolId = 0;
+  //     const stakeAmount = web3.utils.toWei(toCurrencyPrice.toString());
+  //     const gasPrice = await getGasPrice();
 
-      const tx = await stakingContract.deposit(poolId, stakeAmount, account, {
-        gasLimit: defaultGasLimit,
-        gasPrice,
-      });
+  //     const tx = await stakingContract.deposit(poolId, stakeAmount, account, {
+  //       gasLimit: defaultGasLimit,
+  //       gasPrice,
+  //     });
 
-      console.log(`Transaction hash: ${tx.hash}`);
+  //     console.log(`Transaction hash: ${tx.hash}`);
 
-      const receipt = await tx.wait();
+  //     const receipt = await tx.wait();
 
-      console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-    } catch (error) {
-      console.log("error", error);
-      alert("error: look console for details");
-    }
-  };
+  //     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+  //   } catch (error) {
+  //     console.log("error", error);
+  //     alert("error: look console for details");
+  //   }
+  // };
 
   // const withdraw = async () => {
   //   const signer = await library.getSigner(account);
@@ -86,32 +87,32 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   //   console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   // };
 
-  const getAllowance = async () => {
-    const signer = await library.getSigner(account);
-    // const tokenContract = new ethers.Contract(
-    //   ContractAddress.DYNASET,
-    //   DynasetABI,
-    //   signer
-    // );
-    const lpToken = new Token(ChainId.ROPSTEN, ContractAddress.LP_TOKEN, 18);
-    const allowance = await lpToken.allowance(account, ContractAddress.STAKING_REWARD);
-    console.log("allowance", allowance.toString());
-  };
+  // const getAllowance = async () => {
+  //   const signer = await library.getSigner(account);
+  //   // const tokenContract = new ethers.Contract(
+  //   //   ContractAddress.DYNASET,
+  //   //   DynasetABI,
+  //   //   signer
+  //   // );
+  //   const lpToken = new Token(ChainId.ROPSTEN, ContractAddress.LP_TOKEN, 18);
+  //   const allowance = await lpToken.allowance(account, ContractAddress.STAKING_REWARD);
+  //   console.log("allowance", allowance.toString());
+  // };
 
-  const approveTokens = async () => {
-    const signer = await library.getSigner(account);
-    const lpToken = new ethers.Contract(ContractAddress.LP_TOKEN, DynasetABI, signer);
-    const amountToBeApproved = web3.utils.toWei(toCurrencyPrice.toString());
-    const gasPrice = await getGasPrice();
-    const tx = await lpToken.approve(ContractAddress.STAKING_REWARD, amountToBeApproved, {
-      gasLimit: defaultGasLimit,
-      gasPrice,
-    });
-    console.log(`Transaction hash: ${tx.hash}`);
-    const receipt = await tx.wait();
-    console.log(`Approved ${amountToBeApproved} for staking`);
-    console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-  };
+  // const approveTokens = async () => {
+  //   const signer = await library.getSigner(account);
+  //   const lpToken = new ethers.Contract(ContractAddress.LP_TOKEN, DynasetABI, signer);
+  //   const amountToBeApproved = web3.utils.toWei(toCurrencyPrice.toString());
+  //   const gasPrice = await getGasPrice();
+  //   const tx = await lpToken.approve(ContractAddress.STAKING_REWARD, amountToBeApproved, {
+  //     gasLimit: defaultGasLimit,
+  //     gasPrice,
+  //   });
+  //   console.log(`Transaction hash: ${tx.hash}`);
+  //   const receipt = await tx.wait();
+  //   console.log(`Approved ${amountToBeApproved} for staking`);
+  //   console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+  // };
 
   // const getPoolInfo = async () => {
   //   try {
@@ -126,33 +127,58 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   //   }
   // };
 
-  const getPendingRewards = async () => {
-    const signer = await library.getSigner(account);
+  // const getPendingRewards = async () => {
+  //   const signer = await library.getSigner(account);
 
+  //   const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+  //   const poolId = 0;
+  //   const gasPrice = await getGasPrice();
+  //   const rewards = await stakingContract.pendingRewards(poolId.toString(), account, {
+  //     gasLimit: defaultGasLimit,
+  //     gasPrice,
+  //   });
+  //   console.log("rewards", rewards);
+  // };
+
+  const withdrawAndHarvest = async () => {
+    const signer = await library.getSigner(account);
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
+    const withdrawAmount = web3.utils.toWei(amount.toString());
+    console.log("withdrawAmount", withdrawAmount)
     const gasPrice = await getGasPrice();
-    const rewards = await stakingContract.pendingRewards(poolId.toString(), account, {
+
+    const tx = await stakingContract.withdrawAndHarvest(poolId, withdrawAmount, account, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
-    console.log("rewards", rewards);
+
+    console.log(`Transaction hash: ${tx.hash}`);
+    const receipt = await tx.wait();
+    console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
 
   const handleSubmit = async () => {
-    // return await getPendingRewards();
-    if (typeof approved === "undefined") {
-      try {
-        await approveTokens();
-        setApproved(toCurrencyPrice);
-      } catch (error) {
-        console.log("error", error);
-        alert("error: look console for details");
-      }
-    } else {
-      await stakeToken();
-      setShowStakeSuccessModal(true);
+    // TODO: Validation
+    try {
+      await withdrawAndHarvest();
+    } catch (error) {
+      console.log("error", error);
+      alert("error: look console for details");
     }
+    // return await getPendingRewards();
+    // if (typeof approved === "undefined") {
+    //   try {
+    //     await approveTokens();
+    //     setApproved(toCurrencyPrice);
+    //   } catch (error) {
+    //     console.log("error", error);
+    //     alert("error: look console for details");
+    //   }
+    // } else {
+    //   await stakeToken();
+    //   setShowStakeSuccessModal(true);
+    // }
   };
 
   return (
@@ -162,7 +188,13 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
           Start Staking
         </Typography>
       </div>
-      <CurrencyInputPanelSDAOLP balance={toCurrencyPrice} onChange={setToCurrencyPrice} currency={token} label="SDAO LP" />
+      <CurrencyInputPanelSDAOLP
+        balance={balance}
+        toCurrencyPrice={amount}
+        onChange={setAmount}
+        currency={token}
+        label="SDAO LP"
+      />
       {/* <CurrencyInputPanelSDAOLP
         balance={toCurrencyPrice}
         onChange={setToCurrencyPrice}
