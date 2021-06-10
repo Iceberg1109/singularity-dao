@@ -163,13 +163,13 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
         </Typography>
       </div>
       <CurrencyInputPanelSDAOLP balance={toCurrencyPrice} onChange={setToCurrencyPrice} currency={token} label="SDAO LP" />
-      <CurrencyInputPanelSDAOLP
+      {/* <CurrencyInputPanelSDAOLP
         balance={toCurrencyPrice}
         onChange={setToCurrencyPrice}
         currency={token}
         label="SDAO"
         hideBalance={true}
-      />
+      /> */}
       <div className="d-flex justify-content-center">
         <DefaultButton background="white" color="black" borderColor="black">
           Cancel

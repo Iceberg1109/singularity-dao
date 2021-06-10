@@ -209,7 +209,7 @@ function StakePage() {
 
   return (
     <Container className="my-4">
-      <TokenFunctionPanel panelType={PanelTypes.WITHDRAW} />
+      <TokenFunctionPanel panelType={PanelTypes.DEPOSIT} />
     </Container>
   );
 }
