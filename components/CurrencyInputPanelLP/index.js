@@ -14,6 +14,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Typography from "../Typography";
+import { LinkButton } from "../Buttons";
 
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
@@ -73,9 +74,19 @@ const CurrencyInputPanelSDAO = ({ label, balance, toCurrencyPrice, onChange }) =
           </DropdownToggle>
         </UncontrolledDropdown>
       </InputGroup>
-      <Typography size={14} weight={400} className="pl-1 mt-1">
-        Balance: {balance}
-      </Typography>
+      <div className="d-flex justify-content-between mt-1">
+        <Typography size={14} weight={400} color="text2" className="pl-1">
+          ~ $ value
+        </Typography>
+        <div className="d-flex">
+          <Typography size={14} weight={400} className="pl-1">
+            Balance: {balance}
+          </Typography>
+          <LinkButton className="ml-2 " color="link">
+            MAX
+          </LinkButton>
+        </div>
+      </div>
     </FormGroup>
   );
 };

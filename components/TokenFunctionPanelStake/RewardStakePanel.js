@@ -162,12 +162,12 @@ const RewardStakePanel = ({ type, token, dynasetid }) => {
           Start Staking
         </Typography>
       </div>
-      <CurrencyInputPanelSDAOLP balance={toCurrencyPrice} onChange={setToCurrencyPrice} currency={token} />
-      <CurrencyInputPanelSDAO
+      <CurrencyInputPanelSDAOLP balance={toCurrencyPrice} onChange={setToCurrencyPrice} currency={token} label="SDAO LP" />
+      <CurrencyInputPanelSDAOLP
         balance={toCurrencyPrice}
         onChange={setToCurrencyPrice}
         currency={token}
-        label="Your reward (approx.)"
+        label="SDAO"
         hideBalance={true}
       />
       <div className="d-flex justify-content-center">
