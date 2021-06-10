@@ -1,16 +1,16 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Row, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
-import CurrencyInputPanel from "../../components/CurrencyInputPanelDropDown";
-import CurrencyInputPanelSDAOLP from "../../components/CurrencyInputPanelLP";
-import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelSDAO";
+import CurrencyInputPanel from "../CurrencyInputPanelDropDown";
+import CurrencyInputPanelSDAOLP from "../CurrencyInputPanelLP";
+import CurrencyInputPanelSDAO from "../CurrencyInputPanelSDAO";
 
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
 import Typography from "../Typography";
 
 import { DefaultButton, GradientButton } from "../Buttons";
 import PropTypes from "prop-types";
-import { useUser } from "../../components/UserContext";
+import { useUser } from "../UserContext";
 import web3 from "web3";
 import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Percent } from "@uniswap/sdk";
 
@@ -31,7 +31,7 @@ const FeeBlock = styled(Row)`
   padding: 8px 0;
 `;
 
-const RewardStakePanel = ({ token, dynasetid }) => {
+const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   const [fromCurrency, setFromCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
   const [amounteth, setamountEth] = useState(0);
@@ -162,12 +162,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
           Start Staking
         </Typography>
       </div>
-      <CurrencyInputPanelSDAOLP
-        balance={toCurrencyPrice}
-        onChange={setToCurrencyPrice}
-        currency={token}
-        label="SDAO LP"
-      />
+      <CurrencyInputPanelSDAOLP balance={toCurrencyPrice} onChange={setToCurrencyPrice} currency={token} label="SDAO LP" />
       <CurrencyInputPanelSDAOLP
         balance={toCurrencyPrice}
         onChange={setToCurrencyPrice}
@@ -179,20 +174,20 @@ const RewardStakePanel = ({ token, dynasetid }) => {
         <DefaultButton background="white" color="black" borderColor="black">
           Cancel
         </DefaultButton>
-        <GradientButton onClick={handleSubmit}>{!approved ? "Confirm Stake" : "Stake"}</GradientButton>
+        <GradientButton onClick={handleSubmit}>Withdraw</GradientButton>
       </div>
       <StakeSuccessModal modalOpen={showStakeSuccessModal} setModalOpen={setShowStakeSuccessModal} />
     </>
   );
 };
 
-RewardStakePanel.propTypes = {
+StakeWithdrawPanel.propTypes = {
   type: PropTypes.bool,
 };
 
-RewardStakePanel.defaultProps = {
+StakeWithdrawPanel.defaultProps = {
   // If true, it means that it is the buy panel. If false, it is the swap panel.
   type: true,
 };
 
-export default RewardStakePanel;
+export default StakeWithdrawPanel;

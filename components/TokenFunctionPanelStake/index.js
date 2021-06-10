@@ -5,6 +5,9 @@ import StakePanel from "./StakePanel";
 import Typography from "../Typography";
 import DetailLabel from "./DetailLabel";
 import RewardStakePanel from "./RewardStakePanel";
+import StakeWithdrawPanel from "./StakeWithdrawPanel";
+import PropTypes from "prop-types";
+
 // import BurnPanel from "./BurnPanel";
 // import SwapPanel from "./SwapPanel";
 
@@ -30,10 +33,8 @@ const MainCard = styled(Card)`
 
 const TokenFunctionTab = styled.div`
   border: ${({ theme }) => `1px solid ${theme.color.default}`};
-  background-color: ${({ theme, active }) =>
-    active ? theme.color.default : ""};
-  color: ${({ theme, active }) =>
-    active ? theme.color.white : theme.color.default};
+  background-color: ${({ theme, active }) => (active ? theme.color.default : "")};
+  color: ${({ theme, active }) => (active ? theme.color.white : theme.color.default)};
   cursor: pointer;
   padding: 4px 10px;
   font-size: 16px;
@@ -61,12 +62,18 @@ const TabContainer = styled(Row)`
   margin-bottom: 5vh;
 `;
 
-const TokenFunctionPanel = () => {
-  const [activeTab, setActiveTab] = useState(1);
+export const PanelTypes = {
+  DEPOSIT: "DEPOSIT",
+  WITHDRAW: "WITHDRAW",
+  CLAIM: "CLAIM",
+};
+
+const TokenFunctionPanel = ({ panelType }) => {
+  const MainPanel = panelType === PanelTypes.WITHDRAW ? StakeWithdrawPanel : RewardStakePanel;
 
   return (
     <>
-      {activeTab === 0 ? (
+      {/* {activeTab === 0 ? (
         <div>
           <Typography size={32} weight={600}>
             Stake
@@ -82,11 +89,7 @@ const TokenFunctionPanel = () => {
                     Total Staked
                   </Typography>
                 </div>
-                <Typography
-                  size={20}
-                  style={{ textAlign: "left" }}
-                  className="mb-3"
-                >
+                <Typography size={20} style={{ textAlign: "left" }} className="mb-3">
                   1,250 SDAO LP
                 </Typography>
                 <DetailLabel title="SDAO earned" desc="0.0000" />
@@ -105,50 +108,54 @@ const TokenFunctionPanel = () => {
             </Col>
           </Row>
         </div>
-      ) : (
-        <div>
-          <MainCard>
-            <div className="d-flex justify-content-between">
-              <div>
-                <Typography size={15} style={{ textAlign: "left" }}>
-                  Total Staked
-                </Typography>
-                <Typography
-                  size={20}
-                  style={{ textAlign: "left" }}
-                  className="mb-3"
-                >
-                  1,250 SDAO LP
-                </Typography>
-              </div>
-              <div>
-                <Typography>Withdrawable stake</Typography>
-                <Typography>1,250 SDAO LP</Typography>
-              </div>
+      ) : */}
+
+      <div>
+        <MainCard>
+          <div className="d-flex justify-content-between">
+            <div>
+              <Typography size={15} style={{ textAlign: "left" }}>
+                Total Staked
+              </Typography>
+              <Typography size={20} style={{ textAlign: "left" }} className="mb-3">
+                1,250 SDAO LP
+              </Typography>
             </div>
-          </MainCard>
-          <Row>
-            <Col lg={6}>
-              <MainCard>
-                <RewardStakePanel type={true} />
-              </MainCard>
-            </Col>
-            <Col lg={6}>
-              <MainCard>
-                <Typography size={20}>SDAO earned</Typography>
-                <Typography size={24} weight={600} className="mb-3">
-                  0.0000
-                </Typography>
-                <DetailLabel title="Max stake per user" desc="1,500 SDAO LP" />
-                <DetailLabel title="APY return" desc="34.74 %" />
-                <DetailLabel title="Ends in" desc="1,703,000 blocks" />
-              </MainCard>
-            </Col>
-          </Row>
-        </div>
-      )}
+            <div>
+              <Typography>Withdrawable stake</Typography>
+              <Typography>1,250 SDAO LP</Typography>
+            </div>
+          </div>
+        </MainCard>
+        <Row>
+          <Col lg={6}>
+            <MainCard>
+              <MainPanel />
+            </MainCard>
+          </Col>
+          <Col lg={6}>
+            <MainCard>
+              <Typography size={20}>SDAO earned</Typography>
+              <Typography size={24} weight={600} className="mb-3">
+                0.0000
+              </Typography>
+              <DetailLabel title="Max stake per user" desc="1,500 SDAO LP" />
+              <DetailLabel title="APY return" desc="34.74 %" />
+              <DetailLabel title="Ends in" desc="1,703,000 blocks" />
+            </MainCard>
+          </Col>
+        </Row>
+      </div>
     </>
   );
+};
+
+TokenFunctionPanel.propTypes = {
+  panelType: PropTypes.oneOf([PanelTypes.DEPOSIT, PanelTypes.WITHDRAW, PanelTypes.CLAIM]),
+};
+
+TokenFunctionPanel.defaultProps = {
+  panelType: PanelTypes.DEPOSIT,
 };
 
 export default TokenFunctionPanel;
