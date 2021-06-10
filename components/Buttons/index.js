@@ -42,10 +42,8 @@ export const AirdropButton = styled(Button)`
 `;
 
 export const DefaultButton = styled(Button)`
-  background: ${({ theme, background }) =>
-    background ? theme.color[background] : theme.color.primary1};
-  color: ${({ theme, color }) =>
-    `${color ? theme.color[color] : theme.color.white} !important`};
+  background: ${({ theme, background }) => (background ? theme.color[background] : theme.color.primary1)};
+  color: ${({ theme, color }) => `${color ? theme.color[color] : theme.color.white} !important`};
   border-color: ${({ theme, borderColor }) =>
     `${borderColor ? theme.color[borderColor] : theme.color.white} !important`};
   font-weight: 600;
@@ -59,17 +57,14 @@ DefaultButton.defaultProps = {
 };
 
 export const OutlinedButton = styled(Button)`
-  border: ${({ theme, color }) =>
-    ` 1px solid ${color ? theme.color[color] : theme.color.default}`};
+  border: ${({ theme, color }) => ` 1px solid ${color ? theme.color[color] : theme.color.default}`};
   border-radius: 8px;
   padding: 10px 36px;
-  color: ${({ theme, color }) =>
-    color ? theme.color[color] : theme.color.default};
+  color: ${({ theme, color }) => (color ? theme.color[color] : theme.color.default)};
   font-size: 14px;
 
   &:hover {
-    color ${({ theme, color }) =>
-      color ? theme.color[color] : theme.color.default};
+    color ${({ theme, color }) => (color ? theme.color[color] : theme.color.default)};
   }
 `;
 
@@ -89,3 +84,11 @@ export const BlueButton = styled(Button)`
 BlueButton.defaultProps = {
   color: "",
 };
+
+export const LinkButton = styled(Button)`
+  background: ${({ theme }) => theme.color.grayLight};
+  color: ${({ theme }) => `${theme.color.link1} !important`};
+  font-weight: 600;
+  font-size: 14px;
+  padding: 0px;
+`;

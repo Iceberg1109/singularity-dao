@@ -209,7 +209,19 @@ function StakePage() {
 
   return (
     <Container className="my-4">
-      <TokenFunctionPanel panelType={PanelTypes.DEPOSIT} />
+      {/* <Typography color="text1" size={32} weight={600}>
+        Staking Portal
+      </Typography>
+      <Typography color="gray80" size={14}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+        <br /> eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </Typography> */}
+      <TokenFunctionPanel panelType={PanelTypes.WITHDRAW} />
+      {/* <div className="py-4 mt-5">
+        <Row className="my-3">
+          <TokenFunctionPanel />
+        </Row>
+      </div> */}
     </Container>
   );
 }
