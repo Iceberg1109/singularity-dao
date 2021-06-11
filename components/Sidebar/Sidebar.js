@@ -38,6 +38,9 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive, router }
   }, []);
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
+    if (routeName === '/')
+      return router.pathname === '/' ? 'active' : '';
+
     return router.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
   // makes the sidenav normal on hover (actually when mouse enters on it)
@@ -114,7 +117,7 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive, router }
             >
               {prop.icon ? (
                 <>
-                  <i className={prop.icon} />
+                  <img src={prop.icon} className="mr-3"/>
                   <span className="nav-link-text">{prop.name}</span>
                 </>
               ) : prop.miniName ? (
@@ -136,7 +139,7 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive, router }
             <NavLink href="#pablo" onClick={closeSidenav} className={activeRoute(prop.layout + prop.path)}>
               {prop.icon !== undefined ? (
                 <>
-                  <i className={prop.icon} />
+                  <img src={prop.icon} className="mr-3"/>
                   <span className="nav-link-text">{prop.name}</span>
                 </>
               ) : prop.miniName !== undefined ? (

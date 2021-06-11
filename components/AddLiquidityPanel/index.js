@@ -86,6 +86,7 @@ const AddLiquidityPanel = () => {
     const signer = await library.getSigner(account);
     const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
     const balance = await tokenContract.balanceOf(account);
+
     setToBalance(web3.utils.fromWei(balance.toString()));
   };
 
@@ -144,7 +145,7 @@ const AddLiquidityPanel = () => {
         Add Liquidity
       </Typography>
       <CurrencyInputPanelSDAO
-        label={toCurrency}
+        label={fromCurrency}
         balance={`${fromBalance} ${fromCurrency}`}
         onChange={handleFromAmountChange}
         toCurrencyPrice={fromAmount}

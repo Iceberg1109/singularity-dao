@@ -14,11 +14,18 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import HomeIcon from './assets/img/icons/home.svg';
+import SwapIcon from './assets/img/icons/swap.svg';
+import LiquidityIcon from './assets/img/icons/liquidity.svg';
+import StakeIcon from './assets/img/icons/stake.svg';
+import FarmsIcon from './assets/img/icons/farms.svg';
+import StatsIcon from './assets/img/icons/stats.svg';
+
 const routes = [
   {
     collapse: false,
     name: "Home",
-    icon: "ni ni-shop text-primary",
+    icon: HomeIcon,
     state: "dashboardsCollapse",
     path: "/dashboard",
     layout: "/admin",
@@ -26,7 +33,7 @@ const routes = [
   {
     collapse: false,
     name: "Swap",
-    icon: "ni ni-ungroup text-orange",
+    icon: SwapIcon,
     state: "examplesCollapse",
     path: "/swap",
     layout: "",
@@ -34,7 +41,7 @@ const routes = [
   {
     collapse: false,
     name: "Liquidity",
-    icon: "ni ni-ui-04 text-info",
+    icon: LiquidityIcon,
     state: "componentsCollapse",
     path: "/pools",
     layout: "",
@@ -42,7 +49,7 @@ const routes = [
   {
     collapse: false,
     name: "Farms",
-    icon: "ni ni-single-copy-04 text-pink",
+    icon: FarmsIcon,
     state: "formsCollapse",
     path: "/",
      layout: "",
