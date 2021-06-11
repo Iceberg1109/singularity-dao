@@ -21,6 +21,8 @@ import settingsIcon from "../../assets/img/icons/settings.svg";
 import { defaultGasLimit, getGasPrice } from "../../utils/gasPrice";
 import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
+import { useRouter } from 'next/router';
+
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -44,6 +46,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   const [balance, setBalance] = useState("0");
   const { library, account } = useUser();
   const [showStakeSuccessModal, setShowStakeSuccessModal] = useState(false);
+  const router = useRouter();
 
   // const stakeToken = async () => {
   //   if (typeof approved === "undefined") {
@@ -145,7 +148,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
     const withdrawAmount = web3.utils.toWei(amount.toString());
-    console.log("withdrawAmount", withdrawAmount)
+    console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
 
     const tx = await stakingContract.withdrawAndHarvest(poolId, withdrawAmount, account, {
@@ -208,7 +211,18 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
         </DefaultButton>
         <GradientButton onClick={handleSubmit}>Withdraw</GradientButton>
       </div>
-      <StakeSuccessModal modalOpen={showStakeSuccessModal} setModalOpen={setShowStakeSuccessModal} />
+      <StakeSuccessModal
+        modalOpen={showStakeSuccessModal}
+        setModalOpen={setShowStakeSuccessModal}
+        title="Withdraw done successfully!"
+        itemsList={[
+          { label: "Stake Balance", desc: "960.0000 SDAO LP" },
+          { label: "APY (approx.)", desc: "34.74 %" },
+        ]}
+        resultsList={[{ label: "Withdrawn", desc: "345.2500 SDAO" }]}
+        primaryAction={{ label: "Ok", onClick: () => router.push('/') }}
+        secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
+      />
     </>
   );
 };

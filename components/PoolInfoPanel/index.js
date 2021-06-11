@@ -3,7 +3,7 @@ import { Card as DefaultCard } from "reactstrap";
 import Typography from "components/Typography";
 import { GradientButton } from "components/Buttons";
 import styled from "styled-components";
-import DetailLabel from "../TokenFunctionPanelStake/DetailLabel";
+import { DetailLabel } from "../TokenFunctionPanelStake/Label";
 
 const Card = styled(DefaultCard)`
   border-radius: 8px;
