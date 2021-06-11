@@ -5,16 +5,15 @@ import { Card, Container, Row, Col, Input, Modal, Button } from "reactstrap";
 // layout for this page
 import Admin from "layouts/Admin.js";
 
-import Typography, { GradientTypography } from "../components/Typography";
-import { OutlinedButton } from "../components/Buttons";
+import Typography, { GradientTypography } from "../../components/Typography";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useUser } from "components/UserContext";
 import web3 from "web3";
 import { ethers } from "ethers";
 import classnames from "classnames";
-import AirdropABI from "../assets/constants/abi/AirdropABI.json";
-import TokenFunctionPanel, { PanelTypes } from "../components/TokenFunctionPanelStake/index.js";
+import AirdropABI from "../../assets/constants/abi/AirdropABI.json";
+import TokenFunctionPanel, { PanelTypes } from "../../components/TokenFunctionPanelStake/index.js";
 
 const GradientRow = styled(Row)`
   background: ${({ theme }) => theme.color.gradient2};
@@ -131,7 +130,7 @@ const DetailLabel = ({ name, value, isDetail = true, icon }) => (
   </div>
 );
 
-function StakePage() {
+function StakeDeposit() {
   const { library, account } = useUser();
   const router = useRouter();
 
@@ -214,6 +213,6 @@ function StakePage() {
   );
 }
 
-StakePage.layout = Admin;
+StakeDeposit.layout = Admin;
 
-export default StakePage;
+export default StakeDeposit;
