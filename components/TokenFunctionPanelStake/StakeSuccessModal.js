@@ -3,36 +3,37 @@ import React from "react";
 // reactstrap components
 import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
 import { GradientButton, OutlinedButton } from "../Buttons";
-import DetailLabel from "./DetailLabel";
+import { ResultLabel, DetailLabel } from "./Label";
 
-function StakeSuccessModal({ modalOpen, setModalOpen }) {
-  //   const [modalOpen, setModalOpen] = React.useState(false);
+function StakeSuccessModal({ modalOpen, setModalOpen, title, itemsList, resultsList, primaryAction, secondaryAction }) {
   return (
     <>
-      {/* <Button color="primary" type="button" onClick={() => setModalOpen(!modalOpen)}>
-        Launch demo modal
-      </Button> */}
       <Modal toggle={() => setModalOpen(!modalOpen)} isOpen={modalOpen}>
         <div className=" modal-header">
           <h5 className=" modal-title " id="exampleModalLabel">
-            Token staked successfully!
+            {title}
           </h5>
           <button aria-label="Close" className=" close" type="button" onClick={() => setModalOpen(!modalOpen)}>
             <span aria-hidden={true}>×</span>
           </button>
         </div>
         <ModalBody>
-          <DetailLabel title="Staked" desc="960.0000 SDAO LP" />
-          <DetailLabel title="APY (approx.)" desc="34.74 %" />
+          {itemsList.map((item) => (
+            <DetailLabel title={item.label} desc={item.desc} />
+          ))}
+          {/* <DetailLabel title="Staked" desc="960.0000 SDAO LP" />
+          <DetailLabel title="APY (approx.)" desc="34.74 %" /> */}
           <hr />
-          <DetailLabel title="You get (approx.)" desc="345.2500 SDAO" />
+          {resultsList.map((result) => (
+            <ResultLabel title={result.label} desc={result.desc} />
+          ))}
         </ModalBody>
         <ModalFooter className="d-flex justify-content-center">
-          <OutlinedButton color="interactive2" type="button" onClick={() => setModalOpen(false)}>
-            Stake more
+          <OutlinedButton color="interactive2" type="button" onClick={secondaryAction.onClick}>
+            {secondaryAction.label}
           </OutlinedButton>
-          <GradientButton type="button" className="py-2" onClick={() => setModalOpen(false)}>
-            ok
+          <GradientButton type="button" className="py-2" onClick={primaryAction.onClick}>
+            {primaryAction.label}
           </GradientButton>
         </ModalFooter>
       </Modal>

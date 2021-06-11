@@ -21,6 +21,8 @@ import settingsIcon from "../../assets/img/icons/settings.svg";
 import { defaultGasLimit, getGasPrice } from "../../utils/gasPrice";
 import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
+import { useRouter } from 'next/router';
+
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -43,6 +45,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
   const [amount, setAmount] = useState();
   const { library, account } = useUser();
   const [showStakeSuccessModal, setShowStakeSuccessModal] = useState(false);
+  const router = useRouter();
 
   const stakeToken = async () => {
     if (typeof approved === "undefined") {
@@ -181,7 +184,18 @@ const RewardStakePanel = ({ token, dynasetid }) => {
         </DefaultButton>
         <GradientButton onClick={handleSubmit}>{!approved ? "Confirm Stake" : "Stake"}</GradientButton>
       </div>
-      <StakeSuccessModal modalOpen={showStakeSuccessModal} setModalOpen={setShowStakeSuccessModal} />
+      <StakeSuccessModal
+        modalOpen={showStakeSuccessModal}
+        setModalOpen={setShowStakeSuccessModal}
+        title="Token staked successfully!"
+        itemsList={[
+          { label: "Staked", desc: "960.0000 SDAO LP" },
+          { label: "APY (approx.)", desc: "34.74 %" },
+        ]}
+        resultsList={[{ label: "You get (approx.)", desc: "345.2500 SDAO" }]}
+        primaryAction={{ label: "Ok", onClick: () => router.push("/") }}
+        secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
+      />
     </>
   );
 };

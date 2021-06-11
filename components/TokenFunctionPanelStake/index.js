@@ -3,7 +3,7 @@ import { Row, Card, Col } from "reactstrap";
 import styled from "styled-components";
 import StakePanel from "./StakePanel";
 import Typography from "../Typography";
-import DetailLabel from "./DetailLabel";
+import {DetailLabel} from "./Label";
 import RewardStakePanel from "./RewardStakePanel";
 import StakeWithdrawPanel from "./StakeWithdrawPanel";
 import PropTypes from "prop-types";

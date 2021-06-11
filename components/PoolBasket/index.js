@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { OutlinedButton } from "../Buttons";
 import Typography from "../Typography";
 import { useRouter } from "next/router";
-import DetailLabel from "../TokenFunctionPanelStake/DetailLabel";
+import {DetailLabel} from "../TokenFunctionPanelStake/Label";
 
 const CustomProgress = styled(Progress)`
   .progress-bar {
