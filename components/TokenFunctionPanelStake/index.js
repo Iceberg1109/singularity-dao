@@ -3,10 +3,11 @@ import { Row, Card, Col } from "reactstrap";
 import styled from "styled-components";
 import StakePanel from "./StakePanel";
 import Typography from "../Typography";
-import {DetailLabel} from "./Label";
+import { DetailLabel } from "./Label";
 import RewardStakePanel from "./RewardStakePanel";
 import StakeWithdrawPanel from "./StakeWithdrawPanel";
 import PropTypes from "prop-types";
+import StakeClaimPanel from "./StakeClaimPanel";
 
 // import BurnPanel from "./BurnPanel";
 // import SwapPanel from "./SwapPanel";
@@ -69,7 +70,12 @@ export const PanelTypes = {
 };
 
 const TokenFunctionPanel = ({ panelType }) => {
-  const MainPanel = panelType === PanelTypes.WITHDRAW ? StakeWithdrawPanel : RewardStakePanel;
+  let MainPanel = RewardStakePanel;
+  if(panelType == PanelTypes.WITHDRAW) {
+    MainPanel = StakeWithdrawPanel
+  }else if(panelType == PanelTypes.CLAIM) {
+    MainPanel = StakeClaimPanel
+  }
 
   return (
     <>

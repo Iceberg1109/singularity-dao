@@ -31,17 +31,17 @@ const ForgeBasket = ({ data, title }) => {
       <DetailLabel title="APY" desc="18%" />
       <DetailLabel title="Your stake" desc="40.0 LP" />
       <div className="text-align-center mt-3">
-        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `withdraw` })}>
+        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `stake/withdraw` })}>
           Withdraw
         </OutlinedButton>
-        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `stake` })}>
+        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `stake/deposit` })}>
           Stake
         </OutlinedButton>
       </div>
       <hr />
       <DetailLabel title="SDAO LP deposited" desc="0.0000 LP" />
       <div className="text-align-center mt-3">
-        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `stake` })}>
+        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `stake/claim` })}>
           Claim
         </OutlinedButton>
       </div>

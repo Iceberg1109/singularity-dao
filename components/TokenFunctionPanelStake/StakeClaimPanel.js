@@ -32,7 +32,7 @@ const FeeBlock = styled(Row)`
   padding: 8px 0;
 `;
 
-const StakeWithdrawPanel = ({ token }) => {
+const StakeClaimPanel = ({ token }) => {
   const [toCurrencyPrice, setToCurrencyPrice] = useState(0);
   const [approved, setApproved] = useState(undefined);
 
@@ -82,7 +82,7 @@ const StakeWithdrawPanel = ({ token }) => {
         <DefaultButton background="white" color="black" borderColor="black">
           Cancel
         </DefaultButton>
-        <GradientButton onClick={handleSubmit}>Withdraw</GradientButton>
+        <GradientButton onClick={handleSubmit}>Claim</GradientButton>
       </div>
       <StakeSuccessModal
         modalOpen={showStakeSuccessModal}
@@ -100,13 +100,13 @@ const StakeWithdrawPanel = ({ token }) => {
   );
 };
 
-StakeWithdrawPanel.propTypes = {
+StakeClaimPanel.propTypes = {
   type: PropTypes.bool,
 };
 
-StakeWithdrawPanel.defaultProps = {
+StakeClaimPanel.defaultProps = {
   // If true, it means that it is the buy panel. If false, it is the swap panel.
   type: true,
 };
 
-export default StakeWithdrawPanel;
+export default StakeClaimPanel;
