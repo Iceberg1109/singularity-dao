@@ -52,44 +52,41 @@ const InputGroup = styled.div`
   border-radius: 10px;
 `;
 
-const CurrencyInputPanel = (props) => {
-  const [focused, setFocused] = useState();
+const svgLogoSrc = {
+  ETH: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/628px-Ethereum_logo_2014.svg.png",
+  SDAO: "https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg",
+};
+const CurrencyInputPanel = ({ balance, onChange, label, value, currency }) => {
+  // const [focused, setFocused] = useState();
 
-  const [balance, setBalance] = useState(props.balance);
+  // const [balance, setBalance] = useState(props.balance);
 
   const changeprice = async (e) => {
     // console.log(e.target.value);
 
-    props.onChange(e.target.value);
+    onChange(e.target.value);
   };
 
   return (
     <FormGroup className="my-4 w-100">
       <Typography size={12} weight={300} className="pl-1">
-        {props.label}
+        {label}
       </Typography>
       <InputGroup>
         <Input
-          placeholder={props.balance}
+          placeholder={balance}
           onChange={changeprice}
-          onFocus={(e) => setFocused(true)}
-          onBlur={(e) => setFocused(false)}
-          defaultValue={props.balance}
+          // onFocus={(e) => setFocused(true)}
+          // onBlur={(e) => setFocused(false)}
+          // defaultValue={balance}
+          value={value}
         />
         <CurrencyContainer>
           <CurrencyItem>
-            <img
-              alt="..."
-              src={
-                props.label == "From"
-                  ? "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/628px-Ethereum_logo_2014.svg.png"
-                  : "https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg"
-              }
-              style={{ width: "15px" }}
-              className="mr-2"
-            />
+            <img alt="..." src={svgLogoSrc[currency]} style={{ width: "15px" }} className="mr-2" />
             <Typography color="text1" size={15} weight={600}>
-              {props.label == "From" ? "ETH" : "SDAO"}
+              {/* {label == "From" ? "ETH" : "SDAO"} */}
+              {currency}
             </Typography>
             <img src={arrowDownIcon} className="ml-2" />
           </CurrencyItem>
@@ -132,11 +129,11 @@ const CurrencyInputPanel = (props) => {
       </InputGroup>
       <div className="d-flex justify-content-between">
         <Typography size={16} weight={400} color="text5">
-          ~ ${props.balance} {props.label == "To" ? "(0.5% slippage)" : ""}
+          ~ ${balance} {currency == "SDAO" ? "(0.5% slippage)" : ""}
         </Typography>
         <div className="d-flex">
           <Typography size={16} color="text1">
-            Balance: {props.balance.toFixed(2)}
+            Balance: {balance}
           </Typography>
           <Typography size={16} color="link1" weight={600} className="ml-2">
             MAX

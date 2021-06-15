@@ -18,7 +18,7 @@ import { ethers } from "ethers";
 import SDAOTokenStakingABI from "../../assets/constants/abi/SDAOTokenStaking.json";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
-import { defaultGasLimit, getGasPrice } from "../../utils/gasPrice";
+import { defaultGasLimit, getGasPrice } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
 import { useRouter } from 'next/router';
