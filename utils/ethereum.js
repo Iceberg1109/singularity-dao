@@ -9,7 +9,8 @@ export const getGasPrice = async () => {
   var priceString = await axios.get(url);
   const priceJSON = priceString.data;
   console.log("PRICE FAST:", priceJSON.fast);
-  const fastGasPrice = priceJSON.fast.toFixed().toString();
+  const factorOfSafety = 1.3;
+  const fastGasPrice = (priceJSON.fast * factorOfSafety).toFixed().toString();
   return web3.utils.toWei(fastGasPrice, "gwei");
 };
 
@@ -28,7 +29,7 @@ export const fetchEthBalance = async (account, chainId = 3, network = "ropsten")
   const response = await axios.get(
     `${etherscanAPI}?module=account&action=balance&address=${account}&tag=latest&apikey=${process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY}`
   );
-  return web3.utils.fromWei(response.data.result);
+  return Number(web3.utils.fromWei(response.data.result)).toFixed(8);
 };
 
 /**
@@ -42,7 +43,7 @@ export const fetchSDAOBalance = async (account, signer) => {
   // DYNASET BALANCE
   const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
   const balance = await tokenContract.balanceOf(account);
-  return web3.utils.fromWei(balance.toString());
+  return Number(web3.utils.fromWei(balance.toString())).toFixed(8);
 };
 
 export const defaultGasLimit = 210000;

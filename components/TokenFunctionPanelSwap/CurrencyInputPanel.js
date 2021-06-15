@@ -52,8 +52,12 @@ const InputGroup = styled.div`
   border-radius: 10px;
 `;
 
-const CurrencyInputPanel = ({balance, onChange, label}) => {
-  const [focused, setFocused] = useState();
+const svgLogoSrc = {
+  ETH: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/628px-Ethereum_logo_2014.svg.png",
+  SDAO: "https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg",
+};
+const CurrencyInputPanel = ({ balance, onChange, label, value, currency }) => {
+  // const [focused, setFocused] = useState();
 
   // const [balance, setBalance] = useState(props.balance);
 
@@ -72,24 +76,17 @@ const CurrencyInputPanel = ({balance, onChange, label}) => {
         <Input
           placeholder={balance}
           onChange={changeprice}
-          onFocus={(e) => setFocused(true)}
-          onBlur={(e) => setFocused(false)}
-          defaultValue={balance}
+          // onFocus={(e) => setFocused(true)}
+          // onBlur={(e) => setFocused(false)}
+          // defaultValue={balance}
+          value={value}
         />
         <CurrencyContainer>
           <CurrencyItem>
-            <img
-              alt="..."
-              src={
-                label == "From"
-                  ? "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/628px-Ethereum_logo_2014.svg.png"
-                  : "https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg"
-              }
-              style={{ width: "15px" }}
-              className="mr-2"
-            />
+            <img alt="..." src={svgLogoSrc[currency]} style={{ width: "15px" }} className="mr-2" />
             <Typography color="text1" size={15} weight={600}>
-              {label == "From" ? "ETH" : "SDAO"}
+              {/* {label == "From" ? "ETH" : "SDAO"} */}
+              {currency}
             </Typography>
             <img src={arrowDownIcon} className="ml-2" />
           </CurrencyItem>
@@ -132,7 +129,7 @@ const CurrencyInputPanel = ({balance, onChange, label}) => {
       </InputGroup>
       <div className="d-flex justify-content-between">
         <Typography size={16} weight={400} color="text5">
-          ~ ${balance} {label == "To" ? "(0.5% slippage)" : ""}
+          ~ ${balance} {currency == "SDAO" ? "(0.5% slippage)" : ""}
         </Typography>
         <div className="d-flex">
           <Typography size={16} color="text1">
