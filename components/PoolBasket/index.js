@@ -13,7 +13,7 @@ const CustomProgress = styled(Progress)`
   margin-bottom: 10px !important;
 `;
 
-const ForgeBasket = ({ data, title, poolId, liquidity, apy, share, balance, id }) => {
+const ForgeBasket = ({ data, title, poolId, liquidity, apy, share, balance, tokens }) => {
   const router = useRouter();
 
   const DepositTypography = () => (
@@ -47,7 +47,7 @@ const ForgeBasket = ({ data, title, poolId, liquidity, apy, share, balance, id }
       </div>
 
       <div className="text-align-center mt-3">
-        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `pools/add/${id}` })}>
+        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `pools/add/${tokens[0]}/${tokens[1]}` })}>
           Add Liquidity/Swap
         </OutlinedButton>
       </div>

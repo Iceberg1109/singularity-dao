@@ -4,8 +4,12 @@ import {  Col, Container, Row } from "reactstrap";
 import Typography from "components/Typography";
 import AddLiquidityPanel from "components/AddLiquidityPanel";
 import PoolInfoPanel from "components/PoolInfoPanel";
+import { useRouter } from 'next/router'
 
 export default function Add() {
+  const router = useRouter()
+  const { tokens } = router.query
+
   return (
     <Container className="my-4">
       <Typography color="text1" size={32} weight={600}>

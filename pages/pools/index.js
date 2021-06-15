@@ -13,7 +13,10 @@ const baskets = [
     apy: "4.82",
     share: "0.005",
     balance: "960.0",
-    id: '0x00000000000'
+    tokens: [
+      "SDAO",
+      "WETH"
+    ]
   },
   {
     key: "WETH-AGIX",
@@ -22,7 +25,10 @@ const baskets = [
     apy: "4.82",
     share: "0.005",
     balance: "960.0",
-    id: '0x00000000001'
+    tokens: [
+      "WETH",
+      "AGIX"
+    ]
   },
 ];
 
@@ -47,7 +53,7 @@ const ForgePage = () => {
                 apy={basket.apy}
                 share={basket.share}
                 balance={basket.share}
-                id={basket.id}
+                tokens={basket.tokens}
               />
             </Col>
           ))}
