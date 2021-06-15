@@ -14,8 +14,8 @@ const baskets = [
     share: "0.005",
     balance: "960.0",
     tokens: [
-      "SDAO",
-      "WETH"
+      "0x5e94577b949a56279637ff74dfcff2c28408f049",
+      "0xc778417e063141139fce010982780140aa0cd5ab"
     ]
   },
   {
@@ -26,8 +26,8 @@ const baskets = [
     share: "0.005",
     balance: "960.0",
     tokens: [
-      "WETH",
-      "AGIX"
+      "0x5e94577b949a56279637ff74dfcff2c28408f049",
+      "0xa898150fef6ac506476e70f9bf1c03a11b55bdf9"
     ]
   },
 ];

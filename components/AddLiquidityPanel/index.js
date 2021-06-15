@@ -15,13 +15,13 @@ import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswa
 
 const etherscanBaseAPI = {};
 
-const AddLiquidityPanel = () => {
+const AddLiquidityPanel = ({tokens}) => {
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
   const [toBalance, setToBalance] = useState("0");
   const [fromBalance, setFromBalance] = useState("0");
-  const [fromCurrency] = useState("ETH");
-  const [toCurrency] = useState("SDAO");
+  const [fromCurrency, setFromCurrency] = useState("ETH");
+  const [toCurrency, setToCurrency] = useState("SDAO");
   const { library, account, network, chainId } = useUser();
 
   const getTradeExecutionPrice = async (value) => {
@@ -36,10 +36,28 @@ const AddLiquidityPanel = () => {
     return trade.executionPrice.toSignificant(6);
   };
 
+  const getBalances = async (tokens) => {
+    if(tokens) {
+      const fromBalance = await getBalance(tokens[0])
+      const toBalance = await getBalance(tokens[1])
+      setFromBalance(fromBalance)
+      setToBalance(toBalance)
+    }
+  }
+
+  const getSymbols = async (tokens) => {
+    if(tokens) {
+      const fromCurrency = await getCurrency(tokens[0])
+      const toCurrency = await getCurrency(tokens[1])
+      setFromCurrency(fromCurrency)
+      setToCurrency(toCurrency)
+    }
+  }
+
   useEffect(() => {
-    getEthBalance();
-    getSDAOBalance();
-  }, [account, chainId]);
+    getBalances(tokens);
+    getSymbols(tokens);
+  }, [account, chainId, tokens]);
 
   const handleFromAmountChange = async (value) => {
     console.log("value", value);
@@ -77,18 +95,30 @@ const AddLiquidityPanel = () => {
     //   `${etherscanAPI}?module=account&action=balance&address=${account}&tag=latest&apikey=${process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY}`
     // );
     // const etherBal = web3.utils.fromWei(response.data.result);
-    const etherBal = await fetchEthBalance(account, chainId, network)
-    setFromBalance(etherBal);
+    const balance = await fetchEthBalance(account, chainId, network)
+
+    return balance;
+    // setFromBalance(etherBal);
   };
 
-  const getSDAOBalance = async () => {
+  const getTokenBalance = async (address) => {
     if (!account || !library) return;
     // DYNASET BALANCE
     const signer = await library.getSigner(account);
-    const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+    const tokenContract = new ethers.Contract(address, DynasetABI, signer);
     const balance = await tokenContract.balanceOf(account);
 
-    setToBalance(web3.utils.fromWei(balance.toString()));
+    return web3.utils.fromWei(balance.toString());
+  };
+
+  const getTokenSymbol = async (address) => {
+    if (!account || !library) return;
+    // DYNASET BALANCE
+    const signer = await library.getSigner(account);
+    const tokenContract = new ethers.Contract(address, DynasetABI, signer);
+    const currency = await tokenContract.symbol();
+
+    return currency;
   };
 
   const approveLiquidity = async () => {
@@ -140,6 +170,28 @@ const AddLiquidityPanel = () => {
     }
   };
 
+  const getBalance = async (token) => {
+    let balance;
+    if (token === '0xc778417e063141139fce010982780140aa0cd5ab') {
+      balance = await getEthBalance();
+    } else {
+      balance = await getTokenBalance(token);
+    }
+
+    return balance??0;
+  }
+  
+  const getCurrency = async (token) => {
+    let currency;
+    if (token === '0xc778417e063141139fce010982780140aa0cd5ab') {
+      currency = 'ETH'
+    } else {
+      currency = await getTokenSymbol(token);
+    }
+
+    return currency??'';
+  }
+  
   return (
     <Card className="p-4" style={{ borderRadius: 8 }}>
       <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
