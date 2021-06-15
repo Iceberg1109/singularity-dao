@@ -1,12 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  Row,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-} from "reactstrap";
+import { Row, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
 import CurrencyInputPanel from "./CurrencyInputPanel";
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
 import Typography from "../Typography";
@@ -15,21 +9,12 @@ import { GradientButton } from "../Buttons";
 import PropTypes from "prop-types";
 import { useUser } from "../../components/UserContext";
 import web3 from "web3";
-import {
-  ChainId,
-  Token,
-  WETH,
-  Trade,
-  TokenAmount,
-  TradeType,
-  Fetcher,
-  Route,
-  Percent,
-} from "@uniswap/sdk";
+import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Percent } from "@uniswap/sdk";
 
 import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
+import { fetchEthBalance, fetchSDAOBalance } from "../../utils/ethereum";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -41,22 +26,24 @@ const FeeBlock = styled(Row)`
 `;
 
 const BuyPanel = ({ type, token, dynasetid }) => {
+  const { library, account, network, chainId } = useUser();
   const [fromCurrency, setFromCurrency] = useState("ETH");
-  const [balance, setBalance] = useState(0);
+  const [fromBalance, setFromBalance] = useState("0");
+  const [toBalance, setToBalance] = useState("0");
   const [amounteth, setamountEth] = useState(0);
   const [toCurrency, setToCurrency] = useState("AGI");
-  const [toCurrencyPrice, setToCurrencyPrice] = useState(0);
+  const [toCurrencyPrice, setToCurrencyPrice] = useState("0");
 
   const [fee, setFee] = useState(0);
   const [amount, setAmount] = useState();
-  const { library, account } = useUser();
+
+  useEffect(() => {
+    getEthBalance();
+    getSDAOBalance();
+  }, [account]);
 
   const changeprice = async (e) => {
-    const DAI = new Token(
-      ChainId.ROPSTEN,
-      "0x5e94577b949a56279637ff74dfcff2c28408f049",
-      18
-    );
+    const DAI = new Token(ChainId.ROPSTEN, "0x5e94577b949a56279637ff74dfcff2c28408f049", 18);
 
     // note that you may want/need to handle this async code differently,
     // for example if top-level await is not an option
@@ -64,11 +51,7 @@ const BuyPanel = ({ type, token, dynasetid }) => {
 
     const route = new Route([pair], WETH[DAI.chainId]);
 
-    const trade = new Trade(
-      route,
-      new TokenAmount(WETH[DAI.chainId], web3.utils.toWei(e)),
-      TradeType.EXACT_INPUT
-    );
+    const trade = new Trade(route, new TokenAmount(WETH[DAI.chainId], web3.utils.toWei(e)), TradeType.EXACT_INPUT);
 
     console.log("trade price");
     console.log(trade.executionPrice.invert().toSignificant(6));
@@ -94,11 +77,7 @@ const BuyPanel = ({ type, token, dynasetid }) => {
 
     //  const DAI = new Token(ChainId.ROPSTEN, dynasetid, 18);
 
-    const DYN = new Token(
-      ChainId.ROPSTEN,
-      "0x5e94577b949a56279637ff74dfcff2c28408f049",
-      18
-    );
+    const DYN = new Token(ChainId.ROPSTEN, "0x5e94577b949a56279637ff74dfcff2c28408f049", 18);
 
     // note that you may want/need to handle this async code differently,
     // for example if top-level await is not an option
@@ -131,6 +110,19 @@ const BuyPanel = ({ type, token, dynasetid }) => {
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
 
+  const getEthBalance = async () => {
+    console.log({ account, chainId, network });
+    const etherBal = await fetchEthBalance(account, chainId, network);
+    console.log({ etherBal });
+    setFromBalance(etherBal || "0");
+  };
+
+  const getSDAOBalance = async () => {
+    const signer = await library.getSigner(account);
+    const bal = await fetchSDAOBalance(account, signer);
+    setToBalance(bal || "0");
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between">
@@ -139,25 +131,11 @@ const BuyPanel = ({ type, token, dynasetid }) => {
         </Typography>
         <img src={settingsIcon} />
       </div>
-
-      <CurrencyInputPanel
-        balance={balance}
-        currency={fromCurrency}
-        onChange={changeprice}
-        label="From"
-      />
-
+      <CurrencyInputPanel balance={fromBalance} currency={fromCurrency} onChange={changeprice} label="From" />
       <div className="text-align-center">
         <img src={arrowDownIcon} className="my-3" />
       </div>
-
-      <CurrencyInputPanel
-        balance={toCurrencyPrice}
-        currency={token}
-        onChange={changeprice}
-        label="To"
-      />
-
+      <CurrencyInputPanel balance={toBalance} currency={token} onChange={changeprice} label="To" />
       <FeeBlock>
         <Typography size={14}>Fee:</Typography>
         <Typography size={14}>{fee.toFixed(2)} ETH</Typography>

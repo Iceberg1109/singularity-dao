@@ -10,7 +10,7 @@ import web3 from "web3";
 import { useUser } from "../UserContext";
 import { ethers } from "ethers";
 import axios from "axios";
-import { defaultGasLimit, getGasPrice } from "../../utils/gasPrice";
+import { defaultGasLimit, fetchEthBalance, getGasPrice } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 
 const etherscanBaseAPI = {};
@@ -68,15 +68,16 @@ const AddLiquidityPanel = () => {
   };
 
   const getEthBalance = async () => {
-    if (!account) return;
+    // if (!account) return;
 
-    let etherscanAPI =
-      chainId === 1 ? "https://api.etherscan.io/api" : `https://api-${network.toLowerCase()}.etherscan.io/api`;
+    // let etherscanAPI =
+    //   chainId === 1 ? "https://api.etherscan.io/api" : `https://api-${network.toLowerCase()}.etherscan.io/api`;
 
-    const response = await axios.get(
-      `${etherscanAPI}?module=account&action=balance&address=${account}&tag=latest&apikey=${process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY}`
-    );
-    const etherBal = web3.utils.fromWei(response.data.result);
+    // const response = await axios.get(
+    //   `${etherscanAPI}?module=account&action=balance&address=${account}&tag=latest&apikey=${process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY}`
+    // );
+    // const etherBal = web3.utils.fromWei(response.data.result);
+    const etherBal = await fetchEthBalance(account, chainId, network)
     setFromBalance(etherBal);
   };
 

@@ -66,9 +66,7 @@ const TokenFunctionPanel = () => {
 
   return (
     <>
-
       <MainCard>
-       
         <BuyPanel type={true} />
       </MainCard>
     </>
