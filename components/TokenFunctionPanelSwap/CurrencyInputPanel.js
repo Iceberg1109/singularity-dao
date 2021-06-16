@@ -8,13 +8,17 @@ import {
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
+  ButtonGroup,
+  ButtonDropdown,
 } from "reactstrap";
 import classnames from "classnames";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Typography from "../Typography";
 import arrowDownIcon from "../../assets/img/icons/arrow-down-small.svg";
+import { Currencies, getBalance, getCurrencyById } from "../../utils/currencies";
+import { useUser } from "../UserContext";
 
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
@@ -52,19 +56,54 @@ const InputGroup = styled.div`
   border-radius: 10px;
 `;
 
-const svgLogoSrc = {
-  ETH: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/628px-Ethereum_logo_2014.svg.png",
-  SDAO: "https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg",
-};
-const CurrencyInputPanel = ({ balance, onChange, label, value, currency }) => {
-  // const [focused, setFocused] = useState();
+const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, setSelectedCurrency }) => {
+  const [dropdownOpen, setOpen] = useState(false);
+  // const [selectedCurrency, setSelectedCurrency] = useState(Currencies.ETH.id);
+  const [balance, setBalance] = useState("0");
+  const { library, account, network, chainId } = useUser();
 
-  // const [balance, setBalance] = useState(props.balance);
+  // useEffect(() => {
+  //   setSelectedCurrency(defaultCurrency);
+  // }, [defaultCurrency]);
+
+  useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency]);
+
+  const toggle = () => setOpen(!dropdownOpen);
+
+  const getCurrency = useCallback(() => getCurrencyById(selectedCurrency), [selectedCurrency]);
+
+  const getIcon = useCallback(() => {
+    const currency = getCurrency();
+    return currency ? currency.icon : "'";
+  }, [selectedCurrency]);
+
+  const getName = useCallback(() => {
+    const currency = getCurrency();
+    return currency ? currency.name : "'";
+  }, [selectedCurrency]);
 
   const changeprice = async (e) => {
-    // console.log(e.target.value);
+    onAmountChange(e.target.value);
+  };
 
-    onChange(e.target.value);
+  const updateBalance = async (currencyId) => {
+    try {
+      console.log("update bal 1", currencyId);
+      if (!library) return;
+      console.log("update bal 2", currencyId);
+      const signer = await library.getSigner(account);
+      const balance = await getBalance(currencyId, account, { chainId, network, signer });
+      console.log("update bal 3", balance);
+
+      setBalance(balance);
+    } catch (error) {
+      console.log("update bal 4", error);
+    }
+  };
+
+  const handleCurrencyChange = (currencyId) => {
+    setSelectedCurrency(currencyId);
+    updateBalance(currencyId);
   };
 
   return (
@@ -73,23 +112,26 @@ const CurrencyInputPanel = ({ balance, onChange, label, value, currency }) => {
         {label}
       </Typography>
       <InputGroup>
-        <Input
-          placeholder={balance}
-          onChange={changeprice}
-          // onFocus={(e) => setFocused(true)}
-          // onBlur={(e) => setFocused(false)}
-          // defaultValue={balance}
-          value={value}
-        />
+        <Input placeholder={balance} onChange={changeprice} value={amount} type="number" />
         <CurrencyContainer>
-          <CurrencyItem>
+          <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
+            <DropdownToggle type="button" color="secondary" caret>
+              <img alt="..." src={getIcon()} style={{ width: "15px" }} className="mr-2" />
+              {getName()}
+            </DropdownToggle>
+            <DropdownMenu>
+              {Object.values(Currencies).map((value) => (
+                <DropdownItem onClick={() => handleCurrencyChange(value.id)}>{value.name}</DropdownItem>
+              ))}
+            </DropdownMenu>
+          </ButtonDropdown>
+          {/* <CurrencyItem>
             <img alt="..." src={svgLogoSrc[currency]} style={{ width: "15px" }} className="mr-2" />
             <Typography color="text1" size={15} weight={600}>
-              {/* {label == "From" ? "ETH" : "SDAO"} */}
               {currency}
             </Typography>
             <img src={arrowDownIcon} className="ml-2" />
-          </CurrencyItem>
+          </CurrencyItem> */}
           {/* <UncontrolledDropdown>
             <DropdownToggle
               caret
@@ -129,7 +171,7 @@ const CurrencyInputPanel = ({ balance, onChange, label, value, currency }) => {
       </InputGroup>
       <div className="d-flex justify-content-between">
         <Typography size={16} weight={400} color="text5">
-          ~ ${balance} {currency == "SDAO" ? "(0.5% slippage)" : ""}
+          ~ ${balance} {getName() == Currencies.SDAO.name ? "(0.5% slippage)" : ""}
         </Typography>
         <div className="d-flex">
           <Typography size={16} color="text1">
@@ -142,6 +184,11 @@ const CurrencyInputPanel = ({ balance, onChange, label, value, currency }) => {
       </div>
     </FormGroup>
   );
+};
+
+CurrencyInputPanel.defaultProps = {
+  selectedCurrency: Currencies.ETH.id,
+  setSelectedCurrency: () => console.log("Currency change is not handled"),
 };
 
 export default CurrencyInputPanel;

@@ -17,6 +17,7 @@ import settingsIcon from "../../assets/img/icons/settings.svg";
 import { fetchEthBalance, fetchSDAOBalance, getGasPrice } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { Spinner } from "reactstrap";
+import { Currencies, getUniswapToken } from "../../utils/currencies";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -27,69 +28,34 @@ const FeeBlock = styled(Row)`
   padding: 8px 0;
 `;
 
-const BuyPanel = ({ type, token, dynasetid }) => {
-  const fromCurrency = "ETH";
-  const toCurrency = "SDAO";
-
+const BuyPanel = () => {
   const { library, account, network, chainId } = useUser();
-  const [fromBalance, setFromBalance] = useState("0");
-  const [toBalance, setToBalance] = useState("0");
-  const [amounteth, setamountEth] = useState(0);
-  // const [toCurrency, setToCurrency] = useState("AGI");
-  const [toCurrencyPrice, setToCurrencyPrice] = useState("0");
   const [toAmount, setToAmount] = useState("0");
   const [fromAmount, setFromAmount] = useState("0");
   const [swapping, setSwapping] = useState(false);
   const [pendingTxn, setPendingTxn] = useState();
-
+  const [fromCurrency, setFromCurrency] = useState(Currencies.ETH.id);
+  const [toCurrency, setToCurrency] = useState(Currencies.SDAO.id);
   const [fee, setFee] = useState(0);
-  // const [amount, setAmount] = useState();
 
-  useEffect(() => {
-    getEthBalance();
-    getSDAOBalance();
-  }, [account]);
+  const conversionTypes = {
+    FROM: "FROM",
+    TO: "TO",
+  };
+  const getConversionRate = async (value, type = conversionTypes.FROM) => {
+    const fromToken = getUniswapToken(fromCurrency);
+    const toToken = getUniswapToken(toCurrency);
+    const pair = await Fetcher.fetchPairData(fromToken, toToken);
+    const route = new Route([pair], fromToken);
 
-  // const changeprice = async (e) => {
-  //   const DAI = new Token(ChainId.ROPSTEN, "0x5e94577b949a56279637ff74dfcff2c28408f049", 18);
-
-  //   // note that you may want/need to handle this async code differently,
-  //   // for example if top-level await is not an option
-  //   const pair = await Fetcher.fetchPairData(DAI, WETH[DAI.chainId]);
-
-  //   const route = new Route([pair], WETH[DAI.chainId]);
-
-  //   const trade = new Trade(route, new TokenAmount(WETH[DAI.chainId], web3.utils.toWei(e)), TradeType.EXACT_INPUT);
-
-  //   console.log("trade price");
-  //   console.log(trade.executionPrice.invert().toSignificant(6));
-
-  //   const price = e * trade.executionPrice.toSignificant(6);
-
-  //   console.log(parseInt(price)); // 201.306
-
-  //   // setamountEth(e);
-  //   setFromAmount(e);
-  //   // setToCurrencyPrice(price);
-  //   setToAmount(price);
-
-  //   console.log(route.midPrice.invert().toSignificant(6)); // 0.00496756
-  // };
-
-  const getTradeExecutionPrice = async (value) => {
-    const DAI = new Token(ChainId.ROPSTEN, ContractAddress.DYNASET, 18);
-    const pair = await Fetcher.fetchPairData(DAI, WETH[DAI.chainId]);
-    const route = new Route([pair], WETH[DAI.chainId]);
-    const trade = new Trade(
-      route,
-      new TokenAmount(WETH[DAI.chainId], web3.utils.toWei(value.toString())),
-      TradeType.EXACT_INPUT
-    );
+    const tradeToken = type === conversionTypes.FROM ? fromToken : toToken;
+    const tradeType = type === conversionTypes.FROM ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT;
+    const trade = new Trade(route, new TokenAmount(tradeToken, web3.utils.toWei(value.toString())), tradeType);
+    console.log("new trade price", trade.executionPrice.toSignificant(6));
     return trade.executionPrice.toSignificant(6);
   };
 
   const handleToAmountChange = async (value) => {
-    console.log("value", value);
     if (value == 0) {
       setFromAmount(0);
       setToAmount(0);
@@ -97,22 +63,24 @@ const BuyPanel = ({ type, token, dynasetid }) => {
     }
     setToAmount(value);
     setFromAmount("calculating...");
-    const tradeExecutionPrice = await getTradeExecutionPrice(value);
-    const price = value / tradeExecutionPrice;
+    const rate = await getConversionRate(value, conversionTypes.TO);
+    const price = value / rate;
     setFromAmount(price.toFixed(8));
   };
 
   const handleFromAmountChange = async (value) => {
-    console.log("value", value);
-    if (value == 0) {
-      setFromAmount(0);
-      setToAmount(0);
+    console.log("value", typeof value);
+    // VALIDATION
+    if (value == 0 || typeof value === undefined || value === "" || isNaN(Number(value))) {
+      setFromAmount(value);
+      if (toAmount > 0) setToAmount(0);
       return;
     }
+    // CONVERSION
     setFromAmount(value);
     setToAmount("calculating ...");
-    const tradeExecutionPrice = await getTradeExecutionPrice(value);
-    const price = value * tradeExecutionPrice;
+    const rate = await getConversionRate(value, conversionTypes.FROM);
+    const price = value * rate;
     setToAmount(price.toFixed(8));
   };
 
@@ -128,12 +96,8 @@ const BuyPanel = ({ type, token, dynasetid }) => {
         signer
       );
 
-      //  const DAI = new Token(ChainId.ROPSTEN, dynasetid, 18);
-
       const DYN = new Token(ChainId.ROPSTEN, "0x5e94577b949a56279637ff74dfcff2c28408f049", 18);
 
-      // note that you may want/need to handle this async code differently,
-      // for example if top-level await is not an option
       const pair = await Fetcher.fetchPairData(DYN, WETH[DYN.chainId]);
 
       const route = new Route([pair], WETH[DYN.chainId]);
@@ -142,8 +106,11 @@ const BuyPanel = ({ type, token, dynasetid }) => {
 
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
 
-      console.log("From ", web3.utils.toWei(fromAmount.toString(), "ether", " ", fromCurrency));
-      console.log("To ", web3.utils.toWei(toAmount, "gwei"), " ", toCurrency);
+      console.log("From ", web3.utils.toWei(fromAmount, "ether"));
+      console.log("To ", web3.utils.toWei(toAmount, "gwei"));
+
+      console.log("From 1", web3.utils.toWei(fromAmount.toString()));
+      console.log("To 1", web3.utils.toWei(toAmount));
 
       const gasPrice = await getGasPrice();
 
@@ -171,18 +138,20 @@ const BuyPanel = ({ type, token, dynasetid }) => {
     }
   };
 
-  const getEthBalance = async () => {
-    console.log({ account, chainId, network });
-    const etherBal = await fetchEthBalance(account, chainId, network);
-    console.log({ etherBal });
-    setFromBalance(etherBal || "0");
+  const handleFromCurrencyChange = (value) => {
+    if (value === fromCurrency) return;
+    setToCurrency(fromCurrency);
+    setFromCurrency(value);
+    setFromAmount("0");
+    setToAmount("0");
   };
 
-  const getSDAOBalance = async () => {
-    if (!library) return;
-    const signer = await library.getSigner(account);
-    const bal = await fetchSDAOBalance(account, signer);
-    setToBalance(bal || "0");
+  const handleToCurrencyChange = (value) => {
+    if (value === toCurrency) return;
+    setFromCurrency(toCurrency);
+    setToCurrency(value);
+    setFromAmount("0");
+    setToAmount("0");
   };
 
   return (
@@ -194,21 +163,21 @@ const BuyPanel = ({ type, token, dynasetid }) => {
         <img src={settingsIcon} />
       </div>
       <CurrencyInputPanel
-        balance={fromBalance}
-        currency={fromCurrency}
-        onChange={handleFromAmountChange}
+        onAmountChange={handleFromAmountChange}
         label="From"
-        value={fromAmount}
+        amount={fromAmount}
+        selectedCurrency={fromCurrency}
+        setSelectedCurrency={handleFromCurrencyChange}
       />
       <div className="text-align-center">
         <img src={arrowDownIcon} className="my-3" />
       </div>
       <CurrencyInputPanel
-        balance={toBalance}
-        currency={toCurrency}
-        onChange={handleToAmountChange}
+        onAmountChange={handleToAmountChange}
         label="To"
-        value={toAmount}
+        amount={toAmount}
+        selectedCurrency={toCurrency}
+        onCurrencyChange={handleToCurrencyChange}
       />
       <FeeBlock>
         <Typography size={14}>Fee:</Typography>

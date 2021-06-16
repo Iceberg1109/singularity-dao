@@ -73,17 +73,4 @@ const TokenFunctionPanel = () => {
   );
 };
 
-// <TokenFunctionTab
-//   active={activeTab === 2}
-//   onClick={() => setActiveTab(2)}
-// >
-//   Stake
-// </TokenFunctionTab>
-// <TokenFunctionTab
-//   active={activeTab === 3}
-//   onClick={() => setActiveTab(3)}
-// >
-//   Swap
-// </TokenFunctionTab>
-
 export default TokenFunctionPanel;
