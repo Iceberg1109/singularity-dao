@@ -1,7 +1,6 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Row, Card, Col } from "reactstrap";
 import styled from "styled-components";
-import StakePanel from "./StakePanel";
 import Typography from "../Typography";
 import { DetailLabel } from "./Label";
 import RewardStakePanel from "./RewardStakePanel";
@@ -9,6 +8,11 @@ import StakeWithdrawPanel from "./StakeWithdrawPanel";
 import PropTypes from "prop-types";
 import StakeClaimPanel from "./StakeClaimPanel";
 import { useUser } from "../UserContext";
+import { ethers } from "ethers";
+import web3 from "web3";
+import { ContractAddress } from "../../assets/constants/addresses";
+import SDAOTokenStakingABI from "../../assets/constants/abi/SDAOTokenStaking.json";
+import { defaultGasLimit, getGasPrice } from "../../utils/ethereum";
 
 const MainCard = styled(Card)`
   padding: 40px;
@@ -90,14 +94,15 @@ const TokenFunctionPanel = ({ panelType }) => {
     if(!library) return;
     const signer = await library.getSigner(account);
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+    const gasPrice = await getGasPrice();
     // TODO: Get poolId from route params
     const poolId = 0;
     const rewards = await stakingContract.pendingRewards(poolId.toString(), account, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
-    console.log("rewards", rewards);
-    setPendingRewards(rewards);
+    console.log("rewards", rewards.toString());
+    setPendingRewards(rewards.toString());
   };
 
   return (
