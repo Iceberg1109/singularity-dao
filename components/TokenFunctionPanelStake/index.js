@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { Row, Card, Col } from "reactstrap";
 import styled from "styled-components";
 import StakePanel from "./StakePanel";
@@ -8,7 +8,10 @@ import RewardStakePanel from "./RewardStakePanel";
 import StakeWithdrawPanel from "./StakeWithdrawPanel";
 import PropTypes from "prop-types";
 import StakeClaimPanel from "./StakeClaimPanel";
-
+import { useUser } from "../UserContext";
+import { ethers } from "ethers";
+import { ContractAddress } from "../../assets/constants/addresses";
+import SDAOTokenStakingABI from "../../assets/constants/abi/SDAOTokenStaking.json";
 // import BurnPanel from "./BurnPanel";
 // import SwapPanel from "./SwapPanel";
 
@@ -69,13 +72,38 @@ export const PanelTypes = {
   CLAIM: "CLAIM",
 };
 
+
+
 const TokenFunctionPanel = ({ panelType }) => {
+
+    const { library, account } = useUser();
+    const [reward,setreward]= useState("0");
+
+
   let MainPanel = RewardStakePanel;
   if(panelType == PanelTypes.WITHDRAW) {
     MainPanel = StakeWithdrawPanel
   }else if(panelType == PanelTypes.CLAIM) {
     MainPanel = StakeClaimPanel
   }
+
+
+   useEffect(() => {
+      getPendingRewards();
+    }, [])
+
+
+    const getPendingRewards = async () => {
+    const signer = await library.getSigner(account);
+    const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+    const poolId = 0;
+    const rewards = await stakingContract.pendingRewards(poolId.toString(), account);
+    
+    console.log("rewards", rewards);
+    setreward(rewards.toString());
+  
+  };
+
 
   return (
     <>
@@ -143,7 +171,7 @@ const TokenFunctionPanel = ({ panelType }) => {
             <MainCard>
               <Typography size={20}>SDAO earned</Typography>
               <Typography size={24} weight={600} className="mb-3">
-                0.0000
+                {reward}
               </Typography>
               <DetailLabel title="Max stake per user" desc="1,500 SDAO LP" />
               <DetailLabel title="APY return" desc="34.74 %" />

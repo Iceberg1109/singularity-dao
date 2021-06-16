@@ -47,6 +47,7 @@ const StakeClaimPanel = ({ token }) => {
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
     const withdrawAmount = web3.utils.toWei(amount.toString());
+    
     console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
 
