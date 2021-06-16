@@ -49,25 +49,6 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   const [reward,setreward]= useState("0");
   const router = useRouter();
 
- useEffect(() => {
-    const getPendingRewards = async () => {
-    const signer = await library.getSigner(account);
-
-    const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
-    const poolId = 0;
-    const gasPrice = await getGasPrice();
-    const rewards = await stakingContract.pendingRewards(poolId.toString(), account, {
-      gasLimit: defaultGasLimit,
-      gasPrice,
-    });
-    
-    console.log("rewards", rewards);
-    setreward(rewards);
-  
-  };
-
-    getPendingRewards();
-  }, [])
 
 
   // const stakeToken = async () => {
