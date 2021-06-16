@@ -2,7 +2,7 @@ import axios from "axios";
 import web3 from "web3";
 import { ethers } from "ethers";
 import { ContractAddress } from "../assets/constants/addresses";
-import { abi as DynasetABI } from "../assets/constants/abi/Dynaset.json";
+
 
 export const getGasPrice = async () => {
   const url = "https://gasprice.poa.network/";
