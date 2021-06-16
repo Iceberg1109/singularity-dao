@@ -29,6 +29,7 @@ const FeeBlock = styled(Row)`
 `;
 
 const BuyPanel = () => {
+  // STATES
   const { library, account, network, chainId } = useUser();
   const [toAmount, setToAmount] = useState("0");
   const [fromAmount, setFromAmount] = useState("0");
@@ -37,6 +38,7 @@ const BuyPanel = () => {
   const [fromCurrency, setFromCurrency] = useState(Currencies.ETH.id);
   const [toCurrency, setToCurrency] = useState(Currencies.SDAO.id);
   const [fee, setFee] = useState(0);
+  const slippage = 0.5
 
   const conversionTypes = {
     FROM: "FROM",
@@ -55,23 +57,10 @@ const BuyPanel = () => {
     return trade.executionPrice.toSignificant(6);
   };
 
-  const handleToAmountChange = async (value) => {
-    if (value == 0) {
-      setFromAmount(0);
-      setToAmount(0);
-      return;
-    }
-    setToAmount(value);
-    setFromAmount("calculating...");
-    const rate = await getConversionRate(value, conversionTypes.TO);
-    const price = value / rate;
-    setFromAmount(price.toFixed(8));
-  };
-
   const handleFromAmountChange = async (value) => {
     console.log("value", typeof value);
     // VALIDATION
-    if (value == 0 || typeof value === undefined || value === "" || isNaN(Number(value))) {
+    if (value == 0 || typeof value === undefined || value === "") {
       setFromAmount(value);
       if (toAmount > 0) setToAmount(0);
       return;
@@ -82,6 +71,21 @@ const BuyPanel = () => {
     const rate = await getConversionRate(value, conversionTypes.FROM);
     const price = value * rate;
     setToAmount(price.toFixed(8));
+  };
+
+  const handleToAmountChange = async (value) => {
+    // VALIDATION
+    if (value == 0 || typeof value === undefined || value === "") {
+      setToAmount(value);
+      if (toAmount > 0) setFromAmount(0);
+      return;
+    }
+    // CONVERSION
+    setToAmount(value);
+    setFromAmount("calculating...");
+    const rate = await getConversionRate(value, conversionTypes.TO);
+    const price = value / rate;
+    setFromAmount(price.toFixed(8));
   };
 
   const handleSwapping = async () => {
@@ -182,8 +186,8 @@ const BuyPanel = () => {
       <FeeBlock>
         <Typography size={14}>Fee:</Typography>
         <Typography size={14}>{fee.toFixed(2)} ETH</Typography>
-        <Typography size={14}>Slipage:</Typography>
-        <Typography size={14}>{fee.toFixed(2)} ETH</Typography>
+        <Typography size={14}>Slippage:</Typography>
+        <Typography size={14}>{slippage.toFixed(2)} %</Typography>
       </FeeBlock>
 
       <div className="d-flex justify-content-center">
