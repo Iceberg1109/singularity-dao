@@ -38,7 +38,7 @@ const BuyPanel = () => {
   const [fromCurrency, setFromCurrency] = useState(Currencies.ETH.id);
   const [toCurrency, setToCurrency] = useState(Currencies.SDAO.id);
   const [fee, setFee] = useState(0);
-  const slippage = 0.5
+  const slippage = 0.5;
 
   const conversionTypes = {
     FROM: "FROM",
@@ -110,12 +110,6 @@ const BuyPanel = () => {
 
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
 
-      console.log("From ", web3.utils.toWei(fromAmount, "ether"));
-      console.log("To ", web3.utils.toWei(toAmount, "gwei"));
-
-      console.log("From 1", web3.utils.toWei(fromAmount.toString()));
-      console.log("To 1", web3.utils.toWei(toAmount));
-
       const gasPrice = await getGasPrice();
 
       const tx = await uniswap.swapExactETHForTokens(
@@ -173,7 +167,7 @@ const BuyPanel = () => {
         selectedCurrency={fromCurrency}
         setSelectedCurrency={handleFromCurrencyChange}
       />
-      <div className="text-align-center">
+      <div className="text-align-center" role="button" onClick={() => handleFromCurrencyChange(toCurrency)}>
         <img src={arrowDownIcon} className="my-3" />
       </div>
       <CurrencyInputPanel

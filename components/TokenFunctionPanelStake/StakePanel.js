@@ -17,7 +17,7 @@ import { ethers } from "ethers";
 import SDAOTokenStakingABI from "../../assets/constants/abi/SDAOTokenStaking.json";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
-import { defaultGasLimit, getGasPrice } from "../../utils/ethereum";
+import { defaultGasLimit, getGasPrice, defaultApprovalAmount } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 
 const FeeBlock = styled(Row)`
@@ -90,15 +90,13 @@ const StakePanel = ({ type, token, dynasetid }) => {
   const approveTokens = async () => {
     const signer = await library.getSigner(account);
     const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
-    const amountToBeApproved = web3.utils.toWei(toCurrencyPrice.toString());
     const gasPrice = await getGasPrice();
-    const tx = await tokenContract.approve(ContractAddress.STAKING_REWARD, amountToBeApproved, {
+    const tx = await tokenContract.approve(ContractAddress.STAKING_REWARD, defaultApprovalAmount, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
     console.log(`Transaction hash: ${tx.hash}`);
     const receipt = await tx.wait();
-    console.log(`Approved ${amountToBeApproved} for staking`);
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
 
