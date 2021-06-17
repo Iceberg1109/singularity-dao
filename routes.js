@@ -27,7 +27,7 @@ const routes = [
     name: "Home",
     icon: HomeIcon,
     state: "dashboardsCollapse",
-    path: "/homepage",
+    path: "/",
     layout: "",
   },
   {
@@ -51,7 +51,7 @@ const routes = [
     name: "Farms",
     icon: FarmsIcon,
     state: "formsCollapse",
-    path: "/",
+    path: "/farms",
      layout: "",
   },
   // {
