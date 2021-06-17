@@ -186,8 +186,8 @@ const AddLiquidityPanel = () => {
       const tx = await uniswap.addLiquidityETH(
         ContractAddress.DYNASET,
         amountTokenDesired,
-        amountTokenMin,
-        amountETHMin,
+        "0",
+        "0",
         account,
         deadline,
         {
