@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Spinner } from "reactstrap";
 import Typography from "components/Typography";
 import { GradientButton } from "components/Buttons";
-import CurrencyInputPanelLP from "../../components/CurrencyInputPanelLP";
+import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelLP";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Percent } from "@uniswap/sdk";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
@@ -12,7 +12,10 @@ import { ethers } from "ethers";
 import axios from "axios";
 import { defaultGasLimit, fetchEthBalance, getGasPrice } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
+<<<<<<< HEAD
 import { Currencies, getUniswapToken } from "../../utils/currencies";
+=======
+>>>>>>> parent of bccd9d4 (LP input panel)
 
 const etherscanBaseAPI = {};
 
@@ -237,6 +240,7 @@ const AddLiquidityPanel = () => {
       <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
         Add Liquidity
       </Typography>
+<<<<<<< HEAD
       <CurrencyInputPanelLP
         onAmountChange={handleFromAmountChange}
         amount={fromAmount}
@@ -247,6 +251,23 @@ const AddLiquidityPanel = () => {
       <GradientButton onClick={handleClick} disabled={!toAmount || addingLiquidity}>
         <span>Add Liquidity</span>
         {addingLiquidity ? <Spinner color="white" size="sm" className="ml-2" /> : null}
+=======
+      <CurrencyInputPanelSDAO
+        label={fromCurrency}
+        balance={`${fromBalance} ${fromCurrency}`}
+        onChange={handleFromAmountChange}
+        toCurrencyPrice={fromAmount}
+      />
+      <Typography className="d-flex justify-content-center">+</Typography>
+      <CurrencyInputPanelSDAO
+        label={toCurrency}
+        balance={`${toBalance} ${toCurrency}`}
+        onChange={handleToAmountChange}
+        toCurrencyPrice={toAmount}
+      />
+      <GradientButton onClick={handleClick} disabled={!toAmount}>
+        Add Liquidity
+>>>>>>> parent of bccd9d4 (LP input panel)
       </GradientButton>
       {pendingTxn ? (
         <Typography color="text1" className="mt-2">
