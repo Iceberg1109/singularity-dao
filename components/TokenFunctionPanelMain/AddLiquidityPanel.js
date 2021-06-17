@@ -16,7 +16,7 @@ import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Pe
 
 import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
-import { defaultGasLimit, getGasPrice } from "../../utils/ethereum";
+import { defaultGasLimit, getGasPrice, highestApprovalLimit } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 
 const FeeBlock = styled(Row)`
@@ -79,15 +79,13 @@ const AddLiquidityPanel = ({ type, token, dynasetid }) => {
   const approveDynasetToken = async () => {
     const signer = await library.getSigner(account);
     const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
-    const amountToBeApproved = web3.utils.toWei(toCurrencyPrice.toString());
     const gasPrice = await getGasPrice();
-    const tx = await tokenContract.approve(ContractAddress.UNISWAP, amountToBeApproved, {
+    const tx = await tokenContract.approve(ContractAddress.UNISWAP, highestApprovalLimit, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
     console.log(`Transaction hash: ${tx.hash}`);
     const receipt = await tx.wait();
-    console.log(`Approved ${amountToBeApproved} for staking`);
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
 

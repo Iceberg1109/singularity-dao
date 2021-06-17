@@ -10,7 +10,7 @@ import web3 from "web3";
 import { useUser } from "../UserContext";
 import { ethers } from "ethers";
 import axios from "axios";
-import { defaultGasLimit, fetchEthBalance, getGasPrice } from "../../utils/ethereum";
+import { defaultGasLimit, fetchEthBalance, getGasPrice, highestApprovalLimit } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { Currencies, getUniswapToken } from "../../utils/currencies";
 
@@ -151,16 +151,14 @@ const AddLiquidityPanel = () => {
         gasPrice,
       });
       console.log("allowance", allowance);
-      const amountToBeApproved = web3.utils.toWei(toAmount.toString());
       const gasPrice = await getGasPrice();
-      const tx = await tokenContract.approve(ContractAddress.UNISWAP, amountToBeApproved, {
+      const tx = await tokenContract.approve(ContractAddress.UNISWAP, highestApprovalLimit, {
         gasLimit: defaultGasLimit,
         gasPrice,
       });
       setPendingTxn(tx.hash);
       console.log(`Transaction hash: ${tx.hash}`);
       const receipt = await tx.wait();
-      console.log(`Approved ${amountToBeApproved} for staking`);
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
     } catch (error) {
       console.log("unable to approve");
