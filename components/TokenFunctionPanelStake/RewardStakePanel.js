@@ -105,7 +105,6 @@ const RewardStakePanel = ({ token, dynasetid }) => {
   const approveTokens = async () => {
     const signer = await library.getSigner(account);
     const lpToken = new ethers.Contract(ContractAddress.LP_TOKEN, DynasetABI, signer);
-    // const amountToBeApproved = web3.utils.toWei(toCurrencyPrice.toString());
     console.log("amountToBeApproved", defaultApprovalAmount)
     const gasPrice = await getGasPrice();
     const tx = await lpToken.approve(ContractAddress.STAKING_REWARD, defaultApprovalAmount, {
@@ -114,7 +113,6 @@ const RewardStakePanel = ({ token, dynasetid }) => {
     });
     console.log(`Transaction hash: ${tx.hash}`);
     const receipt = await tx.wait();
-    console.log(`Approved ${amountToBeApproved} for staking`);
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
 
