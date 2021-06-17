@@ -56,7 +56,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
 
       const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
       const poolId = 0;
-      const stakeAmount = web3.utils.toWei(toCurrencyPrice.toString());
+      const stakeAmount = web3.utils.toWei("10"); //
       const gasPrice = await getGasPrice();
 
       const tx = await stakingContract.deposit(poolId, stakeAmount, account, {
