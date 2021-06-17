@@ -21,6 +21,7 @@ export const Currencies = {
     decimal: 18,
     unit: "gwei",
     abi: DynasetABI,
+    slippagePercent: 0.5,
     allowInDropdown: true,
   },
   SDAO_LP: {

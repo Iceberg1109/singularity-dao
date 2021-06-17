@@ -146,6 +146,11 @@ const AddLiquidityPanel = () => {
     try {
       const signer = await library.getSigner(account);
       const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+      const allowance = await tokenContract.allowance(ContractAddress.DYNASET, ContractAddress.UNISWAP, {
+        gasLimit: defaultGasLimit,
+        gasPrice,
+      });
+      console.log("allowance", allowance);
       const amountToBeApproved = web3.utils.toWei(toAmount.toString());
       const gasPrice = await getGasPrice();
       const tx = await tokenContract.approve(ContractAddress.UNISWAP, amountToBeApproved, {
@@ -172,11 +177,18 @@ const AddLiquidityPanel = () => {
       const uniswap = new ethers.Contract(ContractAddress.UNISWAP, IUniswapV2Router02ABI, signer);
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
       const gasPrice = await getGasPrice();
+      debugger;
+      const amountTokenDesired = web3.utils.toWei(fromAmount.toString(), "gwei");
+      const slippage = Currencies.SDAO.slippagePercent;
+      const slippageMulFactor = 1 - slippage / 100;
+      const amountTokenMin = ethers.BigNumber.from(amountTokenDesired) * slippageMulFactor;
+      const amountETHMin = web3.utils.toWei(toAmount.toString(), "ether");
+      debugger;
       const tx = await uniswap.addLiquidityETH(
         ContractAddress.DYNASET,
-        web3.utils.toWei(toAmount.toString(), "ether"),
-        "0",
-        "0",
+        amountTokenDesired,
+        amountTokenMin,
+        amountETHMin,
         account,
         deadline,
         {
@@ -202,7 +214,7 @@ const AddLiquidityPanel = () => {
       setAddingLiquidity(true);
       await approveLiquidity();
       await buyLiquidity();
-      alert("Added liquidity Successfully")
+      alert("Added liquidity Successfully");
     } catch (error) {
       alert("Errr: look console");
       console.log("errrrrrrrrrr", error);
