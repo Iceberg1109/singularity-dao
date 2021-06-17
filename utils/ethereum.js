@@ -3,6 +3,7 @@ import web3 from "web3";
 import { ethers } from "ethers";
 import { ContractAddress } from "../assets/constants/addresses";
 
+
 export const getGasPrice = async () => {
   const url = "https://gasprice.poa.network/";
   var priceString = await axios.get(url);
@@ -46,4 +47,4 @@ export const fetchSDAOBalance = async (account, signer) => {
 };
 
 export const defaultGasLimit = 210000;
-export const highestApprovalLimit = (2 ** 256 - 1) / 10 ** 18; // Inspired from UNISWAP Approval
+export const defaultApprovalAmount = ethers.BigNumber.from(10).pow(77).toString(); // Inspired from UNISWAP default Approval

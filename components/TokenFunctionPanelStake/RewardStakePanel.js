@@ -18,7 +18,7 @@ import { ethers } from "ethers";
 import SDAOTokenStakingABI from "../../assets/constants/abi/SDAOTokenStaking.json";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
-import { defaultGasLimit, getGasPrice, highestApprovalLimit } from "../../utils/ethereum";
+import { defaultGasLimit, getGasPrice, defaultApprovalAmount } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
 import { useRouter } from "next/router";
@@ -106,10 +106,9 @@ const RewardStakePanel = ({ token, dynasetid }) => {
     const signer = await library.getSigner(account);
     const lpToken = new ethers.Contract(ContractAddress.LP_TOKEN, DynasetABI, signer);
     // const amountToBeApproved = web3.utils.toWei(toCurrencyPrice.toString());
-    // const amountToBeApproved = ethers.BigNumber.from(Infinity);
-    console.log("amountToBeApproved", highestApprovalLimit)
+    console.log("amountToBeApproved", defaultApprovalAmount)
     const gasPrice = await getGasPrice();
-    const tx = await lpToken.approve(ContractAddress.STAKING_REWARD, highestApprovalLimit, {
+    const tx = await lpToken.approve(ContractAddress.STAKING_REWARD, defaultApprovalAmount, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
