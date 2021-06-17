@@ -2,8 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Row, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
 import CurrencyInputPanel from "../../components/CurrencyInputPanelDropDown";
-import CurrencyInputPanelSDAOLP from "../../components/CurrencyInputPanelLP";
-import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelSDAO";
+import CurrencyInputPanelLP from "../../components/CurrencyInputPanelLP";
+// import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelSDAO";
 
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
 import Typography from "../Typography";
@@ -21,9 +21,8 @@ import settingsIcon from "../../assets/img/icons/settings.svg";
 import { defaultGasLimit, getGasPrice } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { Currencies } from "../../utils/currencies";
-
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -36,6 +35,7 @@ const FeeBlock = styled(Row)`
 
 const RewardStakePanel = ({ token, dynasetid }) => {
   const [fromCurrency, setFromCurrency] = useState("ETH");
+  const [fromCurrencyPrice, setFromCurrencyPrice] = useState("0");
   const [balance, setBalance] = useState(0);
   const [amounteth, setamountEth] = useState(0);
   const [toCurrency, setToCurrency] = useState("AGI");
@@ -141,10 +141,9 @@ const RewardStakePanel = ({ token, dynasetid }) => {
       gasPrice,
     });
 
-
     console.log("rewards", rewards);
 
-     return rewards;
+    return rewards;
   };
 
   const handleSubmit = async () => {
@@ -170,17 +169,17 @@ const RewardStakePanel = ({ token, dynasetid }) => {
           Start Staking
         </Typography>
       </div>
-      <CurrencyInputPanelSDAOLP
-        balance={toCurrencyPrice}
-        onChange={setToCurrencyPrice}
-        selectedCurrency={token}
-        label="SDAO LP"
+      <CurrencyInputPanelLP
+        // balance={toCurrencyPrice}
+        amount={fromCurrencyPrice}
+        onAmountChange={setFromCurrencyPrice}
+        selectedCurrency={Currencies.SDAO_LP.id}
       />
-      <CurrencyInputPanelSDAOLP
-        balance={toCurrencyPrice}
-        onChange={setToCurrencyPrice}
-        currency={Currencies.SDAO.id}
-        label="SDAO"
+      <CurrencyInputPanelLP
+        // balance={toCurrencyPrice}
+        amount={toCurrencyPrice}
+        onAmountChange={setToCurrencyPrice}
+        selectedCurrency={Currencies.SDAO.id}
         hideBalance={true}
       />
       <div className="d-flex justify-content-center">
