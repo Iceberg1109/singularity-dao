@@ -22,6 +22,7 @@ import { defaultGasLimit, getGasPrice } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
 import { useRouter } from 'next/router';
+import { Currencies } from "../../utils/currencies";
 
 
 const FeeBlock = styled(Row)`
@@ -172,13 +173,13 @@ const RewardStakePanel = ({ token, dynasetid }) => {
       <CurrencyInputPanelSDAOLP
         balance={toCurrencyPrice}
         onChange={setToCurrencyPrice}
-        currency={token}
+        selectedCurrency={token}
         label="SDAO LP"
       />
       <CurrencyInputPanelSDAOLP
         balance={toCurrencyPrice}
         onChange={setToCurrencyPrice}
-        currency={token}
+        currency={Currencies.SDAO.id}
         label="SDAO"
         hideBalance={true}
       />

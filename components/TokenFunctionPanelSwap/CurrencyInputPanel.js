@@ -120,9 +120,13 @@ const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, s
               {getName()}
             </DropdownToggle>
             <DropdownMenu>
-              {Object.values(Currencies).map((value) => (
-                <DropdownItem onClick={() => handleCurrencyChange(value.id)}>{value.name}</DropdownItem>
-              ))}
+              {Object.values(Currencies).map((value) =>
+                value.allowInDropdown ? (
+                  <DropdownItem onClick={() => handleCurrencyChange(value.id)} key={value.id}>
+                    {value.name}
+                  </DropdownItem>
+                ) : null
+              )}
             </DropdownMenu>
           </ButtonDropdown>
         </CurrencyContainer>
