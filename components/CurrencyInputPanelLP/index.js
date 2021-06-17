@@ -36,7 +36,6 @@ const DropdownToggle = styled(DefaultDropdownToggle)`
 
 const CurrencyInputPanelSDAO = ({ label, balance, toCurrencyPrice, onChange }) => {
   const [focused, setFocused] = useState();
-<<<<<<< HEAD
   const [balance, setBalance] = useState("0");
   const { library, account, network, chainId } = useUser();
   
@@ -48,8 +47,6 @@ const CurrencyInputPanelSDAO = ({ label, balance, toCurrencyPrice, onChange }) =
     const currency = getCurrency();
     return currency ? currency.name : "'";
   }, [selectedCurrency]);
-=======
->>>>>>> parent of bccd9d4 (LP input panel)
 
   const changeprice = async (e) => {
     let { value } = e.target;

@@ -12,10 +12,7 @@ import { ethers } from "ethers";
 import axios from "axios";
 import { defaultGasLimit, fetchEthBalance, getGasPrice } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
-<<<<<<< HEAD
-import { Currencies, getUniswapToken } from "../../utils/currencies";
-=======
->>>>>>> parent of bccd9d4 (LP input panel)
+
 
 const etherscanBaseAPI = {};
 
@@ -240,18 +237,7 @@ const AddLiquidityPanel = () => {
       <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
         Add Liquidity
       </Typography>
-<<<<<<< HEAD
-      <CurrencyInputPanelLP
-        onAmountChange={handleFromAmountChange}
-        amount={fromAmount}
-        selectedCurrency={fromCurrency}
-      />
-      <Typography className="d-flex justify-content-center">+</Typography>
-      <CurrencyInputPanelLP onAmountChange={handleToAmountChange} amount={toAmount} selectedCurrency={toCurrency} />
-      <GradientButton onClick={handleClick} disabled={!toAmount || addingLiquidity}>
-        <span>Add Liquidity</span>
-        {addingLiquidity ? <Spinner color="white" size="sm" className="ml-2" /> : null}
-=======
+
       <CurrencyInputPanelSDAO
         label={fromCurrency}
         balance={`${fromBalance} ${fromCurrency}`}
@@ -267,7 +253,6 @@ const AddLiquidityPanel = () => {
       />
       <GradientButton onClick={handleClick} disabled={!toAmount}>
         Add Liquidity
->>>>>>> parent of bccd9d4 (LP input panel)
       </GradientButton>
       {pendingTxn ? (
         <Typography color="text1" className="mt-2">
