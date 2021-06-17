@@ -47,7 +47,7 @@ const StakeClaimPanel = ({ token }) => {
     const signer = await library.getSigner(account);
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
-    const withdrawAmount = web3.utils.toWei(amount.toString());
+    const withdrawAmount = web3.utils.toWei("10"); //amount.toString()
 
     console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
@@ -60,12 +60,10 @@ const StakeClaimPanel = ({ token }) => {
     console.log(`Transaction hash: ${tx.hash}`);
     const receipt = await tx.wait();
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-    //  showStakeSuccessModal(true);
   };
 
   const handleSubmit = async () => {
     withdrawAndHarvest();
-    //
   };
 
   return (
