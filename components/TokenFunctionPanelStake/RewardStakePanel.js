@@ -139,7 +139,11 @@ const RewardStakePanel = ({ token, dynasetid }) => {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
+
+
     console.log("rewards", rewards);
+
+     return rewards;
   };
 
   const handleSubmit = async () => {

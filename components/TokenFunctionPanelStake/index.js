@@ -71,6 +71,8 @@ export const PanelTypes = {
   CLAIM: "CLAIM",
 };
 
+
+
 const TokenFunctionPanel = ({ panelType }) => {
   const [pendingRewards, setPendingRewards] = useState(0);
   const { library, account } = useUser();

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import styled from "styled-components";
 import { Row, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
 import CurrencyInputPanel from "../CurrencyInputPanelDropDown";
@@ -46,7 +46,10 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   const [balance, setBalance] = useState("0");
   const { library, account } = useUser();
   const [showStakeSuccessModal, setShowStakeSuccessModal] = useState(false);
+  const [reward,setreward]= useState("0");
   const router = useRouter();
+
+
 
   // const stakeToken = async () => {
   //   if (typeof approved === "undefined") {
@@ -130,18 +133,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   //   }
   // };
 
-  // const getPendingRewards = async () => {
-  //   const signer = await library.getSigner(account);
 
-  //   const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
-  //   const poolId = 0;
-  //   const gasPrice = await getGasPrice();
-  //   const rewards = await stakingContract.pendingRewards(poolId.toString(), account, {
-  //     gasLimit: defaultGasLimit,
-  //     gasPrice,
-  //   });
-  //   console.log("rewards", rewards);
-  // };
 
   const withdrawAndHarvest = async () => {
     const signer = await library.getSigner(account);
