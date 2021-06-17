@@ -15,11 +15,13 @@ import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
 import {
+  addSlippage,
   defaultApprovalSDAO,
   defaultGasLimit,
   fetchEthBalance,
   fetchSDAOBalance,
   getGasPrice,
+  reduceSlippage,
 } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { Spinner } from "reactstrap";
@@ -94,6 +96,21 @@ const BuyPanel = () => {
     setFromAmount(price.toFixed(8));
   };
 
+  const validateSDAOAllowanceForUniswap = async () => {
+    if (!library) return;
+    const signer = await library.getSigner(account);
+    const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
+
+    const allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
+
+    if (allowance.lte(web3.utils.toWei(fromAmount, "gwei"))) {
+      const txn = await sdaoToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
+      setPendingTxn(txn.hash);
+      await txn.wait();
+      setPendingTxn(undefined);
+    }
+  };
+
   const handleSwapping = async () => {
     if (!library) return;
     try {
@@ -112,55 +129,35 @@ const BuyPanel = () => {
 
       const route = new Route([pair], WETH[DYN.chainId]);
 
-      const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
-
-      let allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
-
-      if (allowance.lte(web3.utils.toWei(fromAmount, "gwei"))) {
-        // APPROVE
-        const txn = await sdaoToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
-        setPendingTxn(txn.hash);
-        await txn.wait();
-        setPendingTxn(undefined);
-        // APPROVE END
-      }
-
-      // ALLOWANCE END
-
-      // ALLOWANCE
-      allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
-      console.log("allowance after", allowance.toString());
-      // ALLOWANCE END
-
       console.log("route", route.path);
 
       const gasPrice = await getGasPrice();
 
       let operation;
       let args = [];
+      let value;
       if (fromCurrency === Currencies.ETH.id) {
         operation = uniswap.swapExactETHForTokens;
-        const amountOutMin = web3.utils.toWei(toAmount.toString(), "gwei");
+        console.log("reduceSlippage(toAmount)", reduceSlippage(toAmount))
+        const amountOutMin = web3.utils.toWei(reduceSlippage(toAmount), "gwei");
         const path = [route.path[0].address, route.path[1].address];
         const to = account;
         const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
         args = [amountOutMin, path, to, deadline];
+        value = web3.utils.toWei(fromAmount.toString(), "ether");
       } else {
-        debugger;
+        await validateSDAOAllowanceForUniswap();
         operation = uniswap.swapTokensForExactETH;
+        console.log("addSlippage(fromAmount)", addSlippage(fromAmount), typeof addSlippage(fromAmount))
         const amountOut = web3.utils.toWei(toAmount.toString(), "ether");
-        const amountInMax = web3.utils.toWei(fromAmount.toString(), "gwei");
+        const amountInMax = web3.utils.toWei(addSlippage(fromAmount), "gwei");
         const path = [route.path[1].address, route.path[0].address];
         const to = account;
         const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
         args = [amountOut, amountInMax, path, to, deadline];
       }
-      console.log(operation.toString());
 
-      const tx = await operation(...args, {
-        gasLimit: defaultGasLimit,
-        gasPrice,
-      });
+      const tx = await operation(...args, { gasLimit: defaultGasLimit, gasPrice, value });
       console.log(`Transaction hash: ${tx.hash}`);
       setPendingTxn(tx.hash);
       const receipt = await tx.wait();

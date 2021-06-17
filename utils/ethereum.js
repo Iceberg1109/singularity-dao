@@ -2,7 +2,7 @@ import axios from "axios";
 import web3 from "web3";
 import { ethers } from "ethers";
 import { ContractAddress } from "../assets/constants/addresses";
-
+import { Currencies } from "./currencies";
 
 export const getGasPrice = async () => {
   const url = "https://gasprice.poa.network/";
@@ -48,3 +48,21 @@ export const fetchSDAOBalance = async (account, signer) => {
 
 export const defaultGasLimit = 210000;
 export const defaultApprovalSDAO = ethers.BigNumber.from(10).pow(28).toString(); // Inspired from UNISWAP default Approval
+
+/**
+ *
+ * @param {String | Number} amount Amount to be adjusted for the slippage
+ * @param {Number} slippage Slippage value in percentage
+ * @returns {String}
+ */
+export const addSlippage = (amount, slippage = Currencies.SDAO.slippagePercent) =>
+  (Number(amount) * (1 + slippage / 100)).toFixed(8);
+
+/**
+ *
+ * @param {String | Number} amount Amount to be adjusted for the slippage
+ * @param {Number} slippage Slippage value in percentage
+ * @returns {String}
+ */
+export const reduceSlippage = (amount, slippage = Currencies.SDAO.slippagePercent) =>
+  (Number(amount) * (1 - slippage / 100)).toFixed(8);
