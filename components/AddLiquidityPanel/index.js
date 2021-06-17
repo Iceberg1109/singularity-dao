@@ -260,15 +260,7 @@ const AddLiquidityPanel = () => {
         {addingLiquidity ? <Spinner color="white" size="sm" className="ml-2" /> : null}
            </GradientButton>
       <Typography className="d-flex justify-content-center">+</Typography>
-      <CurrencyInputPanelLP
-        label={toCurrency}
-        balance={`${toAmount} ${toCurrency}`}
-        onChange={handleToAmountChange}
-        toCurrencyPrice={toAmount}
-      />
-      <GradientButton onClick={handleClick} disabled={!toAmount}>
-        Add Liquidity
-      </GradientButton>
+
       {pendingTxn ? (
         <Typography color="text1" className="mt-2">
           Pending:&nbsp;
