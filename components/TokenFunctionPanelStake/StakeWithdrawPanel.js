@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Row, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
 import CurrencyInputPanel from "../CurrencyInputPanelDropDown";
 import CurrencyInputPanelSDAOLP from "../CurrencyInputPanelLP";
-import CurrencyInputPanelSDAO from "../CurrencyInputPanelSDAO";
+// import CurrencyInputPanelSDAO from "../CurrencyInputPanelSDAO";
 
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
 import Typography from "../Typography";
@@ -22,6 +22,7 @@ import { defaultGasLimit, getGasPrice } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
 import { useRouter } from 'next/router';
+import { Currencies } from "../../utils/currencies";
 
 
 const FeeBlock = styled(Row)`
@@ -185,9 +186,9 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
       </div>
       <CurrencyInputPanelSDAOLP
         balance={balance}
-        toCurrencyPrice={amount}
-        onChange={setAmount}
-        currency={token}
+        amount={amount}
+        onAmountChange={setAmount}
+        selectedCurrency={Currencies.SDAO.id}
         label="SDAO LP"
       />
       {/* <CurrencyInputPanelSDAOLP

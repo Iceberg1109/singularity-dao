@@ -11,6 +11,7 @@ export const Currencies = {
     name: "ETH",
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/628px-Ethereum_logo_2014.svg.png",
     unit: "ether",
+    allowInDropdown: true,
   },
   SDAO: {
     id: "sdao",
@@ -20,6 +21,18 @@ export const Currencies = {
     decimal: 18,
     unit: "gwei",
     abi: DynasetABI,
+    slippagePercent: 0.5,
+    allowInDropdown: true,
+  },
+  SDAO_LP: {
+    id: "sdao_lp",
+    name: "SDAO LP",
+    icon: "https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg",
+    address: ContractAddress.LP_TOKEN,
+    decimal: 18,
+    unit: "gwei",
+    abi: DynasetABI,
+    allowInDropdown: false,
   },
 };
 

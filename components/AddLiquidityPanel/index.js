@@ -10,7 +10,7 @@ import web3 from "web3";
 import { useUser } from "../UserContext";
 import { ethers } from "ethers";
 import axios from "axios";
-import { defaultGasLimit, fetchEthBalance, getGasPrice } from "../../utils/ethereum";
+import { defaultGasLimit, fetchEthBalance, getGasPrice, defaultApprovalAmount } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { Currencies, getUniswapToken } from "../../utils/currencies";
 
@@ -146,16 +146,19 @@ const AddLiquidityPanel = () => {
     try {
       const signer = await library.getSigner(account);
       const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
-      const amountToBeApproved = web3.utils.toWei(toAmount.toString());
+      const allowance = await tokenContract.allowance(ContractAddress.DYNASET, ContractAddress.UNISWAP, {
+        gasLimit: defaultGasLimit,
+        gasPrice,
+      });
+      console.log("allowance", allowance);
       const gasPrice = await getGasPrice();
-      const tx = await tokenContract.approve(ContractAddress.UNISWAP, amountToBeApproved, {
+      const tx = await tokenContract.approve(ContractAddress.UNISWAP, defaultApprovalAmount, {
         gasLimit: defaultGasLimit,
         gasPrice,
       });
       setPendingTxn(tx.hash);
       console.log(`Transaction hash: ${tx.hash}`);
       const receipt = await tx.wait();
-      console.log(`Approved ${amountToBeApproved} for staking`);
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
     } catch (error) {
       console.log("unable to approve");
@@ -172,11 +175,18 @@ const AddLiquidityPanel = () => {
       const uniswap = new ethers.Contract(ContractAddress.UNISWAP, IUniswapV2Router02ABI, signer);
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
       const gasPrice = await getGasPrice();
+      debugger;
+      const amountTokenDesired = web3.utils.toWei(fromAmount.toString(), "gwei");
+      const slippage = Currencies.SDAO.slippagePercent;
+      const slippageMulFactor = 1 - slippage / 100;
+      const amountTokenMin = ethers.BigNumber.from(amountTokenDesired) * slippageMulFactor;
+      const amountETHMin = web3.utils.toWei(toAmount.toString(), "ether");
+      debugger;
       const tx = await uniswap.addLiquidityETH(
         ContractAddress.DYNASET,
-        web3.utils.toWei(toAmount.toString(), "ether"),
-        "0",
-        "0",
+        amountTokenDesired,
+        amountTokenMin,
+        amountETHMin,
         account,
         deadline,
         {
@@ -202,7 +212,7 @@ const AddLiquidityPanel = () => {
       setAddingLiquidity(true);
       await approveLiquidity();
       await buyLiquidity();
-      alert("Added liquidity Successfully")
+      alert("Added liquidity Successfully");
     } catch (error) {
       alert("Errr: look console");
       console.log("errrrrrrrrrr", error);
