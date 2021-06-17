@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Spinner } from "reactstrap";
 import Typography from "components/Typography";
 import { GradientButton } from "components/Buttons";
-import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelLP";
+import CurrencyInputPanelLP from "../../components/CurrencyInputPanelLP";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Percent } from "@uniswap/sdk";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
@@ -12,7 +12,7 @@ import { ethers } from "ethers";
 import axios from "axios";
 import { defaultGasLimit, fetchEthBalance, getGasPrice } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
-
+import { Currencies, getUniswapToken } from "../../utils/currencies";
 
 const etherscanBaseAPI = {};
 
@@ -238,16 +238,21 @@ const AddLiquidityPanel = () => {
         Add Liquidity
       </Typography>
 
-      <CurrencyInputPanelSDAO
-        label={fromCurrency}
-        balance={`${fromBalance} ${fromCurrency}`}
-        onChange={handleFromAmountChange}
-        toCurrencyPrice={fromAmount}
+       <CurrencyInputPanelLP
+        onAmountChange={handleFromAmountChange}
+        amount={fromAmount}
+        selectedCurrency={fromCurrency}
       />
+            <Typography className="d-flex justify-content-center">+</Typography>
+      <CurrencyInputPanelLP onAmountChange={handleToAmountChange} amount={toAmount} selectedCurrency={toCurrency} />
+      <GradientButton onClick={handleClick} disabled={!toAmount || addingLiquidity}>
+        <span>Add Liquidity</span>
+        {addingLiquidity ? <Spinner color="white" size="sm" className="ml-2" /> : null}
+           </GradientButton>
       <Typography className="d-flex justify-content-center">+</Typography>
-      <CurrencyInputPanelSDAO
+      <CurrencyInputPanelLP
         label={toCurrency}
-        balance={`${toBalance} ${toCurrency}`}
+        balance={`${toAmount} ${toCurrency}`}
         onChange={handleToAmountChange}
         toCurrencyPrice={toAmount}
       />

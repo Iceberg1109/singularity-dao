@@ -10,11 +10,13 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import classnames from "classnames";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Typography from "../Typography";
 import { LinkButton } from "../Buttons";
+import { useUser } from "components/UserContext";
+import { getBalance, getCurrencyById } from "../../utils/currencies";
 
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
@@ -34,11 +36,11 @@ const DropdownToggle = styled(DefaultDropdownToggle)`
   border-radius: 8px;
 `;
 
-const CurrencyInputPanelSDAO = ({ label, balance, toCurrencyPrice, onChange }) => {
+const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
   const [focused, setFocused] = useState();
-  const [balance, setBalance] = useState("0");
   const { library, account, network, chainId } = useUser();
-  
+   const [balance, setBalance] = useState("0");
+   
   useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency]);
 
   const getCurrency = useCallback(() => getCurrencyById(selectedCurrency), [selectedCurrency]);
@@ -54,10 +56,28 @@ const CurrencyInputPanelSDAO = ({ label, balance, toCurrencyPrice, onChange }) =
     onChange(value);
   };
 
+    const updateBalance = async (currencyId) => {
+    try {
+      if (!library) return;
+      const signer = await library.getSigner(account);
+      const balance = await getBalance(currencyId, account, { chainId, network, signer });
+      setBalance(balance);
+    } catch (error) {
+      alert("something went wrong");
+      console.log("error", error);
+    }
+  };
+
+  const handleMaxClick = () => {
+    if (!balance) return;
+    onAmountChange(balance);
+  };
+
+
   return (
     <FormGroup className="my-4 w-100">
       <Typography size={12} weight={300} className="pl-1">
-        {label}
+        {getName()}
       </Typography>
       <InputGroup className={classnames("input-group-merge", { focused })}>
         <Input
@@ -66,7 +86,7 @@ const CurrencyInputPanelSDAO = ({ label, balance, toCurrencyPrice, onChange }) =
           type="number"
           onFocus={(e) => setFocused(true)}
           onBlur={(e) => setFocused(false)}
-          value={toCurrencyPrice}
+           value={amount}
         />
         <UncontrolledDropdown>
           <DropdownToggle
@@ -81,7 +101,7 @@ const CurrencyInputPanelSDAO = ({ label, balance, toCurrencyPrice, onChange }) =
               src="https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg"
               style={{ width: "15px" }}
             ></img> */}
-            {label}
+              {getName()}
           </DropdownToggle>
         </UncontrolledDropdown>
       </InputGroup>
@@ -102,11 +122,11 @@ const CurrencyInputPanelSDAO = ({ label, balance, toCurrencyPrice, onChange }) =
   );
 };
 
-CurrencyInputPanelSDAO.propTypes = {
+CurrencyInputPanelLP.propTypes = {
   label: PropTypes.string,
   balance: PropTypes.string,
   toCurrencyPrice: PropTypes.number,
   onChange: PropTypes.func,
 };
 
-export default CurrencyInputPanelSDAO;
+export default CurrencyInputPanelLP;
