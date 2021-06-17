@@ -22,6 +22,7 @@ import { defaultGasLimit, getGasPrice } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
 import { useRouter } from "next/router";
+import { Currencies } from "../../utils/currencies";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -43,7 +44,6 @@ const StakeClaimPanel = ({ token }) => {
   const router = useRouter();
 
   const withdrawAndHarvest = async () => {
-    
     const signer = await library.getSigner(account);
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
@@ -60,12 +60,12 @@ const StakeClaimPanel = ({ token }) => {
     console.log(`Transaction hash: ${tx.hash}`);
     const receipt = await tx.wait();
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-  //  showStakeSuccessModal(true);
+    //  showStakeSuccessModal(true);
   };
 
   const handleSubmit = async () => {
     withdrawAndHarvest();
-   // 
+    //
   };
 
   return (
@@ -77,10 +77,9 @@ const StakeClaimPanel = ({ token }) => {
       </div>
       <CurrencyInputPanelSDAOLP
         balance={balance}
-        toCurrencyPrice={amount}
-        onChange={setAmount}
-        currency={token}
-        label="SDAO LP"
+        amount={amount}
+        onAmountChange={setAmount}
+        selectedCurrency={Currencies.SDAO_LP.id}
       />
       <div className="d-flex justify-content-center">
         <DefaultButton background="white" color="black" borderColor="black">
