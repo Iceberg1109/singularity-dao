@@ -18,7 +18,7 @@ import { ethers } from "ethers";
 import SDAOTokenStakingABI from "../../assets/constants/abi/SDAOTokenStaking.json";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
-import { defaultGasLimit, getGasPrice, defaultApprovalAmount } from "../../utils/ethereum";
+import { defaultGasLimit, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
 import { useRouter } from "next/router";
@@ -106,7 +106,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
     const signer = await library.getSigner(account);
     const lpToken = new ethers.Contract(ContractAddress.LP_TOKEN, DynasetABI, signer);
     const gasPrice = await getGasPrice();
-    const tx = await lpToken.approve(ContractAddress.STAKING_REWARD, defaultApprovalAmount, {
+    const tx = await lpToken.approve(ContractAddress.STAKING_REWARD, defaultApprovalSDAO, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
