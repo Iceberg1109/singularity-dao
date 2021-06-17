@@ -14,10 +14,16 @@ import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Pe
 import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
-import { fetchEthBalance, fetchSDAOBalance, getGasPrice } from "../../utils/ethereum";
+import {
+  defaultApprovalSDAO,
+  defaultGasLimit,
+  fetchEthBalance,
+  fetchSDAOBalance,
+  getGasPrice,
+} from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { Spinner } from "reactstrap";
-import { Currencies, getUniswapToken } from "../../utils/currencies";
+import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -106,22 +112,55 @@ const BuyPanel = () => {
 
       const route = new Route([pair], WETH[DYN.chainId]);
 
-      console.log("route", route.path);
+      const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
 
-      const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
+      let allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
+
+      if (allowance.lte(web3.utils.toWei(fromAmount, "gwei"))) {
+        // APPROVE
+        const txn = await sdaoToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
+        setPendingTxn(txn.hash);
+        await txn.wait();
+        setPendingTxn(undefined);
+        // APPROVE END
+      }
+
+      // ALLOWANCE END
+
+      // ALLOWANCE
+      allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
+      console.log("allowance after", allowance.toString());
+      // ALLOWANCE END
+
+      console.log("route", route.path);
 
       const gasPrice = await getGasPrice();
 
-      const tx = await uniswap.swapExactETHForTokens(
-        web3.utils.toWei(toAmount.toString(), "gwei"),
-        [route.path[0].address, route.path[1].address],
-        account,
-        deadline,
-        {
-          value: web3.utils.toWei(fromAmount.toString(), "ether"),
-          gasPrice,
-        }
-      );
+      let operation;
+      let args = [];
+      if (fromCurrency === Currencies.ETH.id) {
+        operation = uniswap.swapExactETHForTokens;
+        const amountOutMin = web3.utils.toWei(toAmount.toString(), "gwei");
+        const path = [route.path[0].address, route.path[1].address];
+        const to = account;
+        const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
+        args = [amountOutMin, path, to, deadline];
+      } else {
+        debugger;
+        operation = uniswap.swapTokensForExactETH;
+        const amountOut = web3.utils.toWei(toAmount.toString(), "ether");
+        const amountInMax = web3.utils.toWei(fromAmount.toString(), "gwei");
+        const path = [route.path[1].address, route.path[0].address];
+        const to = account;
+        const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
+        args = [amountOut, amountInMax, path, to, deadline];
+      }
+      console.log(operation.toString());
+
+      const tx = await operation(...args, {
+        gasLimit: defaultGasLimit,
+        gasPrice,
+      });
       console.log(`Transaction hash: ${tx.hash}`);
       setPendingTxn(tx.hash);
       const receipt = await tx.wait();

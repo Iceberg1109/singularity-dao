@@ -47,4 +47,4 @@ export const fetchSDAOBalance = async (account, signer) => {
 };
 
 export const defaultGasLimit = 210000;
-export const defaultApprovalAmount = ethers.BigNumber.from(10).pow(77).toString(); // Inspired from UNISWAP default Approval
+export const defaultApprovalSDAO = ethers.BigNumber.from(10).pow(28).toString(); // Inspired from UNISWAP default Approval
