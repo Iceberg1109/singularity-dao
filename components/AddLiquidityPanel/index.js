@@ -10,7 +10,7 @@ import web3 from "web3";
 import { useUser } from "../UserContext";
 import { ethers } from "ethers";
 import axios from "axios";
-import { defaultGasLimit, fetchEthBalance, getGasPrice, defaultApprovalAmount } from "../../utils/ethereum";
+import { defaultGasLimit, fetchEthBalance, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { Currencies, getUniswapToken } from "../../utils/currencies";
 
@@ -153,7 +153,7 @@ const AddLiquidityPanel = () => {
       });
       console.log("allowance", allowance);
       const gasPrice = await getGasPrice();
-      const tx = await tokenContract.approve(ContractAddress.UNISWAP, defaultApprovalAmount, {
+      const tx = await tokenContract.approve(ContractAddress.UNISWAP, defaultApprovalSDAO, {
         gasLimit: defaultGasLimit,
         gasPrice,
       });
