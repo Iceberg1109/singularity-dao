@@ -40,7 +40,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
   const [focused, setFocused] = useState();
   const { library, account, network, chainId } = useUser();
    const [balance, setBalance] = useState("0");
-   
+
   useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency]);
 
   const getCurrency = useCallback(() => getCurrencyById(selectedCurrency), [selectedCurrency]);
@@ -53,7 +53,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
   const changeprice = async (e) => {
     let { value } = e.target;
     value = value && value > 0 ? value : 0;
-    onChange(value);
+    onAmountChange(value);
   };
 
     const updateBalance = async (currencyId) => {
@@ -83,10 +83,10 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
         <Input
           placeholder={balance}
           onChange={changeprice}
-          type="number"
+          type="text"
           onFocus={(e) => setFocused(true)}
           onBlur={(e) => setFocused(false)}
-           value={amount}
+          value={amount}
         />
         <UncontrolledDropdown>
           <DropdownToggle
@@ -113,7 +113,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
           <Typography size={14} weight={400} className="pl-1">
             Balance: {balance}
           </Typography>
-          <LinkButton className="ml-2 " color="link">
+          <LinkButton className="ml-2 " color="link" onClick={handleMaxClick}>
             MAX
           </LinkButton>
         </div>

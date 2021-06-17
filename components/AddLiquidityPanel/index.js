@@ -30,6 +30,7 @@ const AddLiquidityPanel = () => {
     FROM: "FROM",
     TO: "TO",
   };
+
   const getConversionRate = async (value, type = conversionTypes.FROM) => {
     const fromToken = getUniswapToken(fromCurrency);
     const toToken = getUniswapToken(toCurrency);
@@ -247,20 +248,18 @@ const AddLiquidityPanel = () => {
       <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
         Add Liquidity
       </Typography>
-
        <CurrencyInputPanelLP
         onAmountChange={handleFromAmountChange}
         amount={fromAmount}
         selectedCurrency={fromCurrency}
       />
-            <Typography className="d-flex justify-content-center">+</Typography>
+     
+     <Typography className="d-flex justify-content-center">+</Typography>
       <CurrencyInputPanelLP onAmountChange={handleToAmountChange} amount={toAmount} selectedCurrency={toCurrency} />
       <GradientButton onClick={handleClick} disabled={!toAmount || addingLiquidity}>
         <span>Add Liquidity</span>
         {addingLiquidity ? <Spinner color="white" size="sm" className="ml-2" /> : null}
-           </GradientButton>
-      <Typography className="d-flex justify-content-center">+</Typography>
-
+      </GradientButton>
       {pendingTxn ? (
         <Typography color="text1" className="mt-2">
           Pending:&nbsp;

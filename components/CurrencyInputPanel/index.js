@@ -11,7 +11,6 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Typography from "../Typography";
 import { useUser } from "components/UserContext";
-
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
   font-weight: 600;
