@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card } from "reactstrap";
 import Typography from "components/Typography";
 import { GradientButton } from "components/Buttons";
-import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelLP";
+import CurrencyInputPanelLP from "../../components/CurrencyInputPanelLP";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Percent } from "@uniswap/sdk";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
@@ -12,6 +12,7 @@ import { ethers } from "ethers";
 import axios from "axios";
 import { defaultGasLimit, fetchEthBalance, getGasPrice } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
+import { Currencies } from "../../utils/currencies";
 
 const etherscanBaseAPI = {};
 
@@ -197,18 +198,16 @@ const AddLiquidityPanel = ({tokens}) => {
       <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
         Add Liquidity
       </Typography>
-      <CurrencyInputPanelSDAO
-        label={fromCurrency}
-        balance={`${fromBalance} ${fromCurrency}`}
-        onChange={handleFromAmountChange}
-        toCurrencyPrice={fromAmount}
+      <CurrencyInputPanelLP
+        onAmountChange={handleFromAmountChange}
+        amount={fromAmount}
+        selectedCurrency={Currencies.SDAO.id}
       />
       <Typography className="d-flex justify-content-center">+</Typography>
-      <CurrencyInputPanelSDAO
-        label={toCurrency}
-        balance={`${toBalance} ${toCurrency}`}
-        onChange={handleToAmountChange}
-        toCurrencyPrice={toAmount}
+      <CurrencyInputPanelLP
+        onAmountChange={handleToAmountChange}
+        amount={toAmount}
+        selectedCurrency={Currencies.ETH.id}
       />
       <GradientButton onClick={handleClick} disabled={!toAmount}>
         Add Liquidity
