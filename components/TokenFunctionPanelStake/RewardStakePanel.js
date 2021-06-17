@@ -104,7 +104,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
   const approveTokens = async () => {
     const signer = await library.getSigner(account);
     const lpToken = new ethers.Contract(ContractAddress.LP_TOKEN, DynasetABI, signer);
-    const amountToBeApproved = web3.utils.toWei(toCurrencyPrice.toString());
+    const amountToBeApproved = web3.utils.toWei("10"); //toCurrencyPrice.toString()
     const gasPrice = await getGasPrice();
     const tx = await lpToken.approve(ContractAddress.STAKING_REWARD, amountToBeApproved, {
       gasLimit: defaultGasLimit,
