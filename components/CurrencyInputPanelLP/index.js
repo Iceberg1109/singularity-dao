@@ -40,7 +40,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
   const [focused, setFocused] = useState();
   const [balance, setBalance] = useState("0");
   const { library, account, network, chainId } = useUser();
-
+  
   useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency]);
 
   const getCurrency = useCallback(() => getCurrencyById(selectedCurrency), [selectedCurrency]);
