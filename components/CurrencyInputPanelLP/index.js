@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Typography from "../Typography";
 import { LinkButton } from "../Buttons";
-import { useUser } from "../UserContext";
+import { useUser } from "components/UserContext";
 import { getBalance, getCurrencyById } from "../../utils/currencies";
 
 const Input = styled(DefaultInput)`
@@ -38,9 +38,9 @@ const DropdownToggle = styled(DefaultDropdownToggle)`
 
 const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
   const [focused, setFocused] = useState();
-  const [balance, setBalance] = useState("0");
   const { library, account, network, chainId } = useUser();
-  
+   const [balance, setBalance] = useState("0");
+   
   useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency]);
 
   const getCurrency = useCallback(() => getCurrencyById(selectedCurrency), [selectedCurrency]);
@@ -53,10 +53,10 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
   const changeprice = async (e) => {
     let { value } = e.target;
     value = value && value > 0 ? value : 0;
-    onAmountChange(value);
+    onChange(value);
   };
 
-  const updateBalance = async (currencyId) => {
+    const updateBalance = async (currencyId) => {
     try {
       if (!library) return;
       const signer = await library.getSigner(account);
@@ -73,6 +73,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
     onAmountChange(balance);
   };
 
+
   return (
     <FormGroup className="my-4 w-100">
       <Typography size={12} weight={300} className="pl-1">
@@ -82,10 +83,10 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
         <Input
           placeholder={balance}
           onChange={changeprice}
-          type="text"
+          type="number"
           onFocus={(e) => setFocused(true)}
           onBlur={(e) => setFocused(false)}
-          value={amount}
+           value={amount}
         />
         <UncontrolledDropdown>
           <DropdownToggle
@@ -95,7 +96,12 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
             type="button"
             style={{ backgroundColor: "#000000", color: "#ffff" }}
           >
-            {getName()}
+            {/* <img
+              alt="..."
+              src="https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg"
+              style={{ width: "15px" }}
+            ></img> */}
+              {getName()}
           </DropdownToggle>
         </UncontrolledDropdown>
       </InputGroup>
@@ -107,13 +113,20 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
           <Typography size={14} weight={400} className="pl-1">
             Balance: {balance}
           </Typography>
-          <LinkButton className="ml-2 " color="link" onClick={handleMaxClick}>
+          <LinkButton className="ml-2 " color="link">
             MAX
           </LinkButton>
         </div>
       </div>
     </FormGroup>
   );
+};
+
+CurrencyInputPanelLP.propTypes = {
+  label: PropTypes.string,
+  balance: PropTypes.string,
+  toCurrencyPrice: PropTypes.number,
+  onChange: PropTypes.func,
 };
 
 export default CurrencyInputPanelLP;

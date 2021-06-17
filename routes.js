@@ -27,8 +27,8 @@ const routes = [
     name: "Home",
     icon: HomeIcon,
     state: "dashboardsCollapse",
-    path: "/dashboard",
-    layout: "/admin",
+    path: "/homepage",
+    layout: "",
   },
   {
     collapse: false,
