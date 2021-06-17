@@ -90,17 +90,17 @@ const RewardStakePanel = ({ token, dynasetid }) => {
   //   console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   // };
 
-  const getAllowance = async () => {
-    const signer = await library.getSigner(account);
-    // const tokenContract = new ethers.Contract(
-    //   ContractAddress.DYNASET,
-    //   DynasetABI,
-    //   signer
-    // );
-    const lpToken = new Token(ChainId.ROPSTEN, ContractAddress.LP_TOKEN, 18);
-    const allowance = await lpToken.allowance(account, ContractAddress.STAKING_REWARD);
-    console.log("allowance", allowance.toString());
-  };
+  // const getAllowance = async () => {
+  //   const signer = await library.getSigner(account);
+  //   // const tokenContract = new ethers.Contract(
+  //   //   ContractAddress.DYNASET,
+  //   //   DynasetABI,
+  //   //   signer
+  //   // );
+  //   const lpToken = new Token(ChainId.ROPSTEN, ContractAddress.LP_TOKEN, 18);
+  //   const allowance = await lpToken.allowance(account, ContractAddress.STAKING_REWARD);
+  //   console.log("allowance", allowance.toString());
+  // };
 
   const approveTokens = async () => {
     const signer = await library.getSigner(account);

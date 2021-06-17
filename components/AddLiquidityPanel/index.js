@@ -12,9 +12,7 @@ import { ethers } from "ethers";
 import axios from "axios";
 import { defaultGasLimit, fetchEthBalance, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
-import { Currencies, getUniswapToken } from "../../utils/currencies";
-
-const etherscanBaseAPI = {};
+import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
 
 const fromCurrency = Currencies.SDAO.id;
 const toCurrency = Currencies.ETH.id;
@@ -44,41 +42,6 @@ const AddLiquidityPanel = () => {
     return trade.executionPrice.toSignificant(6);
   };
 
-  // const getTradeExecutionPrice = async (value) => {
-  //   const DAI = new Token(ChainId.ROPSTEN, ContractAddress.DYNASET, 18);
-  //   const pair = await Fetcher.fetchPairData(DAI, WETH[DAI.chainId]);
-  //   const route = new Route([pair], WETH[DAI.chainId]);
-  //   const trade = new Trade(
-  //     route,
-  //     new TokenAmount(WETH[DAI.chainId], web3.utils.toWei(value.toString())),
-  //     TradeType.EXACT_INPUT
-  //   );
-  //   return trade.executionPrice.toSignificant(6);
-  // };
-
-  // const getBalances = async (tokens) => {
-  //   if (tokens) {
-  //     const fromBalance = await getBalance(tokens[0]);
-  //     const toBalance = await getBalance(tokens[1]);
-  //     setFromBalance(fromBalance);
-  //     setToBalance(toBalance);
-  //   }
-  // };
-
-  // const getSymbols = async (tokens) => {
-  //   if (tokens) {
-  //     const fromCurrency = await getCurrency(tokens[0]);
-  //     const toCurrency = await getCurrency(tokens[1]);
-  //     setFromCurrency(fromCurrency);
-  //     setToCurrency(toCurrency);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getBalances(tokens);
-  //   getSymbols(tokens);
-  // }, [account, chainId, tokens]);
-
   const handleFromAmountChange = async (value) => {
     console.log("value", value);
     if (value == 0) {
@@ -107,51 +70,10 @@ const AddLiquidityPanel = () => {
     setFromAmount(price);
   };
 
-  // const getEthBalance = async () => {
-  //   // if (!account) return;
-
-  //   // let etherscanAPI =
-  //   //   chainId === 1 ? "https://api.etherscan.io/api" : `https://api-${network.toLowerCase()}.etherscan.io/api`;
-
-  //   // const response = await axios.get(
-  //   //   `${etherscanAPI}?module=account&action=balance&address=${account}&tag=latest&apikey=${process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY}`
-  //   // );
-  //   // const etherBal = web3.utils.fromWei(response.data.result);
-  //   const balance = await fetchEthBalance(account, chainId, network);
-
-  //   return balance;
-  //   // setFromBalance(etherBal);
-  // };
-
-  // const getTokenBalance = async (address) => {
-  //   if (!account || !library) return;
-  //   // DYNASET BALANCE
-  //   const signer = await library.getSigner(account);
-  //   const tokenContract = new ethers.Contract(address, DynasetABI, signer);
-  //   const balance = await tokenContract.balanceOf(account);
-
-  //   return web3.utils.fromWei(balance.toString());
-  // };
-
-  // const getTokenSymbol = async (address) => {
-  //   if (!account || !library) return;
-  //   // DYNASET BALANCE
-  //   const signer = await library.getSigner(account);
-  //   const tokenContract = new ethers.Contract(address, DynasetABI, signer);
-  //   const currency = await tokenContract.symbol();
-
-  //   return currency;
-  // };
-
   const approveLiquidity = async () => {
     try {
       const signer = await library.getSigner(account);
       const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
-      const allowance = await tokenContract.allowance(ContractAddress.DYNASET, ContractAddress.UNISWAP, {
-        gasLimit: defaultGasLimit,
-        gasPrice,
-      });
-      console.log("allowance", allowance);
       const gasPrice = await getGasPrice();
       const tx = await tokenContract.approve(ContractAddress.UNISWAP, defaultApprovalSDAO, {
         gasLimit: defaultGasLimit,
@@ -176,7 +98,7 @@ const AddLiquidityPanel = () => {
       const uniswap = new ethers.Contract(ContractAddress.UNISWAP, IUniswapV2Router02ABI, signer);
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
       const gasPrice = await getGasPrice();
-      debugger;
+
       const amountTokenDesired = web3.utils.toWei(fromAmount.toString(), "gwei");
       const slippage = Currencies.SDAO.slippagePercent;
       const slippageMulFactor = 1 - slippage / 100;
@@ -186,14 +108,14 @@ const AddLiquidityPanel = () => {
       const tx = await uniswap.addLiquidityETH(
         ContractAddress.DYNASET,
         amountTokenDesired,
-        amountTokenMin,
-        amountETHMin,
+        "0",
+        "0",
         account,
         deadline,
         {
           gasLimit: defaultGasLimit,
           gasPrice,
-          value: web3.utils.toWei(fromAmount.toString()),
+          value: web3.utils.toWei(toAmount.toString()),
         }
       );
       setPendingTxn(tx.hash);
@@ -208,10 +130,25 @@ const AddLiquidityPanel = () => {
     }
   };
 
+  const approveIfInsufficientAllowance = async () => {
+    if (!library) return;
+    const signer = await library.getSigner(account);
+    const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
+
+    const allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
+    console.log("allowance", allowance.toString())
+    if (allowance.lte(web3.utils.toWei(fromAmount, "gwei"))) {
+      const txn = await sdaoToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
+      setPendingTxn(txn.hash);
+      await txn.wait();
+      setPendingTxn(undefined);
+    }
+  };
+
   const handleClick = async () => {
     try {
       setAddingLiquidity(true);
-      await approveLiquidity();
+      await approveIfInsufficientAllowance();
       await buyLiquidity();
       alert("Added liquidity Successfully");
     } catch (error) {
@@ -222,39 +159,18 @@ const AddLiquidityPanel = () => {
     }
   };
 
-  // const getBalance = async (token) => {
-  //   let balance;
-  //   if (token === "0xc778417e063141139fce010982780140aa0cd5ab") {
-  //     balance = await getEthBalance();
-  //   } else {
-  //     balance = await getTokenBalance(token);
-  //   }
-
-  //   return balance ?? 0;
-  // };
-
-  // const getCurrency = async (token) => {
-  //   let currency;
-  //   if (token === "0xc778417e063141139fce010982780140aa0cd5ab") {
-  //     currency = "ETH";
-  //   } else {
-  //     currency = await getTokenSymbol(token);
-  //   }
-
-  //   return currency ?? "";
-  // };
   return (
     <Card className="p-4" style={{ borderRadius: 8 }}>
       <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
         Add Liquidity
       </Typography>
-       <CurrencyInputPanelLP
+      <CurrencyInputPanelLP
         onAmountChange={handleFromAmountChange}
         amount={fromAmount}
         selectedCurrency={fromCurrency}
       />
-     
-     <Typography className="d-flex justify-content-center">+</Typography>
+
+      <Typography className="d-flex justify-content-center">+</Typography>
       <CurrencyInputPanelLP onAmountChange={handleToAmountChange} amount={toAmount} selectedCurrency={toCurrency} />
       <GradientButton onClick={handleClick} disabled={!toAmount || addingLiquidity}>
         <span>Add Liquidity</span>
