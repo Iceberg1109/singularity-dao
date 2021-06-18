@@ -43,18 +43,18 @@ const  Index = () => {
               <Col lg="12">
                 <Row>
                   <Col lg="4">
-                    <Card className="card-lift--hover shadow border-0">
+                    <Card className="card shadow border-0">
                       <CardBody className="py-5">
                        <img
                           alt="..."
                           className="img-fluid"
                           src={require("assets/img/connect_wallet.svg")}
                         />
-                        <h4 className="h3 text-info text-uppercase">
+                        <h4 className="h3 text-dark text-uppercase">
                           Connect your wallet
                         </h4>
                         <p className="description mt-3">
-                         Connect your wallet and discover the benefits of DeFi! No registration or account needed.
+                        Connect your Ethereum wallet to get started. No registration required.
                         </p>
                         <div>
                           <Badge color="info" pill>
@@ -66,18 +66,18 @@ const  Index = () => {
                     </Card>
                   </Col>
                   <Col lg="4">
-                    <Card className="card-lift--hover shadow border-0">
+                    <Card className="card shadow border-0">
                       <CardBody className="py-5">
                        <img
                           alt="..."
                           className="img-fluid"
                           src={require("assets/img/liquidity_provider.svg")}
                         />
-                        <h4 className="h3 text-success text-uppercase">
+                        <h4 className="h3 text-dark text-uppercase">
                           Become a liquidity provider
                         </h4>
                         <p className="description mt-3">
-                          Start contributing in Liquidity Pools and earn free tokens. Yeah, is that easy!
+                          Provide Liquidity in SDAO/ETH and AGIX/ETH pools to begin earning LP tokens.
                         </p>
                         <div>
                              <Badge color="info" pill>
@@ -88,22 +88,21 @@ const  Index = () => {
                     </Card>
                   </Col>
                   <Col lg="4">
-                    <Card className="card-lift--hover shadow border-0">
+                    <Card className="card shadow border-0">
                       <CardBody className="py-5">
                          <img
                           alt="..."
                           className="img-fluid"
                           src={require("assets/img/yield_farming.svg")}
                            />
-                        <h4 className="h3 text-warning text-uppercase">
+                        <h4 className="h3 text-dark text-uppercase">
                           Earn SDAO with Yield Farming
                         </h4>
                         <p className="description mt-3">
-                         Are you brave enough for an higher APR? Farm your LP tokens to earn more SDAO, now.
+                         Stake your LP tokens in our Yield Farming portal to earn additional SDAO rewards.
                         </p>
                         <div>
-                        
-                            <Badge color="info" pill>
+                          <Badge color="info" pill>
                             3 step
                           </Badge>
                         </div>
@@ -117,8 +116,10 @@ const  Index = () => {
         </section>
         <section className="py-6">
           <Container>
+          
             <Row className="row-grid align-items-center">
               <Col className="order-md-2" md="6">
+
                 <img
                   alt="..."
                   className="img-fluid"
@@ -126,14 +127,19 @@ const  Index = () => {
                 />
               </Col>
               <Col className="order-md-1" md="6">
+                <div>
+               <Badge color="info" pill>
+                   step 1
+                </Badge>
+            </div>
                 <div className="pr-md-5">
                   <h1>Get your SDAO</h1>
                   <p>
-                     Are you ready to enter into the DeFi World? To interact with SingularityDAO platform, first connect your wallet. Swap your WETH into SDAO using the swap function. Then go further into the next steps!
+                   To interact with SingularityDAO platform, first connect your wallet.  Swap ETH into SDAO using the swap function. To provide liquidity you will need equal values of ETH and AGIX/SDAO.
                   </p>
                 <Link href="/swap">
-                    <a className="font-weight-bold text-warning mt-5">
-                      Buy SDAO
+                    <a className="font-weight-bold text-purple mt-5">
+                      Buy SDAO ->
                     </a>
                   </Link>
                 </div>
@@ -152,14 +158,20 @@ const  Index = () => {
                 />
               </Col>
               <Col md="6">
+                 <div>
+               <Badge color="info" pill>
+                   step 2
+                </Badge>
+            </div>
                 <div className="pr-md-5">
                   <h1>Earn trading fees, get LP tokens now</h1>
                   <p>
-                    LP tokens are the key! When you add liquidity to a Liquidity Pool, you get SDAO LP tokens in return. LP tokens represent a crypto liquidity provider’s share of a pool, and the crypto liquidity provider remains entirely in control of the token.
+                   When you add liquidity to either the SDAO/ETH or AGIX/ETH Liquidity Pool, you earn trading fees and receive LP tokens.
+LP tokens represent a crypto liquidity provider’s share of a pool, and the crypto liquidity provider remains entirely in control of the token.
                   </p>
                   <Link href="/pools">
-                    <a className="font-weight-bold text-warning mt-5">
-                      Get LP tokens
+                    <a className="font-weight-bold text-purple mt-5">
+                      Get LP tokens ->
                     </a>
                   </Link>
                 </div>
@@ -168,6 +180,7 @@ const  Index = () => {
           </Container>
         </section>
         <section className="py-6">
+          
           <Container>
             <Row className="row-grid align-items-center">
               <Col className="order-md-2" md="6">
@@ -178,14 +191,19 @@ const  Index = () => {
                 />
               </Col>
               <Col className="order-md-1" md="6">
+               <div>
+               <Badge color="info" pill>
+                   step 3
+                </Badge>
+            </div>
                 <div className="pr-md-5">
-                  <h1>Maximize your earnings with Yeld Farming</h1>
+                  <h1>Maximize your earnings with Yield Farming</h1>
                   <p>
-                   Now that you have LP tokens, what’s next? Deposit those LP tokens into the SingDAO staking pool and maximize your earning. Staking your LP tokens your liquidity works double-time earning fees and farming yields.
+                   Deposit the LP tokens into the SingDAO staking pool and maximize your earning. By staking LP tokens your liquidity works double-time earning fees and farming yield.
                   </p>
-                  <Link href="/">
-                    <a className="font-weight-bold text-info mt-5">
-                     Farm now
+                  <Link href="/farms">
+                    <a className="font-weight-bold text-purple mt-5">
+                     Farm now ->
                     </a>
                   </Link>
                 </div>
