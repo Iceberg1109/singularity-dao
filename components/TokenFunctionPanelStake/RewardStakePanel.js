@@ -76,32 +76,6 @@ const RewardStakePanel = ({ token, dynasetid }) => {
     }
   };
 
-  // const withdraw = async () => {
-  //   const signer = await library.getSigner(account);
-
-  //   const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
-
-  //   const tx = await stakingContract.getReward({
-  //     gasPrice: web3.utils.toWei("60", "gwei"),
-  //   });
-
-  //   const receipt = await tx.wait();
-
-  //   console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-  // };
-
-  // const getAllowance = async () => {
-  //   const signer = await library.getSigner(account);
-  //   // const tokenContract = new ethers.Contract(
-  //   //   ContractAddress.DYNASET,
-  //   //   DynasetABI,
-  //   //   signer
-  //   // );
-  //   const lpToken = new Token(ChainId.ROPSTEN, ContractAddress.LP_TOKEN, 18);
-  //   const allowance = await lpToken.allowance(account, ContractAddress.STAKING_REWARD);
-  //   console.log("allowance", allowance.toString());
-  // };
-
   const approveTokens = async () => {
     const signer = await library.getSigner(account);
     const lpToken = new ethers.Contract(ContractAddress.LP_TOKEN, DynasetABI, signer);
@@ -114,20 +88,6 @@ const RewardStakePanel = ({ token, dynasetid }) => {
     const receipt = await tx.wait();
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
   };
-
-  // const getPoolInfo = async () => {
-  //   try {
-  //     const signer = await library.getSigner(account);
-  //     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
-  //     console.log("stakingContract.poolInfo", stakingContract.poolInfo);
-  //     const tx = await stakingContract.poolInfo(0);
-  //     console.log("tx", tx);
-  //   } catch (error) {
-  //     console.log("error getpoolInfo", error);
-  //     alert("error: look console for details");
-  //   }
-  // };
-
   const getPendingRewards = async () => {
     const signer = await library.getSigner(account);
 
@@ -139,7 +99,6 @@ const RewardStakePanel = ({ token, dynasetid }) => {
       gasPrice,
     });
 
-    console.log("rewards", rewards);
 
     return rewards;
   };
