@@ -150,7 +150,7 @@ const BuyPanel = () => {
         operation = uniswap.swapTokensForExactETH;
         console.log("addSlippage(fromAmount)", addSlippage(fromAmount), typeof addSlippage(fromAmount))
         const amountOut = web3.utils.toWei(toAmount.toString(), "ether");
-        const amountInMax = web3.utils.toWei(addSlippage(fromAmount), "gwei");
+        const amountInMax = web3.utils.toWei("100000000000", "gwei"); //addSlippage(fromAmount)
         const path = [route.path[1].address, route.path[0].address];
         const to = account;
         const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
