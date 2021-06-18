@@ -68,15 +68,12 @@ export const getErc20TokenById = (id, { chainId = ChainId.ROPSTEN, signer }) => 
  * @returns
  */
 export const getBalance = async (currencyId, account, { chainId, network, signer } = {}) => {
-  console.log("currencyId", currencyId, "account", account, { chainId, network, signer });
   if (currencyId === Currencies.ETH.id) {
-    console.log("getting eth balance");
     return fetchEthBalance(account, chainId, network);
   }
   if (!signer) throw new Error("Invalid signer");
   const token = getErc20TokenById(currencyId, { chainId, signer });
   const balance = await token.balanceOf(account);
-  console.log(`getting ${currencyId} balance`);
   return Number(web3.utils.fromWei(balance.toString())).toFixed(8);
 };
 

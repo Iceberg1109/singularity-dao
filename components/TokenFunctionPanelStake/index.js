@@ -9,10 +9,9 @@ import PropTypes from "prop-types";
 import StakeClaimPanel from "./StakeClaimPanel";
 import { useUser } from "../UserContext";
 import { ethers } from "ethers";
-import web3 from "web3";
 import { ContractAddress } from "../../assets/constants/addresses";
 import SDAOTokenStakingABI from "../../assets/constants/abi/SDAOTokenStaking.json";
-import { defaultGasLimit, getGasPrice } from "../../utils/ethereum";
+import {  unitBlockTime } from "../../utils/ethereum";
 
 const MainCard = styled(Card)`
   padding: 40px;
@@ -34,52 +33,30 @@ const MainCard = styled(Card)`
   }
 `;
 
-// const TokenFunctionTab = styled.div`
-//   border: ${({ theme }) => `1px solid ${theme.color.default}`};
-//   background-color: ${({ theme, active }) => (active ? theme.color.default : "")};
-//   color: ${({ theme, active }) => (active ? theme.color.white : theme.color.default)};
-//   cursor: pointer;
-//   padding: 4px 10px;
-//   font-size: 16px;
-//   font-weight: 600;
-//   width: 120px;
-//   text-align: center;
-//   height: 35px;
-//   &:first-child {
-//     border-top-left-radius: 8px;
-//     border-bottom-left-radius: 8px;
-//   }
-
-//   &:not(:last-child) {
-//     border-right: 0;
-//   }
-
-//   &:last-child {
-//     border-top-right-radius: 8px;
-//     border-bottom-right-radius: 8px;
-//   }
-// `;
-
-// const TabContainer = styled(Row)`
-//   justify-content: center;
-//   margin-bottom: 5vh;
-// `;
-
 export const PanelTypes = {
   DEPOSIT: "DEPOSIT",
   WITHDRAW: "WITHDRAW",
   CLAIM: "CLAIM",
 };
 
-
+let getUserStakeDetailsTimer;
 
 const TokenFunctionPanel = ({ panelType }) => {
+  const poolId = 0;
   const [pendingRewards, setPendingRewards] = useState(0);
+  const [userInfoAmount, setUserInfoAmount] = useState(0);
   const { library, account } = useUser();
 
   useEffect(() => {
-    getPendingRewards()
-  }, [account])
+    clearInterval(getUserStakeDetailsTimer);
+    getUserStakeDetailsTimer = setInterval(() => {
+      getUserStakeDetails();
+    }, unitBlockTime);
+    getUserStakeDetails();
+    return () => {
+      clearInterval(getUserStakeDetailsTimer);
+    };
+  }, [account]);
 
   const MainPanel = useCallback(() => {
     switch (panelType) {
@@ -92,36 +69,48 @@ const TokenFunctionPanel = ({ panelType }) => {
     }
   }, [panelType])();
 
+  const getUserStakeDetails = () => {
+    getPendingRewards();
+    getStateUserInfo();
+  };
+
   const getPendingRewards = async () => {
-    if(!library) return;
-    const signer = await library.getSigner(account);
-    const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
-    const gasPrice = await getGasPrice();
-    // TODO: Get poolId from route params
-    const poolId = 0;
-    const rewards = await stakingContract.pendingRewards(poolId.toString(), account, {
-      gasLimit: defaultGasLimit,
-      gasPrice,
-    });
-    console.log("rewards", rewards.toString());
-    setPendingRewards(rewards.toString());
+    try {
+      if (!library) return;
+      const signer = await library.getSigner(account);
+      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+      const poolId = 0;
+
+      const rewards = await stakingContract.callStatic.pendingRewards(poolId.toString(), account);
+      console.log("rewards Withdraw ", rewards.toString());
+      setPendingRewards(rewards.toString());
+      return rewards;
+    } catch (error) {
+      console.log("erorrrrrrrrrrrrrrrr", error);
+    }
+  };
+
+  const getStateUserInfo = async () => {
+    try {
+      if (!library) return;
+      const signer = await library.getSigner(account);
+      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+      const userInfo = await stakingContract.callStatic.userInfo(poolId.toString(), account);
+      setUserInfoAmount(userInfo.amount.toString());
+      console.log("userInfo", userInfo.amount.toString());
+    } catch (error) {
+      console.log("userInfo erorrrrrrrrrrrrrrrr", error);
+    }
   };
 
   return (
     <>
       <MainCard>
         <div className="d-flex justify-content-between">
-          <div>
-            <Typography size={15} style={{ textAlign: "left" }}>
-              Total Staked
-            </Typography>
-            <Typography size={20} style={{ textAlign: "left" }} className="mb-3">
-              {pendingRewards} SDAO LP
-            </Typography>
-          </div>
+          <div />
           <div>
             <Typography>Withdrawable stake</Typography>
-            <Typography>1,250 SDAO LP</Typography>
+            <Typography>{userInfoAmount} SDAO LP</Typography>
           </div>
         </div>
       </MainCard>
@@ -135,7 +124,7 @@ const TokenFunctionPanel = ({ panelType }) => {
           <MainCard>
             <Typography size={20}>SDAO earned</Typography>
             <Typography size={24} weight={600} className="mb-3">
-              0.0000
+              {pendingRewards} SDAO
             </Typography>
             <DetailLabel title="Max stake per user" desc="1,500 SDAO LP" />
             <DetailLabel title="APY return" desc="34.74 %" />

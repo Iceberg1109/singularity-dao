@@ -46,9 +46,6 @@ export const fetchSDAOBalance = async (account, signer) => {
   return Number(web3.utils.fromWei(balance.toString())).toFixed(8);
 };
 
-export const defaultGasLimit = 210000;
-export const defaultApprovalSDAO = ethers.BigNumber.from(10).pow(28).toString(); // Inspired from UNISWAP default Approval
-
 /**
  *
  * @param {String | Number} amount Amount to be adjusted for the slippage
@@ -66,3 +63,7 @@ export const addSlippage = (amount, slippage = Currencies.SDAO.slippagePercent) 
  */
 export const reduceSlippage = (amount, slippage = Currencies.SDAO.slippagePercent) =>
   (Number(amount) * (1 - slippage / 100)).toFixed(8);
+
+export const defaultGasLimit = 210000;
+export const defaultApprovalSDAO = ethers.BigNumber.from(10).pow(28).toString(); // Inspired from UNISWAP default Approval
+export const unitBlockTime = 13500; // milliseconds
