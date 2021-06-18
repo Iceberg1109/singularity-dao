@@ -84,7 +84,7 @@ const TokenFunctionPanel = ({ panelType }) => {
 
       const rewards = await stakingContract.callStatic.pendingRewards(poolId.toString(), account);
       console.log("rewards Withdraw ", rewards.toString());
-      setPendingRewards(rewards.toString());
+      setPendingRewards(Web3.utils.fromWei(rewards.toString()));
       return rewards;
     } catch (error) {
       console.log("erorrrrrrrrrrrrrrrr", error);
