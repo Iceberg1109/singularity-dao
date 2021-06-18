@@ -102,8 +102,7 @@ const  Index = () => {
                          Are you brave enough for an higher APR? Farm your LP tokens to earn more SDAO, now.
                         </p>
                         <div>
-                        
-                            <Badge color="info" pill>
+                          <Badge color="info" pill>
                             3 step
                           </Badge>
                         </div>
