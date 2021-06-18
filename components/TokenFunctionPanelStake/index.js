@@ -11,7 +11,8 @@ import { useUser } from "../UserContext";
 import { ethers } from "ethers";
 import { ContractAddress } from "../../assets/constants/addresses";
 import SDAOTokenStakingABI from "../../assets/constants/abi/SDAOTokenStaking.json";
-import {  unitBlockTime } from "../../utils/ethereum";
+import { unitBlockTime } from "../../utils/ethereum";
+import Web3 from "web3";
 
 const MainCard = styled(Card)`
   padding: 40px;
@@ -96,7 +97,7 @@ const TokenFunctionPanel = ({ panelType }) => {
       const signer = await library.getSigner(account);
       const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
       const userInfo = await stakingContract.callStatic.userInfo(poolId.toString(), account);
-      setUserInfoAmount(userInfo.amount.toString());
+      setUserInfoAmount(Web3.utils.fromWei(userInfo.amount.toString()));
       console.log("userInfo", userInfo.amount.toString());
     } catch (error) {
       console.log("userInfo erorrrrrrrrrrrrrrrr", error);
@@ -107,11 +108,18 @@ const TokenFunctionPanel = ({ panelType }) => {
     <>
       <MainCard>
         <div className="d-flex justify-content-between">
-          <div />
           <div>
+            <Typography size={15} style={{ textAlign: "left" }}>
+              Total Staked
+            </Typography>
+            <Typography size={20} style={{ textAlign: "left" }} className="mb-3">
+              {userInfoAmount} SDAO LP
+            </Typography>
+          </div>
+          {/* <div>
             <Typography>Withdrawable stake</Typography>
             <Typography>{userInfoAmount} SDAO LP</Typography>
-          </div>
+          </div> */}
         </div>
       </MainCard>
       <Row>
