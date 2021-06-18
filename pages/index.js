@@ -56,12 +56,7 @@ const  Index = () => {
                         <p className="description mt-3">
                         Connect your Ethereum wallet to get started. No registration required.
                         </p>
-                        <div>
-                          <Badge color="info" pill>
-                            1 step
-                          </Badge>
-                      
-                        </div>
+                    
                       </CardBody>
                     </Card>
                   </Col>
@@ -79,11 +74,7 @@ const  Index = () => {
                         <p className="description mt-3">
                           Provide Liquidity in SDAO/ETH and AGIX/ETH pools to begin earning LP tokens.
                         </p>
-                        <div>
-                             <Badge color="info" pill>
-                            2 step
-                          </Badge>
-                        </div>
+                   
                       </CardBody>
                     </Card>
                   </Col>
@@ -101,11 +92,7 @@ const  Index = () => {
                         <p className="description mt-3">
                          Stake your LP tokens in our Yield Farming portal to earn additional SDAO rewards.
                         </p>
-                        <div>
-                          <Badge color="info" pill>
-                            3 step
-                          </Badge>
-                        </div>
+                    
                       </CardBody>
                     </Card>
                   </Col>
