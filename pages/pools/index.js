@@ -12,7 +12,6 @@ const baskets = [
     liquidity: "407004",
     apy: "4.82",
     share: "0.005",
-    balance: "960.0",
     tokens: [
       "0x5e94577b949a56279637ff74dfcff2c28408f049",
       "0xc778417e063141139fce010982780140aa0cd5ab"
@@ -24,7 +23,6 @@ const baskets = [
     liquidity: "407004",
     apy: "4.82",
     share: "0.005",
-    balance: "960.0",
     tokens: [
       "0x5e94577b949a56279637ff74dfcff2c28408f049",
       "0xa898150fef6ac506476e70f9bf1c03a11b55bdf9"
@@ -52,7 +50,6 @@ const ForgePage = () => {
                 liquidity={basket.liquidity}
                 apy={basket.apy}
                 share={basket.share}
-                balance={basket.share}
                 tokens={basket.tokens}
               />
             </Col>
