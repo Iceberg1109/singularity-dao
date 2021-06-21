@@ -13,7 +13,7 @@ import { ContractAddress } from "../../assets/constants/addresses";
 import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
 import web3 from "web3";
 import { Currencies, getErc20TokenById } from "../../utils/currencies";
-import { TOKEN_DAY_DATAS_QUERY } from "../../queries/tokenDailyAggregated";
+// import { TOKEN_DAY_DATAS_QUERY } from "../../queries/tokenDailyAggregated";
 // import { useQuery } from "@apollo/client";
 // import { ETH_PRICE_QUERY, TOKEN_QUERY } from "../../queries/price";
 import BigNumber from "bignumber.js";
