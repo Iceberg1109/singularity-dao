@@ -64,7 +64,7 @@ const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, s
   const [balance, setBalance] = useState("0");
   const { library, account, network, chainId } = useUser();
 
-  useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency]);
+  useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency, amount]);
 
   const toggle = () => setOpen(!dropdownOpen);
 

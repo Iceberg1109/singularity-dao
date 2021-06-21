@@ -102,8 +102,9 @@ const BuyPanel = () => {
     const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
 
     const allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
-    console.log("allowance", allowance.toString())
-    if (allowance.lte(web3.utils.toWei(fromAmount, "gwei"))) {
+    console.log("allowance", allowance.toString());
+    console.log("to be transferred", web3.utils.toWei(fromAmount, "ether"));
+    if (allowance.lte(web3.utils.toWei(fromAmount, "ether"))) {
       const txn = await sdaoToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
       setPendingTxn(txn.hash);
       await txn.wait();
@@ -138,7 +139,6 @@ const BuyPanel = () => {
       let value;
       if (fromCurrency === Currencies.ETH.id) {
         operation = uniswap.swapExactETHForTokens;
-        console.log("reduceSlippage(toAmount)", reduceSlippage(toAmount))
         const amountOutMin = web3.utils.toWei(reduceSlippage(toAmount), "gwei");
         const path = [route.path[0].address, route.path[1].address];
         const to = account;
@@ -148,7 +148,6 @@ const BuyPanel = () => {
       } else {
         await validateSDAOAllowanceForUniswap();
         operation = uniswap.swapTokensForExactETH;
-        
         const amountOut = web3.utils.toWei(toAmount.toString(), "ether");
         const amountInMax = web3.utils.toWei(addSlippage(fromAmount), "ether"); // using ether for proper decimals
         const path = [route.path[1].address, route.path[0].address];
@@ -162,6 +161,7 @@ const BuyPanel = () => {
       setPendingTxn(tx.hash);
       const receipt = await tx.wait();
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+      resetAmounts();
       alert(`Transaction was mined in block ${receipt.blockNumber}`);
     } catch (error) {
       alert("something went wrong");
@@ -176,14 +176,17 @@ const BuyPanel = () => {
     if (value === fromCurrency) return;
     setToCurrency(fromCurrency);
     setFromCurrency(value);
-    setFromAmount("0");
-    setToAmount("0");
+    resetAmounts();
   };
 
   const handleToCurrencyChange = (value) => {
     if (value === toCurrency) return;
     setFromCurrency(toCurrency);
     setToCurrency(value);
+    resetAmounts();
+  };
+
+  const resetAmounts = () => {
     setFromAmount("0");
     setToAmount("0");
   };
