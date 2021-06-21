@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Row, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
+import { Row } from "reactstrap";
 import CurrencyInputPanel from "./CurrencyInputPanel";
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
 import Typography from "../Typography";
@@ -9,11 +9,10 @@ import { GradientButton } from "../Buttons";
 import PropTypes from "prop-types";
 import { useUser } from "../../components/UserContext";
 import web3 from "web3";
-import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Percent } from "@uniswap/sdk";
+import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route } from "@uniswap/sdk";
 
 import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
-import settingsIcon from "../../assets/img/icons/settings.svg";
 import { addSlippage, defaultApprovalSDAO, defaultGasLimit, getGasPrice, reduceSlippage } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { Spinner } from "reactstrap";
@@ -226,7 +225,6 @@ const BuyPanel = () => {
         <Typography size={20} style={{ textAlign: "left" }}>
           Swap
         </Typography>
-        <img src={settingsIcon} />
       </div>
       <CurrencyInputPanel
         onAmountChange={handleFromAmountChange}
