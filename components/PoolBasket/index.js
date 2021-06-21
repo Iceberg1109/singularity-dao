@@ -12,6 +12,11 @@ import { ethers } from "ethers";
 import { ContractAddress } from "../../assets/constants/addresses";
 import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
 import web3 from "web3";
+import { Currencies, getErc20TokenById } from "../../utils/currencies";
+import { TOKEN_DAY_DATAS_QUERY } from "../../queries/tokenDailyAggregated";
+// import { useQuery } from "@apollo/client";
+// import { ETH_PRICE_QUERY, TOKEN_QUERY } from "../../queries/price";
+import BigNumber from "bignumber.js";
 
 const CustomProgress = styled(Progress)`
   .progress-bar {
@@ -21,15 +26,24 @@ const CustomProgress = styled(Progress)`
   margin-bottom: 10px !important;
 `;
 
-const ForgeBasket = ({ data, title, poolId, liquidity, apy, share, tokens }) => {
+const ForgeBasket = ({ data, title, poolId, liquidity, apy, tokens }) => {
   const router = useRouter();
   const { chainId, account, library } = useUser();
   const [balance, setBalance] = useState("...");
+  const [share, setShare] = useState("...");
+  // const { loading: ethLoading, data: ethPriceData } = useQuery(ETH_PRICE_QUERY);
+  // const { loading: tokenDayDatasLoading, data: tokenDayDatas } = useQuery(TOKEN_QUERY, {
+  //   variables: { tokenAddress: ContractAddress.DYNASET },
+  // });
+
+  // console.table(ethPriceData?.bundles);
 
   useEffect(() => {
     if (!chainId) return;
+    setBalance("...")
+    setShare("...")
     getPairData();
-  }, [tokens, chainId]);
+  }, [tokens, chainId, account]);
 
   const getPairData = async () => {
     try {
@@ -50,9 +64,21 @@ const ForgeBasket = ({ data, title, poolId, liquidity, apy, share, tokens }) => 
       // BALANCE OF LIQUIDITY TOKEN IN STAKING
       const signer = await library.getSigner(account);
       const lpToken = new ethers.Contract(liquidityToken.address, IUniswapV2ERC20.abi, signer);
-      const balance = await lpToken.callStatic.balanceOf(account);
-      console.log("converted balance", web3.utils.fromWei(balance.toString(), "gwei"));
-      setBalance(balance);
+      const lpBalance = await lpToken.callStatic.balanceOf(account);
+      console.log(lpBalance.toString(), "converted balance", web3.utils.fromWei(lpBalance.toString()));
+      const totalSupply = await lpToken.callStatic.totalSupply();
+      console.log("totalSupply", web3.utils.fromWei(totalSupply.toString()));
+      setBalance(web3.utils.fromWei(lpBalance.toString()));
+      // BALANCE OF LIQUIDITY IN SDAO
+      const sdaoToken = await getErc20TokenById(Currencies.SDAO.id, { chainId, signer });
+      const lpSDAOBalance = await sdaoToken.callStatic.balanceOf(liquidityToken.address);
+      console.log("lpSDAOBalance ", web3.utils.fromWei(lpSDAOBalance.toString()));
+      // CALCULATE YOUR SHARE PERCENT
+      console.log("balance", lpBalance.toString());
+      console.log("totalSupply", totalSupply.toString());
+      const percent = BigNumber(lpBalance.toString()).div(BigNumber(totalSupply.toString())).multipliedBy(100);
+      setShare(percent.toString());
+      console.log();
     } catch (error) {
       console.log(title, "pair erorrrr", error);
     }
