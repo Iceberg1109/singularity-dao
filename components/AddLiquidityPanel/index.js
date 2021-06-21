@@ -104,7 +104,6 @@ const AddLiquidityPanel = () => {
       const slippageMulFactor = 1 - slippage / 100;
       const amountTokenMin = ethers.BigNumber.from(amountTokenDesired) * slippageMulFactor;
       const amountETHMin = web3.utils.toWei(toAmount.toString(), "ether");
-      debugger;
       const tx = await uniswap.addLiquidityETH(
         ContractAddress.DYNASET,
         amountTokenDesired,

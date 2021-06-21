@@ -13,6 +13,7 @@ import { ContractAddress } from "../../assets/constants/addresses";
 import SDAOTokenStakingABI from "../../assets/constants/abi/SDAOTokenStaking.json";
 import { unitBlockTime } from "../../utils/ethereum";
 import Web3 from "web3";
+import useInterval from "../../utils/hooks/useInterval";
 
 const MainCard = styled(Card)`
   padding: 40px;
@@ -40,24 +41,13 @@ export const PanelTypes = {
   CLAIM: "CLAIM",
 };
 
-let getUserStakeDetailsTimer;
-
 const TokenFunctionPanel = ({ panelType }) => {
   const poolId = 0;
   const [pendingRewards, setPendingRewards] = useState(0);
   const [userInfoAmount, setUserInfoAmount] = useState(0);
   const { library, account } = useUser();
 
-  useEffect(() => {
-    clearInterval(getUserStakeDetailsTimer);
-    getUserStakeDetailsTimer = setInterval(() => {
-      getUserStakeDetails();
-    }, unitBlockTime);
-    getUserStakeDetails();
-    return () => {
-      clearInterval(getUserStakeDetailsTimer);
-    };
-  }, [account]);
+  useInterval(() => getUserStakeDetails(), unitBlockTime, [account]);
 
   const MainPanel = useCallback(() => {
     switch (panelType) {

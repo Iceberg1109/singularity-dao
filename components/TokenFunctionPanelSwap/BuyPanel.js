@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Row, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
 import CurrencyInputPanel from "./CurrencyInputPanel";
@@ -14,15 +14,7 @@ import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Pe
 import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
-import {
-  addSlippage,
-  defaultApprovalSDAO,
-  defaultGasLimit,
-  fetchEthBalance,
-  fetchSDAOBalance,
-  getGasPrice,
-  reduceSlippage,
-} from "../../utils/ethereum";
+import { addSlippage, defaultApprovalSDAO, defaultGasLimit, getGasPrice, reduceSlippage } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { Spinner } from "reactstrap";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
@@ -36,6 +28,18 @@ const FeeBlock = styled(Row)`
   padding: 8px 0;
 `;
 
+const sanitizeNumber = (number) =>
+  `${number}`
+    .replace(/[^0-9.]/g, "")
+    .replace(/\b0+/g, "")
+    .split(".")
+    .slice(0, 2)
+    .join(".");
+
+const memoizedRoute = {};
+const setMemoizedRoute = (fromAddress, toAddress, value) => (memoizedRoute[`${fromAddress}_${toAddress}`] = value);
+const getMemoizedRoute = (fromAddress, toAddress) => memoizedRoute[`${fromAddress}_${toAddress}`];
+
 const BuyPanel = () => {
   // STATES
   const { library, account, network, chainId } = useUser();
@@ -46,33 +50,59 @@ const BuyPanel = () => {
   const [fromCurrency, setFromCurrency] = useState(Currencies.ETH.id);
   const [toCurrency, setToCurrency] = useState(Currencies.SDAO.id);
   const [fee, setFee] = useState(0);
+  const [conversionRate, setConversionRate] = useState(undefined);
   const slippage = 0.5;
+  const [swappingRoute, setSwappingRoute] = useState(undefined);
 
   const conversionTypes = {
     FROM: "FROM",
     TO: "TO",
   };
-  const getConversionRate = async (value, type = conversionTypes.FROM) => {
+
+  useEffect(async () => {
+    const route = await getSwappingRoute();
+    setSwappingRoute(route);
+  }, []);
+
+  useEffect(async () => {
+    setSwappingRoute(undefined);
+    const route = await getSwappingRoute();
+    setSwappingRoute(route);
+  }, [fromCurrency, toCurrency]);
+
+  const getTokens = useCallback(() => {
     const fromToken = getUniswapToken(fromCurrency);
     const toToken = getUniswapToken(toCurrency);
+    return { fromToken, toToken };
+  }, [fromCurrency, toCurrency]);
+
+  const getSwappingRoute = async () => {
+    const { fromToken, toToken } = getTokens();
+    const memo = getMemoizedRoute(fromToken.address, toToken.address);
+    if (memo) return memo;
     const pair = await Fetcher.fetchPairData(fromToken, toToken);
     const route = new Route([pair], fromToken);
+    setMemoizedRoute(fromToken.address, toToken.address, route);
+    return route;
+  };
 
+  const getConversionRate = (value, type = conversionTypes.FROM) => {
+    if (!swappingRoute) return;
+
+    const { fromToken, toToken } = getTokens();
     const tradeToken = type === conversionTypes.FROM ? fromToken : toToken;
     const tradeType = type === conversionTypes.FROM ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT;
-    const trade = new Trade(route, new TokenAmount(tradeToken, web3.utils.toWei(value.toString())), tradeType);
-    console.log("new trade price", trade.executionPrice.toSignificant(6));
+
+    const trade = new Trade(swappingRoute, new TokenAmount(tradeToken, web3.utils.toWei(value.toString())), tradeType);
+    console.log("trade.executionPrice", trade.executionPrice.toSignificant(6));
+    setConversionRate(trade.executionPrice.toSignificant(6));
     return trade.executionPrice.toSignificant(6);
   };
 
   const handleFromAmountChange = async (value) => {
-    console.log("value", typeof value);
+    value = sanitizeNumber(value);
     // VALIDATION
-    if (value == 0 || typeof value === undefined || value === "") {
-      setFromAmount(value);
-      if (toAmount > 0) setToAmount(0);
-      return;
-    }
+    if (!value) return resetAmounts();
     // CONVERSION
     setFromAmount(value);
     setToAmount("calculating ...");
@@ -82,18 +112,15 @@ const BuyPanel = () => {
   };
 
   const handleToAmountChange = async (value) => {
+    value = sanitizeNumber(value);
     // VALIDATION
-    if (value == 0 || typeof value === undefined || value === "") {
-      setToAmount(value);
-      if (toAmount > 0) setFromAmount(0);
-      return;
-    }
+    if (!value) return resetAmounts();
     // CONVERSION
     setToAmount(value);
     setFromAmount("calculating...");
     const rate = await getConversionRate(value, conversionTypes.TO);
     const price = value / rate;
-    setFromAmount(price.toFixed(8));
+    setFromAmount(price.toFixed(18));
   };
 
   const validateSDAOAllowanceForUniswap = async () => {
@@ -113,16 +140,17 @@ const BuyPanel = () => {
   };
 
   const handleSwapping = async () => {
-    if (!library) return;
     try {
+      // VALIDATION
+      if (isNaN(Number(fromAmount)) || isNaN(Number(toAmount))) {
+        throw new Error("Invalid Input values");
+      }
+      // SWAPPING
+      if (!library) return;
       setSwapping(true);
       const signer = await library.getSigner(account);
 
-      const uniswap = new ethers.Contract(
-        "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-        IUniswapV2Router02ABI.abi,
-        signer
-      );
+      const uniswap = new ethers.Contract(ContractAddress.UNISWAP, IUniswapV2Router02ABI.abi, signer);
 
       const DYN = new Token(ChainId.ROPSTEN, "0x5e94577b949a56279637ff74dfcff2c28408f049", 18);
 
@@ -163,8 +191,9 @@ const BuyPanel = () => {
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
       resetAmounts();
       alert(`Transaction was mined in block ${receipt.blockNumber}`);
+      resetAmounts();
     } catch (error) {
-      alert("something went wrong");
+      alert(error.message);
       console.log("error", error);
     } finally {
       setSwapping(false);
@@ -205,6 +234,7 @@ const BuyPanel = () => {
         amount={fromAmount}
         selectedCurrency={fromCurrency}
         setSelectedCurrency={handleFromCurrencyChange}
+        disabled={!swappingRoute}
       />
       <div className="text-align-center" role="button" onClick={() => handleFromCurrencyChange(toCurrency)}>
         <img src={arrowDownIcon} className="my-3" />
@@ -222,7 +252,11 @@ const BuyPanel = () => {
         <Typography size={14}>Slippage:</Typography>
         <Typography size={14}>{slippage.toFixed(2)} %</Typography>
       </FeeBlock>
-
+      {/* {conversionRate ? (
+        <Typography>
+          1 {fromCurrency} => {conversionRate} {toCurrency}
+        </Typography>
+      ) : null} */}
       <div className="d-flex justify-content-center">
         <GradientButton onClick={handleSwapping} disabled={swapping}>
           <span>Swap</span>
