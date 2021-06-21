@@ -13,6 +13,7 @@ import styled from "styled-components";
 import Typography from "../Typography";
 import { Currencies, getBalance, getCurrencyById } from "../../utils/currencies";
 import { useUser } from "../UserContext";
+import useDebounce from "../../utils/hooks/useDebounce";
 
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
@@ -59,12 +60,17 @@ const InputGroup = styled(DefaultInputGroup)`
   border-radius: 10px;
 `;
 
-const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, setSelectedCurrency }) => {
+const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, setSelectedCurrency, disabled }) => {
   const [dropdownOpen, setOpen] = useState(false);
   const [balance, setBalance] = useState("0");
   const { library, account, network, chainId } = useUser();
+  const debouncedAmount = useDebounce(amount);
 
   useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency]);
+
+  useEffect(() => {
+    if (debouncedAmount) updateBalance(selectedCurrency);
+  }, [debouncedAmount]);
 
   const toggle = () => setOpen(!dropdownOpen);
 
@@ -112,9 +118,9 @@ const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, s
         {label}
       </Typography>
       <InputGroup>
-        <Input placeholder={balance} onChange={changeprice} value={amount} type="text" />
+        <Input placeholder={balance} onChange={changeprice} value={amount} type="text" disabled={disabled} />
         <CurrencyContainer>
-          <ButtonDropdown isOpen={dropdownOpen} toggle={toggle}>
+          <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} disabled={disabled}>
             <DropdownToggle type="button" color="secondary" caret>
               <img alt="..." src={getIcon()} style={{ width: "15px" }} className="mr-2" />
               {getName()}
