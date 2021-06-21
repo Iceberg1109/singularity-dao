@@ -162,12 +162,30 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                 </div>
               </NavItem>
 
-              <NavItem className="d-sm-none">
+              <NavItem >
                 <NavLink onClick={openSearch}>
-                  <i className="ni ni-zoom-split-in" />
-
+           
+                Governance
+                </NavLink>
+                    </NavItem>
+                        <NavItem >
+                 <NavLink onClick={openSearch}>
+                 
+                  Docs
+                </NavLink>
+                    </NavItem>
+                      <NavItem >
+                 <NavLink onClick={openSearch}>
+      
+                 GitHub
                 </NavLink>
               </NavItem>
+              <NavItem >
+                 <NavLink onClick={openSearch}>
+                Support
+                </NavLink>
+              </NavItem>
+
 
               <NavItem>
                 {!account && (

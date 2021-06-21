@@ -24,7 +24,7 @@ import StatsIcon from './assets/img/icons/stats.svg';
 const routes = [
   {
     collapse: false,
-    name: "Home",
+    name: "How it works",
     icon: HomeIcon,
     state: "dashboardsCollapse",
     path: "/",
@@ -48,7 +48,7 @@ const routes = [
   },
   {
     collapse: false,
-    name: "Farms",
+    name: "Yield Farming",
     icon: FarmsIcon,
     state: "formsCollapse",
     path: "/farms",

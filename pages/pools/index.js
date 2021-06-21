@@ -19,7 +19,7 @@ const baskets = [
   },
   {
     key: "WETH-AGIX",
-    poolId: "SDAO-AGIX",
+    poolId: "AGIX-WETH",
     liquidity: "407004",
     apy: "4.82",
     share: "0.005",

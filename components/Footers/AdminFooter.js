@@ -59,25 +59,7 @@ function AdminFooter() {
           </Col>
           <Col lg={7}>
             <Row className="justify-content-between d-lg-flex d-md-block">
-              <Col>
-                <Nav className="d-lg-block d-md-flex justify-content-center">
-                  <NavItem>
-                    <GrayLink target="_blank">About</GrayLink>
-                  </NavItem>
-                  <NavItem>
-                    <GrayLink target="_blank">Documentation</GrayLink>
-                  </NavItem>
-                  <NavItem>
-                    <GrayLink target="_blank">FAQ</GrayLink>
-                  </NavItem>
-                  <NavItem>
-                    <GrayLink target="_blank">Terms & Conditions</GrayLink>
-                  </NavItem>
-                  <NavItem>
-                    <GrayLink target="_blank">Privacy Policy</GrayLink>
-                  </NavItem>
-                </Nav>
-              </Col>
+         
 
               <Col className="col-auto social-links">
                 <Nav className="align-items-lg-center">
@@ -86,13 +68,14 @@ function AdminFooter() {
                       className="nav-link-icon"
                       id="tooltip601201423"
                       target="_blank"
+                      href="https://www.facebook.com/SingularityDAO"
                     >
                       <i className="fab fa-facebook-square" />
                       <span className="nav-link-inner--text d-lg-none">
                         Facebook
                       </span>
                     </NavLink>
-                    <UncontrolledTooltip delay={0} target="tooltip601201423">
+                    <UncontrolledTooltip delay={0} target="tooltip601201423" href="https://www.facebook.com/SingularityDAO">
                       Like us on Facebook
                     </UncontrolledTooltip>
                   </NavItem>
@@ -101,6 +84,7 @@ function AdminFooter() {
                       className="nav-link-icon"
                       id="tooltip871243015"
                       target="_blank"
+                      href="https://www.instagram.com/singularitydao/"
                     >
                       <i className="fab fa-instagram" />
                       <span className="nav-link-inner--text d-lg-none">
@@ -116,6 +100,7 @@ function AdminFooter() {
                       className="nav-link-icon"
                       id="tooltip366258619"
                       target="_blank"
+                      href="https://twitter.com/SingularityDao"
                     >
                       <i className="fab fa-twitter-square" />
                       <span className="nav-link-inner--text d-lg-none">
@@ -131,6 +116,7 @@ function AdminFooter() {
                       className="nav-link-icon"
                       id="tooltip931502898"
                       target="_blank"
+                      href="https://github.com/Singularity-DAO/"
                     >
                       <i className="fab fa-github" />
                       <span className="nav-link-inner--text d-lg-none">
