@@ -23,7 +23,6 @@ const PoolInfoPanel = () => {
       <DetailLabel title="Slippage" desc="$ 407,004,574" />
       <DetailLabel title="Minimum received" desc="4.82%" />
       <DetailLabel title="Transaction speed" desc="0.005%" />
-      <GradientButton>Add Liquidity</GradientButton>
     </Card>
   );
 };
