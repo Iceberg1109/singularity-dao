@@ -3,10 +3,12 @@ import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
-import {Web3ReactProvider} from '@web3-react/core';
-import {UserProvider} from 'components/UserContext';
+import { Web3ReactProvider } from "@web3-react/core";
+import { UserProvider } from "components/UserContext";
 import PageChange from "components/PageChange/PageChange.js";
-import {Web3Provider} from '@ethersproject/providers';
+import { Web3Provider } from "@ethersproject/providers";
+import { ApolloProvider } from "@apollo/client";
+import client from "../apollo-client";
 
 // plugins styles from node_modules
 import "react-notification-alert/dist/animate.css";
@@ -27,10 +29,7 @@ import ThemeProvider from "../theme";
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
   document.body.classList.add("body-page-transition");
-  ReactDOM.render(
-    <PageChange path={url} />,
-    document.getElementById("page-transition")
-  );
+  ReactDOM.render(<PageChange path={url} />, document.getElementById("page-transition"));
 });
 Router.events.on("routeChangeComplete", () => {
   ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
@@ -42,9 +41,7 @@ Router.events.on("routeChangeError", () => {
 });
 
 export default class MyApp extends App {
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
   // static async getInitialProps({ Component, router, ctx }) {
   //   let pageProps = {};
 
@@ -55,7 +52,7 @@ export default class MyApp extends App {
   //   return { pageProps };
   // }
 
-   getLibrary = provider => {
+  getLibrary = (provider) => {
     return new Web3Provider(provider);
   };
 
@@ -67,20 +64,20 @@ export default class MyApp extends App {
     return (
       <React.Fragment>
         <Head>
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          />
+          <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
           <title>Singularity DAO</title>
         </Head>
+
         <ThemeProvider>
           <Web3ReactProvider getLibrary={this.getLibrary}>
-          <UserProvider>
-          <Layout>
-              <Component {...pageProps} />
-          </Layout>
-          </UserProvider>
-         </Web3ReactProvider>
+            <UserProvider>
+              <Layout>
+                <ApolloProvider client={client}>
+                  <Component {...pageProps} />
+                </ApolloProvider>
+              </Layout>
+            </UserProvider>
+          </Web3ReactProvider>
         </ThemeProvider>
       </React.Fragment>
     );

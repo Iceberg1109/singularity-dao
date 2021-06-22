@@ -9,25 +9,20 @@ import ForgeBasket from "../../components/PoolBasket";
 const baskets = [
   {
     poolId: "SDAO-WETH",
-    liquidity: "407004",
     apy: "4.82",
-    share: "0.005",
-    tokens: [
-      "0x5e94577b949a56279637ff74dfcff2c28408f049",
-      "0xc778417e063141139fce010982780140aa0cd5ab"
-    ]
+    tokens: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
   },
-  {
-    key: "WETH-AGIX",
-    poolId: "AGIX-WETH",
-    liquidity: "407004",
-    apy: "4.82",
-    share: "0.005",
-    tokens: [
-      "0x5e94577b949a56279637ff74dfcff2c28408f049",
-      "0xa898150fef6ac506476e70f9bf1c03a11b55bdf9"
-    ]
-  },
+  // {
+  //   key: "WETH-AGIX",
+  //   poolId: "AGIX-WETH",
+  //   liquidity: "407004",
+  //   apy: "4.82",
+  //   share: "0.005",
+  //   tokens: [
+  //     "0x5e94577b949a56279637ff74dfcff2c28408f049",
+  //     "0xa898150fef6ac506476e70f9bf1c03a11b55bdf9"
+  //   ]
+  // },
 ];
 
 const ForgePage = () => {

@@ -50,7 +50,7 @@ export const getCurrencyById = (id) => {
  * @param {*} id ID of the currency whose token is needed
  * @returns {ethers.Contract} Token
  */
-export const getErc20TokenById = (id, { chainId = ChainId.ROPSTEN, signer }) => {
+export const getErc20TokenById = (id, { chainId = ChainId.ROPSTEN, signer } = {}) => {
   if (id === Currencies.ETH.id) {
     return WETH[chainId];
   }
