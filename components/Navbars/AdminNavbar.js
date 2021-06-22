@@ -40,9 +40,10 @@ import {
 
 import Link from "next/link";
 import WalletModal from "../WalletModal";
+import Typography, { GradientTypography } from "../Typography";
 
 function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
-  const { account } = useUser();
+  const { account, network } = useUser();
   const [walletModal, setWalletModal] = useState(false);
 
   const getFormattedWalletAddress = () => {
@@ -78,21 +79,12 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
 
   return (
     <>
-      <Navbar
-        className="navbar-horizontal navbar-main bg-white"
-        expand="lg"
-        id="navbar-main"
-      >
+      <Navbar className="navbar-horizontal navbar-main bg-white" expand="lg" id="navbar-main">
         <Container>
           <Link href="/">
-            <div className="header-brand mr-4">
-           
-            </div>
+            <div className="header-brand mr-4"></div>
           </Link>
-               <Nav className="mr-auto" navbar>
-       
-      
-            </Nav>
+          <Nav className="mr-auto" navbar></Nav>
           <button
             aria-controls="navbar-collapse"
             aria-expanded={false}
@@ -103,25 +95,15 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
             id="navbar-collapse"
             type="button"
           >
-
             <span className="navbar-toggler-icon" />
           </button>
 
-          <UncontrolledCollapse
-            className="navbar-custom-collapse"
-            navbar
-            toggler="#navbar-collapse"
-          >
+          <UncontrolledCollapse className="navbar-custom-collapse" navbar toggler="#navbar-collapse">
             <div className="navbar-collapse-header">
               <Row>
                 <Col className="collapse-brand" xs="6">
-
                   <Link href="/admin/dashboard">
-                    <img
-                      alt="SingularityDAO"
-                      src={require("assets/img/brand/singdao.svg")}
-                    />
-
+                    <img alt="SingularityDAO" src={require("assets/img/brand/singdao.svg")} />
                   </Link>
                 </Col>
                 <Col className="collapse-close" xs="6">
@@ -162,31 +144,25 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                 </div>
               </NavItem>
 
-              <NavItem >
-                <NavLink onClick={openSearch}>
-           
-                Governance
-                </NavLink>
-                    </NavItem>
-                        <NavItem >
-                 <NavLink onClick={openSearch}>
-                 
-                  Docs
-                </NavLink>
-                    </NavItem>
-                      <NavItem >
-                 <NavLink onClick={openSearch}>
-      
-                 GitHub
-                </NavLink>
+              <NavItem>
+                <NavLink onClick={openSearch}>Governance</NavLink>
               </NavItem>
-              <NavItem >
-                 <NavLink onClick={openSearch}>
-                Support
-                </NavLink>
+              <NavItem>
+                <NavLink onClick={openSearch}>Docs</NavLink>
               </NavItem>
-
-
+              <NavItem>
+                <NavLink onClick={openSearch}>GitHub</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink onClick={openSearch}>Support</NavLink>
+              </NavItem>
+              {network && (
+                <NavItem>
+                  <GradientTypography >
+                    {network}
+                  </GradientTypography>
+                </NavItem>
+              )}
               <NavItem>
                 {!account && (
                   <Button
@@ -201,12 +177,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                 )}
                 {account && (
                   <Popper Content={HeaderUserMenu}>
-                    <Button
-                      outline
-                      color="primary"
-                      label={formatAddress(account)}
-                      className="btn-neutral btn-icon"
-                    >
+                    <Button outline color="primary" label={formatAddress(account)} className="btn-neutral btn-icon">
                       {formatAddress(account)}
                     </Button>
                   </Popper>
@@ -215,10 +186,7 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
             </Nav>
           </UncontrolledCollapse>
         </Container>
-        <WalletModal
-          walletModal={walletModal}
-          setWalletModal={setWalletModal}
-        />
+        <WalletModal walletModal={walletModal} setWalletModal={setWalletModal} />
       </Navbar>
     </>
   );

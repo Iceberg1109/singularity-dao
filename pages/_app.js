@@ -9,6 +9,7 @@ import PageChange from "components/PageChange/PageChange.js";
 import { Web3Provider } from "@ethersproject/providers";
 import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-client";
+import { ToastContainer } from "react-toastify";
 
 // plugins styles from node_modules
 import "react-notification-alert/dist/animate.css";
@@ -19,6 +20,7 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import "select2/dist/css/select2.min.css";
 import "quill/dist/quill.core.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "react-toastify/dist/ReactToastify.css";
 // plugins styles downloaded
 import "assets/vendor/nucleo/css/nucleo.css";
 // core styles
@@ -74,6 +76,16 @@ export default class MyApp extends App {
               <Layout>
                 <ApolloProvider client={client}>
                   <Component {...pageProps} />
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={8000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    draggable={false}
+                    pauseOnVisibilityChange
+                    closeOnClick
+                    pauseOnHover
+                  />
                 </ApolloProvider>
               </Layout>
             </UserProvider>
