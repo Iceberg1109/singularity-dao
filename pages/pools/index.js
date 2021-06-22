@@ -15,7 +15,10 @@ const baskets = [
     poolId: "SDAO-WETH",
     apy: "13%",
     share: "0.005",
-    tokens:["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"]
+    tokens: {
+      1: ["0x993864e43caa7f7f12953ad6feb1d1ca635b875f", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
+      3: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
+    },
   },
   // {
   //   key: "WETH-AGIX",
