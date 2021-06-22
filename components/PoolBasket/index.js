@@ -13,6 +13,9 @@ import { ContractAddress } from "../../assets/constants/addresses";
 import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
 import web3 from "web3";
 import { Currencies, getErc20TokenById } from "../../utils/currencies";
+import { toast } from "react-toastify";
+import Skeleton from "react-loading-skeleton";
+
 // import { TOKEN_DAY_DATAS_QUERY } from "../../queries/tokenDailyAggregated";
 // import { useQuery } from "@apollo/client";
 // import { ETH_PRICE_QUERY, TOKEN_QUERY } from "../../queries/price";
@@ -35,14 +38,20 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   // const chainId = 1;
   // const poolAddress = "0x424485f89ea52839fdb30640eb7dd7e0078e12fb";
   const [poolAddress, setPoolAddress] = useState();
-  const { chainId, library, account } = useUser();
+  const { account, chainId, library } = useUser();
+  const tokenPair = tokens[chainId];
   // const [balance, setBalance] = useState("...");
   // const [share, setShare] = useState("...");
   // const { loading: ethLoading, data: ethPriceData } = useQuery(ETH_PRICE_QUERY);
   // const { loading: tokenDayDatasLoading, data: tokenDayDatas } = useQuery(TOKEN_QUERY, {
   //   variables: { tokenAddress: ContractAddress.DYNASET },
   // });
-  const { loading: userLiquidityLoading, data: userLiquidityData } = useQuery(USER_LIQUIDITY_QUERY, {
+  const [showError, setShowError] = useState(false);
+  const {
+    loading: userLiquidityLoading,
+    data: userLiquidityData,
+    error: userLiquidityError,
+  } = useQuery(USER_LIQUIDITY_QUERY, {
     skip: !account || !library || !poolAddress,
     variables: {
       userAddress: account,
@@ -51,7 +60,11 @@ const ForgeBasket = ({ title, apy, tokens }) => {
     pollInterval: unitBlockTime,
   });
 
-  console.log({ loading: userLiquidityLoading, data: userLiquidityData });
+  console.log({ loading: userLiquidityLoading, data: userLiquidityData, error: userLiquidityError });
+
+  if (userLiquidityError) {
+    toast(userLiquidityError.message, { type: "error" });
+  }
 
   // console.table(ethPriceData?.bundles);
 
@@ -64,15 +77,17 @@ const ForgeBasket = ({ title, apy, tokens }) => {
 
   const getPairData = async () => {
     try {
-      console.log({ chainId, account, library });
       if (!chainId || !account || !library) return;
+
+      if (!tokenPair) throw new Error("Token addresses not available");
       console.log("tokens", tokens[0], chainId);
-      const token1 = new Token(chainId, tokens[0], 18);
-      const token2 = new Token(chainId, tokens[1], 18);
+      setShowError(false);
+      const token1 = new Token(chainId, tokenPair[0], 18);
+      const token2 = new Token(chainId, tokenPair[1], 18);
       const pair = await Fetcher.fetchPairData(token1, token2);
       console.log(title, "pair dataa", pair);
       const liquidityToken = pair.liquidityToken;
-      setPoolAddress(liquidityToken);
+      setPoolAddress(liquidityToken.address.toLowerCase());
 
       // const reserve0 = pair.reserve0;
       // const reserve1 = pair.reserve1;
@@ -99,6 +114,8 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       console.log();
     } catch (error) {
       console.log(title, "pair erorrrr", error);
+      toast(error.message, { type: "error" });
+      setShowError(true);
     }
   };
 
@@ -130,6 +147,37 @@ const ForgeBasket = ({ title, apy, tokens }) => {
     return BigNumber(userLiqudityTokenBalance).div(totalSupply).multipliedBy(100).toString();
   }, [userLiquidityData?.user?.liquidityPositions[0]?.pair?.totalSupply])();
 
+  if (showError || !!userLiquidityError) {
+    return (
+      <Card className="p-4 forge-card">
+        <Row>
+          <Col className="col-auto">
+            <img src="https://www.singularitydao.ai/file/2021/04/singularitydao-image.png" width={40} height={40} />
+          </Col>
+          <Col>
+            <Typography color="text1" size={24} weight={600}>
+              {title}
+            </Typography>
+          </Col>
+        </Row>
+        <Row>
+          <Typography size="14" weight="400" color="text2">
+            Error: Unable to fetch the details of the liquidity pool. Please reload / try again
+          </Typography>
+        </Row>
+      </Card>
+    );
+  }
+
+  if (userLiquidityLoading || !poolAddress) {
+    return (
+      <Card className="p-4 forge-card">
+        <Skeleton circle height={50} width={50} className="mb-3" />
+        <Skeleton count={4} />
+      </Card>
+    );
+  }
+
   return (
     <Card className="p-4 forge-card">
       <Row>
@@ -152,7 +200,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       <div className="text-align-center mt-3">
         <OutlinedButton
           color="interactive2"
-          onClick={() => router.push({ pathname: `pools/add/${tokens[0]}/${tokens[1]}` })}
+          onClick={() => router.push({ pathname: `pools/add/${tokenPair[0]}/${tokenPair[1]}` })}
         >
           Add Liquidity
         </OutlinedButton>
