@@ -11,22 +11,8 @@ const baskets = [
     poolId: "SDAO-WETH",
     liquidity: "407004",
     apy: "4.82",
-    share: "0.005",
-    tokens: [
-      "0x5e94577b949a56279637ff74dfcff2c28408f049",
-      "0xc778417e063141139fce010982780140aa0cd5ab"
-    ]
-  },
-  {
-    key: "WETH-AGIX",
-    poolId: "SDAO-AGIX",
-    liquidity: "407004",
-    apy: "4.82",
-    share: "0.005",
-    tokens: [
-      "0x5e94577b949a56279637ff74dfcff2c28408f049",
-      "0xa898150fef6ac506476e70f9bf1c03a11b55bdf9"
-    ]
+    tokens: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
+    poolAddress: "0x424485f89ea52839fdb30640eb7dd7e0078e12fb",
   },
 ];
 
