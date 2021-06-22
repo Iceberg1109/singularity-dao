@@ -59,8 +59,6 @@ const ForgeBasket = ({ title, apy, tokens }) => {
 
   useEffect(() => {
     if (!chainId) return;
-    setBalance("...");
-    setShare("...");
     getPairData();
   }, [tokens, chainId, account]);
 
