@@ -8,8 +8,29 @@ import IndexNavbar from "components/Navbars/IndexNavbar.js";
 import IndexHeader from "components/Headers/IndexHeader.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import Admin from "layouts/Admin.js";
+import { makeStyles } from '@material-ui/core/styles';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+  },
+  heading: {
+    width:"100%",
+    fontSize: theme.typography.pxToRem(15),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+}));
+
+
 
 const Index = () => {
+   const classes = useStyles();
   const show = false;
   return (
     <Container className="my-2">
@@ -166,6 +187,125 @@ const Index = () => {
       ) : (
         ""
       )}
+        <section className="py-7 section-nucleo-icons  overflow-hidden">
+          <Container>
+          <h2 className="display-3 text-black">FAQ</h2>
+          
+            <Row >
+                   <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography className={classes.heading}>What is Token Swapping?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+        A - Token swapping is the process of instantaneously exchanging one cryptocurrency to another in a decentralised manner.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography className={classes.heading}>What is a Liquidity Provider?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+           A - A liquidity provider is a user who funds a liquidity pool with crypto assets she owns to facilitate trading on the platform and earn passive income on her deposit.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+            <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography className={classes.heading}>What is Yield Farming?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+           A - Yield farming is the practice of staking or lending crypto assets in order to generate high returns or rewards in the form of additional cryptocurrency.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+            <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography className={classes.heading}>What is Impermanent Loss?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            A - Impermanent loss describes the temporary loss of funds occasionally experienced by liquidity providers because of volatility in a trading pair. This also illustrates how much more money someone would have had if they simply held onto their assets instead of providing liquidity.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+            <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography className={classes.heading}>Should I add liquidity to AGIX or SDAO?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            A - It is possible to provide liquidity for both AGIX/ETH and SDAO/ETH, it is entirely up to you which to choose. There are 500,000 tokens to be distributed in the first 60 days. 100,000 will go to AGIX/ETH liquidity providers and 400,000 will go to SDAO/ETH liquidity providers. You will need to stake your LP tokens in the Yield Farming portal, to claim these rewards.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+            <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography className={classes.heading}>Is it possible to stake my LP tokens and earn SDAO? Where?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+           A - It most certainly is! RIGHT HERE->
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+
+               <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography className={classes.heading}>How do I see the new tokens in my wallet?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            A - Our platform is compatible with MetaMask, WalletConnect, Coinbase Wallet, Fortmatic and Portis.
+
+          </Typography>
+           <Typography>
+                  PC - You can click the “connect wallet” button and then choose the appropriate method.
+          </Typography>
+             <Typography>
+                 Mobile - Most wallets will have either a DApp browser for connecting, or use WalletConnect or MetaMask.
+          </Typography>
+                <Typography>
+             Ledger - User Ledger Live to connect to MetaMask, and then connect through the MetaMask app.
+          </Typography>
+
+        </AccordionDetails>
+      </Accordion>
+
+            </Row>
+          </Container>
+        </section>
     </Container>
   );
 };
