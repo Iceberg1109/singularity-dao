@@ -45,6 +45,13 @@ const routes = [
     state: "componentsCollapse",
     path: "/pools",
     layout: "",
+  },{
+    collapse: false,
+    name: "Staking",
+    icon: LiquidityIcon,
+    state: "formsCollapse",
+    path: "/staking",
+    layout: "",
   },
   {
     collapse: false,
@@ -54,6 +61,7 @@ const routes = [
     path: "/farms",
      layout: "",
   },
+  
   // {
   //   collapse: true,
   //   name: "Farms",
