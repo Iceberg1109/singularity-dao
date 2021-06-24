@@ -69,7 +69,7 @@ const TokenFunctionPanel = ({ panelType }) => {
     try {
       if (!library) return;
       const signer = await library.getSigner(account);
-      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+      const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
       const poolId = 0;
 
       const rewards = await stakingContract.callStatic.pendingRewards(poolId.toString(), account);
@@ -85,7 +85,7 @@ const TokenFunctionPanel = ({ panelType }) => {
     try {
       if (!library) return;
       const signer = await library.getSigner(account);
-      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+      const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
       const userInfo = await stakingContract.callStatic.userInfo(poolId.toString(), account);
       setUserInfoAmount(Web3.utils.fromWei(userInfo.amount.toString()));
       console.log("userInfo", userInfo.amount.toString());
