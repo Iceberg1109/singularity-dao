@@ -18,6 +18,7 @@ import { ContractAddress } from "../../assets/constants/addresses";
 import { Spinner } from "reactstrap";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
 import { toast } from "react-toastify";
+import SwapSuccessModal from "./SwapSuccessModal";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -53,6 +54,7 @@ const BuyPanel = () => {
   const [conversionRate, setConversionRate] = useState(undefined);
   const slippage = 0.5;
   const [swappingRoute, setSwappingRoute] = useState(undefined);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const conversionTypes = {
     FROM: "FROM",
@@ -102,6 +104,7 @@ const BuyPanel = () => {
   const handleFromAmountChange = async (value) => {
     value = sanitizeNumber(value);
     // VALIDATION
+    
     if (!value) return resetAmounts();
     // CONVERSION
     setFromAmount(value);
@@ -114,6 +117,7 @@ const BuyPanel = () => {
   const handleToAmountChange = async (value) => {
     value = sanitizeNumber(value);
     // VALIDATION
+    
     if (!value) return resetAmounts();
     // CONVERSION
     setToAmount(value);
@@ -163,6 +167,8 @@ const BuyPanel = () => {
 
       const gasPrice = await getGasPrice();
 
+      console.log("deadline", Math.floor(Date.now() / 1000) + 60 * 20);
+
       let operation;
       let args = [];
       let value;
@@ -182,6 +188,7 @@ const BuyPanel = () => {
         const path = [route.path[1].address, route.path[0].address];
         const to = account;
         const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
+
         args = [amountOut, amountInMax, path, to, deadline];
       }
 
@@ -190,9 +197,8 @@ const BuyPanel = () => {
       setPendingTxn(tx.hash);
       const receipt = await tx.wait();
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-      resetAmounts();
       toast(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
-      resetAmounts();
+      setShowSuccessModal(true);
     } catch (error) {
       toast(`Operation Failed: ${error.message}`, { type: "error" });
       console.log("error", error);
@@ -219,6 +225,12 @@ const BuyPanel = () => {
   const resetAmounts = () => {
     setFromAmount("0");
     setToAmount("0");
+  };
+
+  const handleModalClose = () => {
+    
+    resetAmounts();
+    setShowSuccessModal(false);
   };
 
   return (
@@ -278,6 +290,17 @@ const BuyPanel = () => {
           </a>
         </Typography>
       ) : null}
+      <SwapSuccessModal
+        modalOpen={showSuccessModal}
+        setModalOpen={handleModalClose}
+        title="Swap Successful!"
+        itemsList={[
+          { label: "Swapped", desc: `${fromAmount} ${fromCurrency.toUpperCase()}` },
+          { label: "Slippage", desc: `${slippage.toFixed(2)} %` },
+        ]}
+        resultsList={[{ label: "Received", desc: `${toAmount} ${toCurrency.toUpperCase()}` }]}
+        primaryAction={{ label: "Ok", onClick: handleModalClose }}
+      />
     </>
   );
 };
