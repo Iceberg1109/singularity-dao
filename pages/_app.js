@@ -69,7 +69,7 @@ export default class MyApp extends App {
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
           <title>Singularity DAO</title>
         </Head>
-
+        <script type="text/javascript" src="https://singularitynet.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/sb53l8/b/2/bc54840da492f9ca037209037ef0522a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-GB&collectorId=cf55b16d"></script>
         <ThemeProvider>
           <Web3ReactProvider getLibrary={this.getLibrary}>
             <UserProvider>
