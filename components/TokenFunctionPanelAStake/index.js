@@ -41,7 +41,7 @@ export const PanelTypes = {
   CLAIM: "CLAIM",
 };
 
-const TokenFunctionPanel = ({ panelType }) => {
+const TokenFunctionPanel = ({ panelType,apy }) => {
   const poolId = 0;
   const [pendingRewards, setPendingRewards] = useState(0);
   const [userInfoAmount, setUserInfoAmount] = useState(0);

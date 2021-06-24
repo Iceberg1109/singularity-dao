@@ -192,6 +192,7 @@ const Index = () => {
           <h2 className="display-3 text-black">FAQ</h2>
           
             <Row >
+              <Col className="text-center" lg="8">
        <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -302,7 +303,7 @@ const Index = () => {
 
         </AccordionDetails>
       </Accordion>
-
+          </Col>
             </Row>
           </Container>
         </section>
