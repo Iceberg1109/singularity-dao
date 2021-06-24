@@ -23,7 +23,7 @@ export const getGasPrice = async () => {
 export const fetchSDAOBalance = async (account, signer) => {
   if (!account || !signer) return;
   // DYNASET BALANCE
-  const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+  const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
   const balance = await tokenContract.balanceOf(account);
   return Number(web3.utils.fromWei(balance.toString())).toFixed(8);
 };

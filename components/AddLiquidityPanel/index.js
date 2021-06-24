@@ -13,6 +13,7 @@ import axios from "axios";
 import { defaultGasLimit, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
+import { toast } from "react-toastify";
 
 const fromCurrency = Currencies.SDAO.id;
 const toCurrency = Currencies.ETH.id;
@@ -73,7 +74,7 @@ const AddLiquidityPanel = () => {
   const approveLiquidity = async () => {
     try {
       const signer = await library.getSigner(account);
-      const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+      const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
       const gasPrice = await getGasPrice();
       const tx = await tokenContract.approve(ContractAddress.UNISWAP, defaultApprovalSDAO, {
         gasLimit: defaultGasLimit,
@@ -104,23 +105,16 @@ const AddLiquidityPanel = () => {
       const slippageMulFactor = 1 - slippage / 100;
       const amountTokenMin = ethers.BigNumber.from(amountTokenDesired) * slippageMulFactor;
       const amountETHMin = web3.utils.toWei(toAmount.toString(), "ether");
-      const tx = await uniswap.addLiquidityETH(
-        ContractAddress.DYNASET,
-        amountTokenDesired,
-        "0",
-        "0",
-        account,
-        deadline,
-        {
-          gasLimit: defaultGasLimit,
-          gasPrice,
-          value: web3.utils.toWei(toAmount.toString()),
-        }
-      );
+      const tx = await uniswap.addLiquidityETH(ContractAddress.SDAO, amountTokenDesired, "0", "0", account, deadline, {
+        gasLimit: defaultGasLimit,
+        gasPrice,
+        value: web3.utils.toWei(toAmount.toString()),
+      });
       setPendingTxn(tx.hash);
       console.log(`Transaction hash: ${tx.hash}`);
       const receipt = await tx.wait();
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+      toast(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
     } catch (error) {
       console.log("unable to add liquidity");
       throw error;
@@ -141,6 +135,7 @@ const AddLiquidityPanel = () => {
       setPendingTxn(txn.hash);
       await txn.wait();
       setPendingTxn(undefined);
+      toast("Approval success: Please confirm the add-liquidity now");
     }
   };
 
@@ -149,9 +144,8 @@ const AddLiquidityPanel = () => {
       setAddingLiquidity(true);
       await approveIfInsufficientAllowance();
       await buyLiquidity();
-      alert("Added liquidity Successfully");
     } catch (error) {
-      alert("Errr: look console");
+      toast(`Operation Failed: ${error.message}`, { type: "error" });
       console.log("errrrrrrrrrr", error);
     } finally {
       setAddingLiquidity(false);
