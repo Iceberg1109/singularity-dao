@@ -48,7 +48,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
     try {
       const signer = await library.getSigner(account);
 
-      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+      const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
 
       const stakeAmount = web3.utils.toWei(toCurrencyPrice.toString());
       const gasPrice = await getGasPrice();
@@ -82,16 +82,16 @@ const StakePanel = ({ type, token, dynasetid }) => {
 
   const getAllowance = async () => {
     const signer = await library.getSigner(account);
-    const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+    const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
     const allowance = await tokenContract.allowance(account, ContractAddress.STAKING_REWARD);
     console.log("allowance", allowance.toString());
   };
 
   const approveTokens = async () => {
     const signer = await library.getSigner(account);
-    const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+    const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
     const gasPrice = await getGasPrice();
-    const tx = await tokenContract.approve(ContractAddress.STAKING_REWARD, defaultApprovalSDAO, {
+    const tx = await tokenContract.approve(ContractAddress.FARMING_REWARD, defaultApprovalSDAO, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
@@ -103,7 +103,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
   const getPoolInfo = async () => {
     try {
       const signer = await library.getSigner(account);
-      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+      const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
       const tx = await stakingContract.poolInfo();
       console.log("tx", tx);
     } catch (error) {
