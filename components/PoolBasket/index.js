@@ -180,6 +180,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
     );
   }
 
+  const routeLink = tokenPair ? `pools/add/${tokenPair[0]}/${tokenPair[1]}` : "#";
   return (
     <Card className="p-4 forge-card">
       <Row>
@@ -200,10 +201,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       </div>
 
       <div className="text-align-center mt-3">
-        <OutlinedButton
-          color="interactive2"
-          onClick={() => router.push({ pathname: `pools/add/${tokenPair[0]}/${tokenPair[1]}` })}
-        >
+        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: routeLink })}>
           Add Liquidity
         </OutlinedButton>
       </div>
