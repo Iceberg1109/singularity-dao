@@ -73,7 +73,7 @@ const AddLiquidityPanel = () => {
   const approveLiquidity = async () => {
     try {
       const signer = await library.getSigner(account);
-      const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+      const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
       const gasPrice = await getGasPrice();
       const tx = await tokenContract.approve(ContractAddress.UNISWAP, defaultApprovalSDAO, {
         gasLimit: defaultGasLimit,
@@ -105,7 +105,7 @@ const AddLiquidityPanel = () => {
       const amountTokenMin = ethers.BigNumber.from(amountTokenDesired) * slippageMulFactor;
       const amountETHMin = web3.utils.toWei(toAmount.toString(), "ether");
       const tx = await uniswap.addLiquidityETH(
-        ContractAddress.DYNASET,
+        ContractAddress.SDAO,
         amountTokenDesired,
         "0",
         "0",

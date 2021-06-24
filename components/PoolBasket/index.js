@@ -44,7 +44,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   // const [share, setShare] = useState("...");
   // const { loading: ethLoading, data: ethPriceData } = useQuery(ETH_PRICE_QUERY);
   // const { loading: tokenDayDatasLoading, data: tokenDayDatas } = useQuery(TOKEN_QUERY, {
-  //   variables: { tokenAddress: ContractAddress.DYNASET },
+  //   variables: { tokenAddress: ContractAddress.SDAO },
   // });
   const [showError, setShowError] = useState(false);
   const {

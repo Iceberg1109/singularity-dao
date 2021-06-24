@@ -78,7 +78,7 @@ const AddLiquidityPanel = ({ type, token, dynasetid }) => {
 
   const approveDynasetToken = async () => {
     const signer = await library.getSigner(account);
-    const tokenContract = new ethers.Contract(ContractAddress.DYNASET, DynasetABI, signer);
+    const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
     const gasPrice = await getGasPrice();
     const tx = await tokenContract.approve(ContractAddress.UNISWAP, defaultApprovalSDAO, {
       gasLimit: defaultGasLimit,

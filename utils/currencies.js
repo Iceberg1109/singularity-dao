@@ -16,7 +16,7 @@ export const Currencies = {
     id: "sdao",
     name: "SDAO",
     icon: "https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg",
-    address: ContractAddress.DYNASET,
+    address: ContractAddress.SDAO,
     decimal: 18,
     unit: "gwei",
     abi: DynasetABI,
