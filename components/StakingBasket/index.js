@@ -13,7 +13,7 @@ const CustomProgress = styled(Progress)`
   margin-bottom: 10px !important;
 `;
 
-const ForgeBasket = ({ data, title }) => {
+const ForgeBasket = ({ data, title,apy }) => {
   const router = useRouter();
   return (
     <Card className="p-4 forge-card" style={{borderRadius:8}}>
@@ -27,7 +27,7 @@ const ForgeBasket = ({ data, title }) => {
           </Typography>
         </Col>
       </Row>
-      <DetailLabel title="APY" desc="18%" />
+      <DetailLabel title="APY" desc={apy} />
       <DetailLabel title="Your stake" desc="40.0 SDAO" />
       <div className="text-align-center mt-3">
         <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `asset_stake/withdraw` })}>
@@ -38,7 +38,7 @@ const ForgeBasket = ({ data, title }) => {
         </OutlinedButton>
       </div>
       <hr />
-      <DetailLabel title="SDAO deposited" desc="0.0000 SDAO" />
+      <DetailLabel title="SDAO earned" desc="0.0000 SDAO" />
       <div className="text-align-center mt-3">
         <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `asset_stake/claim` })}>
           Claim

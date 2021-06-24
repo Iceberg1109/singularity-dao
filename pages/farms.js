@@ -20,10 +20,10 @@ const ForgePage = () => {
       <div className="py-4 mt-5">
         <Row className="my-3">
           <Col lg={4}>
-            <ForgeBasket title="SDAO/WETH Pool" />
+            <ForgeBasket title="SDAO/WETH Pool" apy={"3.3%"}/>
           </Col>
           <Col lg={4}>
-            <ForgeBasket title="AGIX/WETH Pool" />
+            <ForgeBasket title="AGIX/WETH Pool" apy={"11.5%"}/>
           </Col>
         </Row>
       </div>
