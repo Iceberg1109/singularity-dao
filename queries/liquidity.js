@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 
 export const USER_LIQUIDITY_QUERY = gql`
   query ($userAddress: Bytes!, $pairAddress: Bytes!, $userAndPairAddress: Bytes!) {

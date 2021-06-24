@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 
 export const ETH_PRICE_QUERY = gql`
   query bundles {
