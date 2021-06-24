@@ -36,7 +36,7 @@ const DropdownToggle = styled(DefaultDropdownToggle)`
   border-radius: 8px;
 `;
 
-const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
+const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency , disabled}) => {
   const [focused, setFocused] = useState();
   const { library, account, network, chainId } = useUser();
    const [balance, setBalance] = useState("0");
@@ -87,6 +87,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency }) => {
           onFocus={(e) => setFocused(true)}
           onBlur={(e) => setFocused(false)}
           value={amount}
+          disabled={disabled}
         />
         <UncontrolledDropdown>
           <DropdownToggle

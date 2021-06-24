@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Admin from "layouts/Admin.js";
 import {  Col, Container, Row } from "reactstrap";
 import Typography from "components/Typography";
-import AddLiquidityPanel from "components/AddLiquidityPanel";
+import AddLiquidityPanel from "../../../components/AddLiquidityPanel";
 import PoolInfoPanel from "components/PoolInfoPanel";
 import { useRouter } from 'next/router'
 import { abi as DynasetABI } from "../../../assets/constants/abi/Dynaset.json";
