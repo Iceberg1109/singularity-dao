@@ -1,7 +1,6 @@
 import { ChainId, Currency, Token, WETH } from "@uniswap/sdk";
 import { ContractAddress } from "../assets/constants/addresses";
-import { fetchEthBalance } from "./ethereum";
-import { ethers } from "ethers";
+import { ethers, Signer } from "ethers";
 import { abi as DynasetABI } from "../assets/constants/abi/Dynaset.json";
 import web3 from "web3";
 
@@ -64,14 +63,16 @@ export const getErc20TokenById = (id, { chainId = ChainId.ROPSTEN, signer } = {}
  *
  * @param {*} currencyId
  * @param {*} account
- * @param {{chainId: Number, network: String, signer: Object}} param2
+ * @param {{chainId: Number, signer: Signer}} param2
  * @returns
  */
-export const getBalance = async (currencyId, account, { chainId, network, signer } = {}) => {
-  if (currencyId === Currencies.ETH.id) {
-    return fetchEthBalance(account, chainId, network);
-  }
+export const getBalance = async (currencyId, account, { chainId, signer } = {}) => {
   if (!signer) throw new Error("Invalid signer");
+  if (currencyId === Currencies.ETH.id) {
+    const balance = await signer.getBalance();
+    return Number(web3.utils.fromWei(balance.toString())).toFixed(8);
+  }
+  
   const token = getErc20TokenById(currencyId, { chainId, signer });
   const balance = await token.balanceOf(account);
   return Number(web3.utils.fromWei(balance.toString())).toFixed(8);

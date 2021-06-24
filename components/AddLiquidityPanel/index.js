@@ -10,7 +10,7 @@ import web3 from "web3";
 import { useUser } from "../UserContext";
 import { ethers } from "ethers";
 import axios from "axios";
-import { defaultGasLimit, fetchEthBalance, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
+import { defaultGasLimit, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
 
@@ -135,7 +135,7 @@ const AddLiquidityPanel = () => {
     const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
 
     const allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
-    console.log("allowance", allowance.toString())
+    console.log("allowance", allowance.toString());
     if (allowance.lte(web3.utils.toWei(fromAmount, "gwei"))) {
       const txn = await sdaoToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
       setPendingTxn(txn.hash);

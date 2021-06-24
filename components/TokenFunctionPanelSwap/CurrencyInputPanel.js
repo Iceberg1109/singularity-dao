@@ -94,7 +94,7 @@ const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, s
     try {
       if (!library) return;
       const signer = await library.getSigner(account);
-      const balance = await getBalance(currencyId, account, { chainId, network, signer });
+      const balance = await getBalance(currencyId, account, { chainId, signer });
       setBalance(balance);
     } catch (error) {
       alert("something went wrong");
