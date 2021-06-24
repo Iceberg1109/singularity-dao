@@ -25,7 +25,7 @@ function SwapSuccessModal({ modalOpen, setModalOpen, title, itemsList, resultsLi
           <DetailLabel title="APY (approx.)" desc="34.74 %" /> */}
           <hr />
           {resultsList.map((result) => (
-            <ResultLabel title={result.label} desc={result.desc} key={item.label} />
+            <ResultLabel title={result.label} desc={result.desc} key={result.label} />
           ))}
         </ModalBody>
         <ModalFooter className="d-flex justify-content-center">
