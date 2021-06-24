@@ -37,7 +37,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   // const account = "0x0ad7a09575e3ec4c109c4faa3be7cdafc5a4adba";
   // const chainId = 1;
   // const poolAddress = "0x424485f89ea52839fdb30640eb7dd7e0078e12fb";
-  const [poolAddress, setPoolAddress] = useState();
+  const [poolAddress, setPoolAddress] = useState("");
   const { account, chainId, library } = useUser();
   const tokenPair = tokens[chainId];
   // const [balance, setBalance] = useState("...");
@@ -55,9 +55,9 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   } = useQuery(USER_LIQUIDITY_QUERY, {
     skip: !account || !library || !poolAddress,
     variables: {
-      userAddress: account,
+      userAddress: account || "",
       userAndPairAddress: `${poolAddress}-${account}`,
-      pairAddress: poolAddress,
+      pairAddress: poolAddress || "",
     },
     pollInterval: unitBlockTime,
   });
