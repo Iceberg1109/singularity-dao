@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Card, Spinner } from "reactstrap";
 import Typography from "components/Typography";
 import { GradientButton } from "components/Buttons";
@@ -18,27 +18,55 @@ import { toast } from "react-toastify";
 const fromCurrency = Currencies.SDAO.id;
 const toCurrency = Currencies.ETH.id;
 
+const conversionTypes = { FROM: "FROM", TO: "TO" };
+
+const memoizedRoute = {};
+const setMemoizedRoute = (fromAddress, toAddress, value) => (memoizedRoute[`${fromAddress}_${toAddress}`] = value);
+const getMemoizedRoute = (fromAddress, toAddress) => memoizedRoute[`${fromAddress}_${toAddress}`];
+
 const AddLiquidityPanel = () => {
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
   const { library, account, network, chainId } = useUser();
   const [pendingTxn, setPendingTxn] = useState();
   const [addingLiquidity, setAddingLiquidity] = useState(false);
+  const [swappingRoute, setSwappingRoute] = useState(undefined);
 
-  const conversionTypes = {
-    FROM: "FROM",
-    TO: "TO",
+  useEffect(async () => {
+    const route = await getSwappingRoute();
+    setSwappingRoute(route);
+  }, []);
+
+  useEffect(async () => {
+    setSwappingRoute(undefined);
+    const route = await getSwappingRoute();
+    setSwappingRoute(route);
+  }, [fromCurrency, toCurrency]);
+
+  const getTokens = useCallback(() => {
+    const fromToken = getUniswapToken(fromCurrency);
+    const toToken = getUniswapToken(toCurrency);
+    return { fromToken, toToken };
+  }, [fromCurrency, toCurrency]);
+
+  const getSwappingRoute = async () => {
+    const { fromToken, toToken } = getTokens();
+    const memo = getMemoizedRoute(fromToken.address, toToken.address);
+    if (memo) return memo;
+    const pair = await Fetcher.fetchPairData(fromToken, toToken);
+    const route = new Route([pair], fromToken);
+    setMemoizedRoute(fromToken.address, toToken.address, route);
+    return route;
   };
 
   const getConversionRate = async (value, type = conversionTypes.FROM) => {
-    const fromToken = getUniswapToken(fromCurrency);
-    const toToken = getUniswapToken(toCurrency);
-    const pair = await Fetcher.fetchPairData(fromToken, toToken);
-    const route = new Route([pair], fromToken);
+    if (!swappingRoute) return;
 
+    const { fromToken, toToken } = getTokens();
     const tradeToken = type === conversionTypes.FROM ? fromToken : toToken;
     const tradeType = type === conversionTypes.FROM ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT;
-    const trade = new Trade(route, new TokenAmount(tradeToken, web3.utils.toWei(value.toString())), tradeType);
+
+    const trade = new Trade(swappingRoute, new TokenAmount(tradeToken, web3.utils.toWei(value.toString())), tradeType);
     console.log("new trade price", trade.executionPrice.toSignificant(6));
     return trade.executionPrice.toSignificant(6);
   };
@@ -161,10 +189,11 @@ const AddLiquidityPanel = () => {
         onAmountChange={handleFromAmountChange}
         amount={fromAmount}
         selectedCurrency={fromCurrency}
+        disabled={!swappingRoute}
       />
 
       <Typography className="d-flex justify-content-center">+</Typography>
-      <CurrencyInputPanelLP onAmountChange={handleToAmountChange} amount={toAmount} selectedCurrency={toCurrency} />
+      <CurrencyInputPanelLP onAmountChange={handleToAmountChange} amount={toAmount} selectedCurrency={toCurrency} disabled={!swappingRoute}/>
       <GradientButton onClick={handleClick} disabled={!toAmount || addingLiquidity}>
         <span>Add Liquidity</span>
         {addingLiquidity ? <Spinner color="white" size="sm" className="ml-2" /> : null}
