@@ -1,15 +1,13 @@
 import { Col, Container, Row } from "reactstrap";
-import { useRouter } from "next/router";
-import { PropTypes } from "prop-types";
-
+import React from "react";
 import Admin from "layouts/Admin.js";
 import Typography from "../../components/Typography";
 import ForgeBasket from "../../components/PoolBasket";
 
 //["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
 
-  // 1: ["0x993864e43caa7f7f12953ad6feb1d1ca635b875f", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
-  //     3: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
+// 1: ["0x993864e43caa7f7f12953ad6feb1d1ca635b875f", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
+//     3: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
 const baskets = [
   {
     poolId: "SDAO-WETH",
@@ -33,7 +31,7 @@ const baskets = [
   // },
 ];
 
-const ForgePage = () => {
+function ForgePage(){
   return (
     <Container className="my-4">
       <Typography color="text1" size={32} weight={600}>
@@ -47,14 +45,7 @@ const ForgePage = () => {
         <Row className="my-3">
           {baskets.map((basket) => (
             <Col lg={4} key={basket.poolId}>
-              <ForgeBasket
-                title={basket.poolId}
-                pool={basket.poolId}
-                liquidity={basket.liquidity}
-                apy={basket.apy}
-                share={basket.share}
-                tokens={basket.tokens}
-              />
+              <ForgeBasket title={basket.poolId} apy={basket.apy} tokens={basket.tokens} />
             </Col>
           ))}
         </Row>
