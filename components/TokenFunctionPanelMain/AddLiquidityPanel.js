@@ -6,7 +6,7 @@ import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelSDAO";
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
 import Typography from "../Typography";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
-
+import { toast } from "react-toastify";
 
 import { GradientButton } from "../Buttons";
 import PropTypes from "prop-types";
@@ -87,47 +87,53 @@ const AddLiquidityPanel = ({ type, token, dynasetid }) => {
     console.log(`Transaction hash: ${tx.hash}`);
     const receipt = await tx.wait();
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+    toast("Approval success: Please confirm the add-liquidity now");
   };
 
   const buy = async () => {
-    const signer = await library.getSigner(account);
+    try {
+      const signer = await library.getSigner(account);
 
-    const uniswap = new ethers.Contract(
-      "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-      IUniswapV2Router02ABI.abi,
-      signer
-    );
+      const uniswap = new ethers.Contract(
+        "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+        IUniswapV2Router02ABI.abi,
+        signer
+      );
 
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
+      const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
 
-    const gasPrice = await getGasPrice();
+      const gasPrice = await getGasPrice();
 
-    console.log(web3.utils.toWei(toCurrencyPrice.toString(), "gwei"));
-    console.log(web3.utils.toWei(amounteth.toString(), "ether"));
+      console.log(web3.utils.toWei(toCurrencyPrice.toString(), "gwei"));
+      console.log(web3.utils.toWei(amounteth.toString(), "ether"));
 
-    await approveDynasetToken()
+      await approveDynasetToken();
 
-    console.log("uniswap", uniswap);
+      console.log("uniswap", uniswap);
 
-    const tx = await uniswap.addLiquidityETH(
-      "0x5e94577b949a56279637ff74dfcff2c28408f049",
-      web3.utils.toWei(toCurrencyPrice.toString(), "ether"),
-      "0",
-      "0",
-      account,
-      deadline,
-      {
-        gasLimit: defaultGasLimit,
-        gasPrice,
-        value: web3.utils.toWei(amounteth.toString()),
-      }
-    );
+      const tx = await uniswap.addLiquidityETH(
+        "0x5e94577b949a56279637ff74dfcff2c28408f049",
+        web3.utils.toWei(toCurrencyPrice.toString(), "ether"),
+        "0",
+        "0",
+        account,
+        deadline,
+        {
+          gasLimit: defaultGasLimit,
+          gasPrice,
+          value: web3.utils.toWei(amounteth.toString()),
+        }
+      );
 
-    console.log(`Transaction hash: ${tx.hash}`);
+      console.log(`Transaction hash: ${tx.hash}`);
 
-    const receipt = await tx.wait();
+      const receipt = await tx.wait();
 
-    console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+      toast(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
+    } catch (error) {
+      toast(`Operation Failed: ${error.message}`, { type: "error" });
+      console.log("error", error);
+    }
   };
 
   return (
