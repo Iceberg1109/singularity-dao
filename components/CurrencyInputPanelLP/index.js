@@ -17,6 +17,7 @@ import Typography from "../Typography";
 import { LinkButton } from "../Buttons";
 import { useUser } from "components/UserContext";
 import { getBalance, getCurrencyById } from "../../utils/currencies";
+import { toast } from "react-toastify";
 
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
@@ -36,10 +37,10 @@ const DropdownToggle = styled(DefaultDropdownToggle)`
   border-radius: 8px;
 `;
 
-const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency , disabled}) => {
+const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabled }) => {
   const [focused, setFocused] = useState();
   const { library, account, network, chainId } = useUser();
-   const [balance, setBalance] = useState("0");
+  const [balance, setBalance] = useState("0");
 
   useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency]);
 
@@ -56,14 +57,14 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency , disab
     onAmountChange(value);
   };
 
-    const updateBalance = async (currencyId) => {
+  const updateBalance = async (currencyId) => {
     try {
       if (!library) return;
       const signer = await library.getSigner(account);
       const balance = await getBalance(currencyId, account, { chainId, network, signer });
       setBalance(balance);
     } catch (error) {
-      alert("something went wrong");
+      toast("unable to fetch the latest balance", { type: "error" });
       console.log("error", error);
     }
   };
@@ -72,7 +73,6 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency , disab
     if (!balance) return;
     onAmountChange(balance);
   };
-
 
   return (
     <FormGroup className="my-4 w-100">
@@ -102,7 +102,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency , disab
               src="https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg"
               style={{ width: "15px" }}
             ></img> */}
-              {getName()}
+            {getName()}
           </DropdownToggle>
         </UncontrolledDropdown>
       </InputGroup>

@@ -14,6 +14,7 @@ import Typography from "../Typography";
 import { Currencies, getBalance, getCurrencyById } from "../../utils/currencies";
 import { useUser } from "../UserContext";
 import useDebounce from "../../utils/hooks/useDebounce";
+import { toast } from "react-toastify";
 
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
@@ -97,7 +98,7 @@ const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, s
       const balance = await getBalance(currencyId, account, { chainId, signer });
       setBalance(balance);
     } catch (error) {
-      alert("something went wrong");
+      toast(`unable to fetch the latest balance of ${currencyId.toUpperCase()}`, { type: "error" });
       console.log("error", error);
     }
   };
