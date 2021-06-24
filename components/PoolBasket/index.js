@@ -51,14 +51,18 @@ const ForgeBasket = ({ title, apy, tokens }) => {
     loading: userLiquidityLoading,
     data: userLiquidityData,
     error: userLiquidityError,
+    refetch: userLiquidityRefetch,
   } = useQuery(USER_LIQUIDITY_QUERY, {
     skip: !account || !library || !poolAddress,
     variables: {
       userAddress: account,
       userAndPairAddress: `${poolAddress}-${account}`,
+      pairAddress: poolAddress,
     },
     pollInterval: unitBlockTime,
   });
+
+  useEffect(() => userLiquidityRefetch(), [chainId]);
 
   console.log({ loading: userLiquidityLoading, data: userLiquidityData, error: userLiquidityError });
 
@@ -134,18 +138,16 @@ const ForgeBasket = ({ title, apy, tokens }) => {
     ? "loading"
     : userLiquidityData?.user?.liquidityPositions[0]?.liquidityTokenBalance || "NA";
 
-  const totalLiquidity = userLiquidityLoading
-    ? "loading"
-    : userLiquidityData?.user?.liquidityPositions[0]?.pair?.reserveUSD || "NA";
+  const totalLiquidity = userLiquidityLoading ? "loading" : userLiquidityData?.pair?.reserveUSD || "NA";
 
   const userLiquidityShare = useCallback(() => {
     if (userLiquidityLoading) return "loading";
-    let totalSupply = userLiquidityData?.user?.liquidityPositions[0]?.pair?.totalSupply;
+    let totalSupply = userLiquidityData?.pair?.totalSupply;
     console.log("totalSupply", totalSupply);
     if (!userLiqudityTokenBalance || !totalSupply) return "NA";
     totalSupply = new BigNumber(totalSupply);
     return BigNumber(userLiqudityTokenBalance).div(totalSupply).multipliedBy(100).toString();
-  }, [userLiquidityData?.user?.liquidityPositions[0]?.pair?.totalSupply])();
+  }, [userLiquidityData?.pair?.totalSupply])();
 
   if (showError || !!userLiquidityError) {
     return (
