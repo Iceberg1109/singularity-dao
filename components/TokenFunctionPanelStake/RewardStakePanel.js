@@ -55,7 +55,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
     try {
       const signer = await library.getSigner(account);
 
-      const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+      const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
       const poolId = 0;
       const stakeAmount = web3.utils.toWei("10"); //
       const gasPrice = await getGasPrice();
@@ -80,7 +80,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
     const signer = await library.getSigner(account);
     const lpToken = new ethers.Contract(ContractAddress.LP_TOKEN, DynasetABI, signer);
     const gasPrice = await getGasPrice();
-    const tx = await lpToken.approve(ContractAddress.STAKING_REWARD, defaultApprovalSDAO, {
+    const tx = await lpToken.approve(ContractAddress.FARMING_REWARD, defaultApprovalSDAO, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
@@ -91,7 +91,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
   const getPendingRewards = async () => {
     const signer = await library.getSigner(account);
 
-    const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+    const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
     const gasPrice = await getGasPrice();
     const rewards = await stakingContract.pendingRewards(poolId.toString(), account, {

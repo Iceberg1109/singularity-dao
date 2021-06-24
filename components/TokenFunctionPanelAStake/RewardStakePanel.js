@@ -78,7 +78,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
 
   const approveTokens = async () => {
     const signer = await library.getSigner(account);
-    const lpToken = new ethers.Contract(ContractAddress.LP_TOKEN, DynasetABI, signer);
+    const lpToken = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
     const gasPrice = await getGasPrice();
     const tx = await lpToken.approve(ContractAddress.STAKING_REWARD, defaultApprovalSDAO, {
       gasLimit: defaultGasLimit,

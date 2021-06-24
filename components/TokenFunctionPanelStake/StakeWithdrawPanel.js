@@ -43,7 +43,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
 
   const withdrawAndHarvest = async () => {
     const signer = await library.getSigner(account);
-    const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+    const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
     const withdrawAmount = web3.utils.toWei(amount.toString());
     console.log("withdrawAmount", withdrawAmount);
