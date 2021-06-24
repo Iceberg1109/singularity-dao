@@ -76,8 +76,6 @@ const Provider = ({ children }) => {
     localStorage.setItem("connected", "n");
   };
 
-  console.log("err", r);
-
   return (
     <Context.Provider
       value={{
