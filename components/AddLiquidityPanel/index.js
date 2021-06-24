@@ -99,7 +99,7 @@ const AddLiquidityPanel = () => {
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
       const gasPrice = await getGasPrice();
 
-      const amountTokenDesired = web3.utils.toWei(fromAmount.toString(), "gwei");
+      const amountTokenDesired = web3.utils.toWei(fromAmount.toString(), "ether");
       const slippage = Currencies.SDAO.slippagePercent;
       const slippageMulFactor = 1 - slippage / 100;
       const amountTokenMin = ethers.BigNumber.from(amountTokenDesired) * slippageMulFactor;
