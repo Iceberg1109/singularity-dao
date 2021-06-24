@@ -41,6 +41,9 @@ const memoizedRoute = {};
 const setMemoizedRoute = (fromAddress, toAddress, value) => (memoizedRoute[`${fromAddress}_${toAddress}`] = value);
 const getMemoizedRoute = (fromAddress, toAddress) => memoizedRoute[`${fromAddress}_${toAddress}`];
 
+const slippage = 0.5;
+const fee = 0.3;
+
 const BuyPanel = () => {
   // STATES
   const { library, account, network, chainId } = useUser();
@@ -50,9 +53,9 @@ const BuyPanel = () => {
   const [pendingTxn, setPendingTxn] = useState();
   const [fromCurrency, setFromCurrency] = useState(Currencies.ETH.id);
   const [toCurrency, setToCurrency] = useState(Currencies.SDAO.id);
-  const [fee, setFee] = useState(0);
   const [conversionRate, setConversionRate] = useState(undefined);
   const slippage = 0.5;
+  const fee = 0.3;
   const [swappingRoute, setSwappingRoute] = useState(undefined);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -104,7 +107,7 @@ const BuyPanel = () => {
   const handleFromAmountChange = async (value) => {
     value = sanitizeNumber(value);
     // VALIDATION
-    
+
     if (!value) return resetAmounts();
     // CONVERSION
     setFromAmount(value);
@@ -117,7 +120,7 @@ const BuyPanel = () => {
   const handleToAmountChange = async (value) => {
     value = sanitizeNumber(value);
     // VALIDATION
-    
+
     if (!value) return resetAmounts();
     // CONVERSION
     setToAmount(value);
@@ -228,7 +231,6 @@ const BuyPanel = () => {
   };
 
   const handleModalClose = () => {
-    
     resetAmounts();
     setShowSuccessModal(false);
   };
@@ -260,7 +262,7 @@ const BuyPanel = () => {
       />
       <FeeBlock>
         <Typography size={14}>Fee:</Typography>
-        <Typography size={14}>{fee.toFixed(2)} ETH</Typography>
+        <Typography size={14}>{fee.toFixed(2)} %</Typography>
         <Typography size={14}>Slippage:</Typography>
         <Typography size={14}>{slippage.toFixed(2)} %</Typography>
       </FeeBlock>
