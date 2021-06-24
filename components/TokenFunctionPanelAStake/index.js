@@ -125,7 +125,7 @@ const TokenFunctionPanel = ({ panelType }) => {
               {pendingRewards} SDAO
             </Typography>
             <DetailLabel title="APY return" desc="13 %" />
-            <DetailLabel title="Ends in" desc="60 days />
+            <DetailLabel title="Ends in" desc="60 days" />
           </MainCard>
         </Col>
       </Row>
