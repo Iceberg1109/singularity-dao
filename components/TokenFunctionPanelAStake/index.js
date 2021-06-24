@@ -124,9 +124,8 @@ const TokenFunctionPanel = ({ panelType }) => {
             <Typography size={24} weight={600} className="mb-3">
               {pendingRewards} SDAO
             </Typography>
-            <DetailLabel title="Max stake per user" desc="1,500 SDAO LP" />
-            <DetailLabel title="APY return" desc="34.74 %" />
-            <DetailLabel title="Ends in" desc="1,703,000 blocks" />
+            <DetailLabel title="APY return" desc="13 %" />
+            <DetailLabel title="Ends in" desc="60 days" />
           </MainCard>
         </Col>
       </Row>

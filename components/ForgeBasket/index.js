@@ -34,14 +34,14 @@ const ForgeBasket = ({ data, title }) => {
           Withdraw
         </OutlinedButton>
         <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `stake/deposit` })}>
-          Stake
+          Farm
         </OutlinedButton>
       </div>
       <hr />
       <DetailLabel title="SDAO earned" desc="0.0000 SDAO" />
       <div className="text-align-center mt-3">
         <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `stake/claim` })}>
-          Claim
+          Harvest
         </OutlinedButton>
       </div>
       {/* </Card> */}

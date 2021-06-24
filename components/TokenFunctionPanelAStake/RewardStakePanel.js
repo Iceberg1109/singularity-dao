@@ -143,7 +143,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
         <DefaultButton background="white" color="black" borderColor="black">
           Cancel
         </DefaultButton>
-        <GradientButton onClick={handleSubmit}>{!approved ? "Confirm Stake" : "Stake"}</GradientButton>
+        <GradientButton onClick={handleSubmit}>{!approved ? "Confirm Stake" : "Farm"}</GradientButton>
       </div>
       <StakeSuccessModal
         modalOpen={showStakeSuccessModal}
