@@ -151,7 +151,7 @@ const CurrencyInputPanel = ({
       </InputGroup>
       <div className="d-flex justify-content-between">
         <Typography size={16} weight={400} color="text5">
-          ~ ${USDValue}
+          {USDValue? `~ $ ${USDValue}` : null}
         </Typography>
         <div className="d-flex">
           <Typography size={16} color="text1">
