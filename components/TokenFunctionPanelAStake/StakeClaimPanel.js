@@ -83,12 +83,12 @@ const StakeClaimPanel = ({ token }) => {
         <DefaultButton background="white" color="black" borderColor="black">
           Cancel
         </DefaultButton>
-        <GradientButton onClick={handleSubmit}>Claim</GradientButton>
+        <GradientButton onClick={handleSubmit}>Harvest</GradientButton>
       </div>
       <StakeSuccessModal
         modalOpen={showStakeSuccessModal}
         setModalOpen={setShowStakeSuccessModal}
-        title="Claim done successfully!"
+        title="Harvest done successfully!"
         itemsList={[
           { label: "Stake Balance", desc: "960.0000 SDAO LP" },
           { label: "APY (approx.)", desc: "34.74 %" },

@@ -138,7 +138,7 @@ const StakePanel = ({ type, token, dynasetid }) => {
         </div>
         <CurrencyInputPanelSDAO balance={toCurrencyPrice} onChange={setToCurrencyPrice} currency={token} label="To" />
         <div className="text-align-center">
-          <GradientButton onClick={handleSubmit}>{!approved ? "Approve" : "Stake"}</GradientButton>
+          <GradientButton onClick={handleSubmit}>{!approved ? "Approve" : "Farm"}</GradientButton>
         </div>
       </>
     </>

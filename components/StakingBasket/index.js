@@ -27,7 +27,6 @@ const ForgeBasket = ({ data, title }) => {
           </Typography>
         </Col>
       </Row>
-      <DetailLabel title="Total Stake" desc="45000 SDAO" />
       <DetailLabel title="APY" desc="18%" />
       <DetailLabel title="Your stake" desc="40.0 SDAO" />
       <div className="text-align-center mt-3">
@@ -39,7 +38,7 @@ const ForgeBasket = ({ data, title }) => {
         </OutlinedButton>
       </div>
       <hr />
-      <DetailLabel title="SDAO LP deposited" desc="0.0000 SDAO" />
+      <DetailLabel title="SDAO deposited" desc="0.0000 SDAO" />
       <div className="text-align-center mt-3">
         <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `asset_stake/claim` })}>
           Claim

@@ -192,7 +192,7 @@ const Index = () => {
           <h2 className="display-3 text-black">FAQ</h2>
           
             <Row >
-                   <Accordion>
+       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
