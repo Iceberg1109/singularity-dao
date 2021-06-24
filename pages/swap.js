@@ -133,6 +133,7 @@ const DetailLabel = ({ name, value, isDetail = true, icon }) => (
 
 function SwapPage() {
   const { library, account } = useUser();
+  console.log("library", library);
   const router = useRouter();
 
   const [eligible, seteligible] = useState(false);
@@ -167,8 +168,6 @@ function SwapPage() {
     // getEthBalance();
     // fetchData();
   });
-
-  
 
   const claimTokens = async () => {
     const signer = await library.getSigner(account);

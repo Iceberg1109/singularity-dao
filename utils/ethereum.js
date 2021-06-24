@@ -17,24 +17,6 @@ export const getGasPrice = async () => {
 /**
  *
  * @param {String} account Ethereum address of the user
- * @param {Number} chainId Ethereum Chain ID
- * @param {String} network Name of the Ethereum network
- * @returns
- */
-export const fetchEthBalance = async (account, chainId = 3, network = "ropsten") => {
-  if (!account) return;
-
-  let etherscanAPI =
-    chainId === 1 ? "https://api.etherscan.io/api" : `https://api-${network.toLowerCase()}.etherscan.io/api`;
-  const response = await axios.get(
-    `${etherscanAPI}?module=account&action=balance&address=${account}&tag=latest&apikey=${process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY}`
-  );
-  return Number(web3.utils.fromWei(response.data.result)).toFixed(8);
-};
-
-/**
- *
- * @param {String} account Ethereum address of the user
  * @param {Number} signer Ethereum Chain ID
  * @returns
  */
