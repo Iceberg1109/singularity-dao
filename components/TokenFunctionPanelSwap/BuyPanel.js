@@ -17,6 +17,7 @@ import { addSlippage, defaultApprovalSDAO, defaultGasLimit, getGasPrice, reduceS
 import { ContractAddress } from "../../assets/constants/addresses";
 import { Spinner } from "reactstrap";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
+import { toast } from "react-toastify";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -135,6 +136,7 @@ const BuyPanel = () => {
       setPendingTxn(txn.hash);
       await txn.wait();
       setPendingTxn(undefined);
+      toast("Approval success: Please confirm the swap now");
     }
   };
 
@@ -189,10 +191,10 @@ const BuyPanel = () => {
       const receipt = await tx.wait();
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
       resetAmounts();
-      alert(`Transaction was mined in block ${receipt.blockNumber}`);
+      toast(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
       resetAmounts();
     } catch (error) {
-      alert(error.message);
+      toast(`Operation Failed: ${error.message}`, { type: "error" });
       console.log("error", error);
     } finally {
       setSwapping(false);
