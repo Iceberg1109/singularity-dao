@@ -61,7 +61,15 @@ const InputGroup = styled(DefaultInputGroup)`
   border-radius: 10px;
 `;
 
-const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, setSelectedCurrency, disabled }) => {
+const CurrencyInputPanel = ({
+  onAmountChange,
+  label,
+  amount,
+  selectedCurrency,
+  setSelectedCurrency,
+  disabled,
+  USDValue,
+}) => {
   const [dropdownOpen, setOpen] = useState(false);
   const [balance, setBalance] = useState("0");
   const { library, account, network, chainId } = useUser();
@@ -98,7 +106,10 @@ const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, s
       const balance = await getBalance(currencyId, account, { chainId, signer });
       setBalance(balance);
     } catch (error) {
-      toast(`unable to fetch the latest balance of ${currencyId.toUpperCase()}`, { type: "error" });
+      toast(`unable to fetch the latest balance of ${currencyId.toUpperCase()}`, {
+        type: "error",
+        toastId: `balance-${currencyId}`,
+      });
       console.log("error", error);
     }
   };
@@ -140,7 +151,7 @@ const CurrencyInputPanel = ({ onAmountChange, label, amount, selectedCurrency, s
       </InputGroup>
       <div className="d-flex justify-content-between">
         <Typography size={16} weight={400} color="text5">
-          ~ ${balance} {getName() == Currencies.SDAO.name ? "(0.5% slippage)" : ""}
+          {USDValue? `~ $ ${USDValue}` : null}
         </Typography>
         <div className="d-flex">
           <Typography size={16} color="text1">
