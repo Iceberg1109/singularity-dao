@@ -19,6 +19,8 @@ import { Spinner } from "reactstrap";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
 import { toast } from "react-toastify";
 import SwapSuccessModal from "./SwapSuccessModal";
+import { useQuery } from "@apollo/client";
+import { ETH_PRICE_QUERY } from "../../queries/price";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -58,6 +60,9 @@ const BuyPanel = () => {
   const fee = 0.3;
   const [swappingRoute, setSwappingRoute] = useState(undefined);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const { loading, data, error } = useQuery(ETH_PRICE_QUERY);
+
+  console.log({ loading, data, error });
 
   const conversionTypes = {
     FROM: "FROM",
@@ -235,6 +240,14 @@ const BuyPanel = () => {
     setShowSuccessModal(false);
   };
 
+  const getUSDValue = useCallback(() => {
+    const ethPriceInUSD = data?.bundles[0]?.ethPrice;
+    const eth = fromCurrency === Currencies.ETH.id ? Number(fromAmount) : Number(toAmount);
+    const usdValue = eth * Number(ethPriceInUSD);
+    if (isNaN(usdValue)) return undefined;
+    return usdValue;
+  }, [fromCurrency, toCurrency, fromAmount, toAmount]);
+
   return (
     <>
       <div className="d-flex justify-content-between">
@@ -249,6 +262,7 @@ const BuyPanel = () => {
         selectedCurrency={fromCurrency}
         setSelectedCurrency={handleFromCurrencyChange}
         disabled={!swappingRoute}
+        USDValue={getUSDValue()}
       />
       <div className="text-align-center" role="button" onClick={() => handleFromCurrencyChange(toCurrency)}>
         <img src={arrowDownIcon} className="my-3" />
@@ -259,6 +273,7 @@ const BuyPanel = () => {
         amount={toAmount}
         selectedCurrency={toCurrency}
         onCurrencyChange={handleToCurrencyChange}
+        USDValue={getUSDValue()}
       />
       <FeeBlock>
         <Typography size={14}>Fee:</Typography>
