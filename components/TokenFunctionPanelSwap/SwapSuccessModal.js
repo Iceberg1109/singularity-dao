@@ -19,13 +19,13 @@ function SwapSuccessModal({ modalOpen, setModalOpen, title, itemsList, resultsLi
         </div>
         <ModalBody>
           {itemsList.map((item) => (
-            <DetailLabel title={item.label} desc={item.desc} />
+            <DetailLabel title={item.label} desc={item.desc} key={item.label} />
           ))}
           {/* <DetailLabel title="Staked" desc="960.0000 SDAO LP" />
           <DetailLabel title="APY (approx.)" desc="34.74 %" /> */}
           <hr />
           {resultsList.map((result) => (
-            <ResultLabel title={result.label} desc={result.desc} />
+            <ResultLabel title={result.label} desc={result.desc} key={item.label} />
           ))}
         </ModalBody>
         <ModalFooter className="d-flex justify-content-center">
