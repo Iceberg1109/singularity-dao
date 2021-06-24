@@ -31,7 +31,7 @@ const baskets = [
   // },
 ];
 
-const ForgePage = () => {
+function ForgePage(){
   return (
     <Container className="my-4">
       <Typography color="text1" size={32} weight={600}>
