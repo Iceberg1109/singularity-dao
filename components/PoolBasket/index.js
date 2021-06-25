@@ -213,4 +213,10 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   );
 };
 
+ForgeBasket.defaultProps = {
+  title: "",
+  apy: "'",
+  tokens: {},
+};
+
 export default ForgeBasket;
