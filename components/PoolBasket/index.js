@@ -141,7 +141,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   const totalLiquidity = userLiquidityLoading
     ? "loading"
     : userLiquidityData?.pair?.reserveUSD
-    ? BigNumber(userLiquidityData.pair.reserveUSD).decimalPlaces(Currencies.ETH.decimal).toString()
+    ? BigNumber(userLiquidityData.pair.reserveUSD).decimalPlaces(4).toString()
     : "NA";
 
   const userLiquidityShare = useCallback(() => {
