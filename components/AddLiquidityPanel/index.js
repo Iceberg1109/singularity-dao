@@ -193,11 +193,27 @@ const AddLiquidityPanel = () => {
       />
 
       <Typography className="d-flex justify-content-center">+</Typography>
-      <CurrencyInputPanelLP onAmountChange={handleToAmountChange} amount={toAmount} selectedCurrency={toCurrency} disabled={!swappingRoute}/>
-      <GradientButton onClick={handleClick} disabled={!toAmount || addingLiquidity}>
-        <span>Add Liquidity</span>
-        {addingLiquidity ? <Spinner color="white" size="sm" className="ml-2" /> : null}
-      </GradientButton>
+      <CurrencyInputPanelLP
+        onAmountChange={handleToAmountChange}
+        amount={toAmount}
+        selectedCurrency={toCurrency}
+        disabled={!swappingRoute}
+      />
+      <div className="d-flex justify-content-center">
+        <GradientButton
+          onClick={handleClick}
+          disabled={!toAmount || addingLiquidity}
+          style={{ width: addingLiquidity ? 212 : 186, height: 56 }}
+          className="d-flex align-middle"
+        >
+          <span style={{ lineHeight: "40px" }}>Add Liquidity</span>
+          {addingLiquidity ? (
+            <span style={{ lineHeight: "35px" }}>
+              <Spinner color="white" size="sm" className="ml-2" />
+            </span>
+          ) : null}
+        </GradientButton>
+      </div>
       {pendingTxn ? (
         <Typography color="text1" className="mt-2">
           Pending:&nbsp;
