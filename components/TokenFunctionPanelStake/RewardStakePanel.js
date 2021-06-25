@@ -58,7 +58,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
 
       const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
       const poolId = 0;
-      const stakeAmount = web3.utils.toWei(toCurrencyPrice); //
+      const stakeAmount = web3.utils.toWei(toCurrencyPrice.toString()); //
       const gasPrice = await getGasPrice();
 
       
