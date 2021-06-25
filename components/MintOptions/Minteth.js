@@ -12,6 +12,7 @@ import { ChainId, Token, WETH,Trade,TokenAmount, TradeType, Fetcher, Route,Perce
 
 import {ethers} from 'ethers';
 import UniswapReceipeABI from '../../assets/constants/abi/UniswapReceipe.json';
+import { getGasPrice } from "../../utils/ethereum";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -71,8 +72,8 @@ const BuyPanel = ({ type,token,dynasetid }) => {
       UniswapReceipeABI,
       signer
     );
-
-    const tx = await uniswap_receipe.toPie(dynasetid,"10000000000000000000",{value :web3.utils.toWei("1"), gasPrice: web3.utils.toWei("1", "microether"),gasLimit: 210000 });
+    const gasPrice = await getGasPrice()
+    const tx = await uniswap_receipe.toPie(dynasetid,"10000000000000000000",{value :web3.utils.toWei("1"), gasPrice ,gasLimit: 210000 });
 
     console.log(`Transaction hash: ${tx.hash}`);
 

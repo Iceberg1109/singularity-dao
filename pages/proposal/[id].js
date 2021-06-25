@@ -47,6 +47,7 @@ import {
 } from "@uniswap/sdk";
 import { ethers } from "ethers";
 import formatAddress from "../../utils/format-address";
+import { getGasPrice } from "../../utils/ethereum";
 
 function ProposalPage({ proposal }) {
   const router = useRouter();
@@ -65,10 +66,11 @@ function ProposalPage({ proposal }) {
       LiquidDemocracyABI.abi,
       signer
     );
+    const gasPrice = await getGasPrice();
 
     const tx = await Dynaset.castVote(proposal.id, true, {
       gasLimit: 210000,
-      gasPrice: web3.utils.toWei("120", "gwei"),
+      gasPrice,
     });
 
     console.log(`Transaction hash: ${tx.hash}`);

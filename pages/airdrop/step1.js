@@ -16,6 +16,7 @@ import { ChainId, Token, WETH,Trade,TokenAmount, TradeType, Fetcher, Route,Perce
 
 import {ethers} from 'ethers';
 import AirdropABI from '../../assets/constants/abi/AirdropABI.json';
+import { getGasPrice } from "../../utils/ethereum";
 
 const SubTitle = styled(Typography)`
   font-size: 20px;
@@ -165,8 +166,8 @@ function AirdropStep1() {
     );
 
     try {
-
-    const tx = await Dynaset.claimdrop({gasLimit: 210000, gasPrice: web3.utils.toWei("120", "gwei")});
+      const gasPrice = await getGasPrice()
+    const tx = await Dynaset.claimdrop({gasLimit: 210000, gasPrice});
 
     console.log(`Transaction hash: ${tx.hash}`);
 

@@ -31,6 +31,7 @@ import {
 import { ethers } from "ethers";
 import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
+import { getGasPrice } from "../../utils/ethereum";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -62,11 +63,12 @@ const StakePanel = ({ type, token, dynasetid }) => {
       StakingRewardABI,
       signer
     );
+    const gasPrice = await getGasPrice();
 
     const tx = await stakingContract.stake(
       web3.utils.toWei("1", "gwei"),
       {
-        gasPrice: web3.utils.toWei("60", "gwei"),
+        gasPrice,
       }
     );
 
@@ -87,10 +89,11 @@ const StakePanel = ({ type, token, dynasetid }) => {
       StakingRewardABI,
       signer
     );
+    const gasPrice = await getGasPrice();
 
     const tx = await stakingContract.getReward(
       {
-        gasPrice: web3.utils.toWei("60", "gwei"),
+        gasPrice,
       }
     );
 

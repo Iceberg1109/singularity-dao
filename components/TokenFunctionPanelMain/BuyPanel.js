@@ -30,6 +30,7 @@ import {
 import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
 import settingsIcon from "../../assets/img/icons/settings.svg";
+import { getGasPrice } from "../../utils/ethereum";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -112,7 +113,7 @@ const BuyPanel = ({ type, token, dynasetid }) => {
 
     console.log(web3.utils.toWei(toCurrencyPrice.toString(), "gwei"));
     console.log(web3.utils.toWei(amounteth.toString(), "ether"));
-
+    const gasPrice = await getGasPrice();
     const tx = await uniswap.swapExactETHForTokens(
       web3.utils.toWei(toCurrencyPrice.toString(), "gwei"),
       [route.path[0].address, route.path[1].address],
@@ -120,7 +121,7 @@ const BuyPanel = ({ type, token, dynasetid }) => {
       deadline,
       {
         value: web3.utils.toWei(amounteth.toString(), "ether"),
-        gasPrice: web3.utils.toWei("60", "gwei"),
+        gasPrice,
       }
     );
 

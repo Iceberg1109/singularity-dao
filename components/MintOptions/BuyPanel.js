@@ -16,6 +16,7 @@ import { Doughnut } from "react-chartjs-2";
 
 import {ethers} from 'ethers';
 import ForgeABI from '../../assets/constants/abi/Forge.json';
+import { getGasPrice } from "../../utils/ethereum";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -170,13 +171,13 @@ const BuyPanel = ({ type,token,dynasetid }) => {
   //  const DAI = new Token(ChainId.ROPSTEN, dynasetid, 18);
 
   
-
+    const gasPrice = await getGasPrice()
     const tx = await uniswap.swapExactETHForTokens(
         web3.utils.toWei(toCurrencyPrice.toString(),"gwei"),
         [route.path[0].address,route.path[1].address],
         account,
         deadline,
-        {value :web3.utils.toWei(amounteth.toString(), "ether"), gasPrice: web3.utils.toWei("60", "gwei")}
+        {value :web3.utils.toWei(amounteth.toString(), "ether"), gasPrice}
       );
 
     console.log(`Transaction hash: ${tx.hash}`);
@@ -198,9 +199,9 @@ const BuyPanel = ({ type,token,dynasetid }) => {
       ForgeABI,
       signer
     );
-
+    const gasPrice = await getGasPrice()
     const tx = await forge.deposit(
-        {value :web3.utils.toWei(amounteth.toString(), "ether"), gasPrice: web3.utils.toWei("60", "gwei")}
+        {value :web3.utils.toWei(amounteth.toString(), "ether"), gasPrice}
       );
 
     console.log(`Transaction hash: ${tx.hash}`);

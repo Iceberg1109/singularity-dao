@@ -15,6 +15,7 @@ import { ethers } from "ethers";
 import classnames from "classnames";
 import AirdropABI from "../assets/constants/abi/AirdropABI.json";
 import TokenFunctionPanel from "../components/TokenFunctionPanelMain/index.js";
+import { getGasPrice } from "../utils/ethereum";
 
 const GradientRow = styled(Row)`
   background: ${({ theme }) => theme.color.gradient2};
@@ -190,11 +191,12 @@ function SwapPage() {
       AirdropABI,
       signer
     );
+    const gasPrice = await getGasPrice();
 
     try {
       const tx = await Dynaset.claimdrop({
         gasLimit: 210000,
-        gasPrice: web3.utils.toWei("120", "gwei"),
+        gasPrice,
       });
 
       console.log(`Transaction hash: ${tx.hash}`);

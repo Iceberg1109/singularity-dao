@@ -13,6 +13,7 @@ import {ethers} from 'ethers';
 import DynasetABI from '../../assets/constants/abi/Dynaset.json';
 
 import { Line, Bar, Doughnut, Pie } from "react-chartjs-2";
+import { getGasPrice } from "../../utils/ethereum";
 
 
 const TokensBlock = styled(Row)`
@@ -105,10 +106,10 @@ const BurnPanel = ({ token,ptokens, type,dynasetid }) => {
   //  var total = ethers.BigNumber.from();
 
     console.log(totalsupply.toString());
-
+    const gasPrice = await getGasPrice()
     const tx = await Dynaset.exitPool(web3.utils.toWei(amounteth),
       ratios,
-      {gasLimit: 210000, gasPrice: web3.utils.toWei("120", "gwei")});
+      {gasLimit: 210000, gasPrice});
 
     console.log(`Transaction hash: ${tx.hash}`);
 
