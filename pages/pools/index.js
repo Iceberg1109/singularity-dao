@@ -8,30 +8,53 @@ import ForgeBasket from "../../components/PoolBasket";
 
 // 1: ["0x993864e43caa7f7f12953ad6feb1d1ca635b875f", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
 //     3: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
-const baskets = [
-  {
-    poolId: "SDAO-ETH",
-    apy: "13%",
-    share: "0.005",
-    tokens: {
-      1: ["0x993864e43caa7f7f12953ad6feb1d1ca635b875f", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
-      3: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
-    },
-  },
-  // {
-  //   key: "WETH-AGIX",
-  //   poolId: "AGIX-WETH",
-  //   liquidity: "407004",
-  //   apy: "4.82",
-  //   share: "0.005",
-  //   tokens: [
-  //     "0x5e94577b949a56279637ff74dfcff2c28408f049",
-  //     "0xa898150fef6ac506476e70f9bf1c03a11b55bdf9"
-  //   ]
-  // },
-];
+// const baskets = [
+//   {
+//     poolId: "SDAO-ETH",
+//     apy: "13%",
+//     share: "0.005",
+//     tokens: {
+//       1: ["0x993864e43caa7f7f12953ad6feb1d1ca635b875f", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
+//       3: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
+//     },
+//   },
+//   // {
+//   //   key: "WETH-AGIX",
+//   //   poolId: "AGIX-WETH",
+//   //   liquidity: "407004",
+//   //   apy: "4.82",
+//   //   share: "0.005",
+//   //   tokens: [
+//   //     "0x5e94577b949a56279637ff74dfcff2c28408f049",
+//   //     "0xa898150fef6ac506476e70f9bf1c03a11b55bdf9"
+//   //   ]
+//   // },
+// ];
 
 function ForgePage(){
+  const baskets = [
+    {
+      poolId: "SDAO-ETH",
+      apy: "13%",
+      share: "0.005",
+      tokens: {
+        1: ["0x993864e43caa7f7f12953ad6feb1d1ca635b875f", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
+        3: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
+      },
+    },
+    // {
+    //   key: "WETH-AGIX",
+    //   poolId: "AGIX-WETH",
+    //   liquidity: "407004",
+    //   apy: "4.82",
+    //   share: "0.005",
+    //   tokens: [
+    //     "0x5e94577b949a56279637ff74dfcff2c28408f049",
+    //     "0xa898150fef6ac506476e70f9bf1c03a11b55bdf9"
+    //   ]
+    // },
+  ];
+  
   return (
     <Container className="my-4">
       <Typography color="text1" size={32} weight={600}>
