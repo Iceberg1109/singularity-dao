@@ -64,7 +64,6 @@ const ForgeBasket = ({ title, apy, tokens }) => {
 
   useEffect(() => userLiquidityRefetch(), [chainId]);
 
-  console.log({ loading: userLiquidityLoading, data: userLiquidityData, error: userLiquidityError });
 
   if (userLiquidityError) {
     toast(userLiquidityError.message, { type: "error" });
