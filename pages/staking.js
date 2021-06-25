@@ -16,7 +16,7 @@ const ForgePage = () => {
       <Typography color="text1" size={16} weight={400}>
         Maximize your return by staking your SDAO tokens.
       </Typography>
-      <a href="#">Learn more</a>
+   
       <div className="py-4 mt-5">
         <Row className="my-3">
           <Col lg={4}>
@@ -27,6 +27,7 @@ const ForgePage = () => {
     </Container>
   );
 };
+//   <a href="#">Learn more</a>
 
 ForgePage.layout = Admin;
 
