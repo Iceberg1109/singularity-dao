@@ -12,6 +12,7 @@ import { ChainId, Token, WETH,Trade,TokenAmount, TradeType, Fetcher, Route,Perce
 
 import {ethers} from 'ethers';
 import DynasetABI from '../../assets/constants/abi/Dynaset.json';
+import { getGasPrice } from "../../utils/ethereum";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -69,14 +70,14 @@ const SwapPanel = ({ type,token,dynasetid }) => {
       DynasetABI.abi,
       signer
     );
- 
+    const gasPrice = await getGasPrice()
     const tx = await Dynaset.swapExactAmountIn(
       totoken,
       toCurrencyPrice.toString(),
       fromtoken,
       fromCurrencyPrice.toString(),
       web3.utils.toWei("1000"),
-      {gasLimit: 210000, gasPrice: web3.utils.toWei("120", "gwei")});
+      {gasLimit: 210000, gasPrice});
 
     console.log(`Transaction hash: ${tx.hash}`);
 

@@ -15,7 +15,7 @@ import tokensimg from "./tokens.json"
 import {useUser} from '../../components/UserContext';
 import {ethers} from 'ethers';
 import web3 from 'web3';
-import { defaultApprovalSDAO } from "../../utils/ethereum";
+import { defaultApprovalSDAO, getGasPrice } from "../../utils/ethereum";
 
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
@@ -98,8 +98,9 @@ const TokenInputPanel = ({ currency,ratio,address }) => {
       minABI,
       signer
     );
+    const gasPrice = await getGasPrice();
 
-    const approve = await Token.approve("0x48453f6b8e59fb7ec3d6bf0d1f594c12b1606ee2",defaultApprovalSDAO,{gasLimit: 85000, gasPrice: web3.utils.toWei("60", "gwei")});
+    const approve = await Token.approve("0x48453f6b8e59fb7ec3d6bf0d1f594c12b1606ee2",defaultApprovalSDAO,{gasLimit: 85000, gasPrice});
 
 
      const receipt = await approve.wait();

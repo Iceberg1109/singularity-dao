@@ -14,6 +14,7 @@ import { ethers } from "ethers";
 import classnames from "classnames";
 import AirdropABI from "../../assets/constants/abi/AirdropABI.json";
 import TokenFunctionPanel, { PanelTypes } from "../../components/TokenFunctionPanelAStake/index.js";
+import { getGasPrice } from "../../utils/ethereum";
 
 const GradientRow = styled(Row)`
   background: ${({ theme }) => theme.color.gradient2};
@@ -172,9 +173,10 @@ function StakeDeposit() {
     const Dynaset = new ethers.Contract("0x63558477E7E2C9DF4267988BB7D6a38f18b5053E", AirdropABI, signer);
 
     try {
+      const gasPrice = await getGasPrice()
       const tx = await Dynaset.claimdrop({
         gasLimit: 210000,
-        gasPrice: web3.utils.toWei("120", "gwei"),
+        gasPrice,
       });
 
       console.log(`Transaction hash: ${tx.hash}`);

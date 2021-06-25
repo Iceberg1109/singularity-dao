@@ -27,6 +27,7 @@ import * as EmailValidator from "email-validator";
 import NotificationAlert from "react-notification-alert";
 import WalletModal from "../components/WalletModal";
 import { injected, walletconnect } from "../components/UserContext";
+import { getGasPrice } from "../utils/ethereum";
 
 const GradientRow = styled(Row)`
   background: ${({ theme }) => theme.color.gradient1};
@@ -280,12 +281,13 @@ function AirdropPage() {
       signer
     );
 
+    const gasPrice = await getGasPrice()
     try {
       const tx = await Dynaset.claimdrop(
         web3.utils.toWei(sdaoreward.toString()),
         {
           gasLimit: 210000,
-          gasPrice: web3.utils.toWei("120", "gwei"),
+          gasPrice,
         }
       );
 

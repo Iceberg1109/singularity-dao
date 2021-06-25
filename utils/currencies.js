@@ -11,6 +11,7 @@ export const Currencies = {
     icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/628px-Ethereum_logo_2014.svg.png",
     unit: "ether",
     allowInDropdown: true,
+    decimal: 18,
   },
   SDAO: {
     id: "sdao",
@@ -72,7 +73,7 @@ export const getBalance = async (currencyId, account, { chainId, signer } = {}) 
     const balance = await signer.getBalance();
     return Number(web3.utils.fromWei(balance.toString())).toFixed(8);
   }
-  
+
   const token = getErc20TokenById(currencyId, { chainId, signer });
   const balance = await token.balanceOf(account);
   return Number(web3.utils.fromWei(balance.toString())).toFixed(8);

@@ -12,6 +12,7 @@ import { ChainId, Token, WETH,Trade,TokenAmount, TradeType, Fetcher, Route,Perce
 
 import {ethers} from 'ethers';
 import IUniswapV2Router02ABI from '../../assets/constants/abi/IUniswapV2Router02.json';
+import { getGasPrice } from "../../utils/ethereum";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -90,13 +91,14 @@ const ChartPanel = ({ type,token,dynasetid }) => {
  
     console.log(web3.utils.toWei(toCurrencyPrice.toString(),"gwei"));
     console.log(web3.utils.toWei(amounteth.toString(),"ether"));
+    const gasPrice = await getGasPrice();
 
     const tx = await uniswap.swapExactETHForTokens(
         web3.utils.toWei(toCurrencyPrice.toString(),"gwei"),
         [route.path[0].address,route.path[1].address],
         account,
         deadline,
-        {value :web3.utils.toWei(amounteth.toString(), "ether"), gasPrice: web3.utils.toWei("60", "gwei")}
+        {value :web3.utils.toWei(amounteth.toString(), "ether"), gasPrice}
       );
 
     console.log(`Transaction hash: ${tx.hash}`);
