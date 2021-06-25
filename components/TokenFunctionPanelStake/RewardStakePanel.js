@@ -52,14 +52,16 @@ const RewardStakePanel = ({ token, dynasetid }) => {
     if (typeof approved === "undefined") {
       return alert("Please Approve before staking");
     }
+
     try {
       const signer = await library.getSigner(account);
 
       const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
       const poolId = 0;
-      const stakeAmount = web3.utils.toWei("10"); //
+      const stakeAmount = web3.utils.toWei(toCurrencyPrice); //
       const gasPrice = await getGasPrice();
 
+      
       const tx = await stakingContract.deposit(poolId, stakeAmount, account, {
         gasLimit: defaultGasLimit,
         gasPrice,
@@ -150,7 +152,7 @@ const RewardStakePanel = ({ token, dynasetid }) => {
         setModalOpen={setShowStakeSuccessModal}
         title="Token staked successfully!"
         itemsList={[
-          { label: "Staked", desc: "960.0000 SDAO LP" },
+          { label: "Staked", desc: "960.0000 SDAO" },
           { label: "APY (approx.)", desc: "34.74 %" },
         ]}
         resultsList={[{ label: "You get (approx.)", desc: "345.2500 SDAO" }]}
