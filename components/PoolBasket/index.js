@@ -97,28 +97,28 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       // console.log("liquidityToken", liquidityToken.address);
       // console.log("reserve0", reserve0.toSignificant(6));
       // console.log("reserve1", reserve1.toSignificant(6));
-      // BALANCE OF LIQUIDITY TOKEN IN STAKING
+      // // BALANCE OF LIQUIDITY TOKEN IN STAKING
       // const signer = await library.getSigner(account);
       // const lpToken = new ethers.Contract(liquidityToken.address, IUniswapV2ERC20.abi, signer);
       // const lpBalance = await lpToken.callStatic.balanceOf(account);
       // console.log(lpBalance.toString(), "converted balance", web3.utils.fromWei(lpBalance.toString()));
       // const totalSupply = await lpToken.callStatic.totalSupply();
       // console.log("totalSupply", web3.utils.fromWei(totalSupply.toString()));
-      // setBalance(web3.utils.fromWei(lpBalance.toString()));
-      // BALANCE OF LIQUIDITY IN SDAO
+      // // setBalance(web3.utils.fromWei(lpBalance.toString()));
+      // // BALANCE OF LIQUIDITY IN SDAO
       // const sdaoToken = await getErc20TokenById(Currencies.SDAO.id, { chainId, signer });
       // const lpSDAOBalance = await sdaoToken.callStatic.balanceOf(liquidityToken.address);
       // console.log("lpSDAOBalance ", web3.utils.fromWei(lpSDAOBalance.toString()));
-      // CALCULATE YOUR SHARE PERCENT
+      // // CALCULATE YOUR SHARE PERCENT
       // console.log("balance", lpBalance.toString());
       // console.log("totalSupply", totalSupply.toString());
       // const percent = BigNumber(lpBalance.toString()).div(BigNumber(totalSupply.toString())).multipliedBy(100);
-      // setShare(percent.toString());
-      console.log();
+      // // setShare(percent.toString());
+      // console.log();
     } catch (error) {
       console.log(title, "pair erorrrr", error);
       toast(error.message, { type: "error" });
-      setShowError(true);
+      // setShowError(true);
     }
   };
 
