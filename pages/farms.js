@@ -16,21 +16,21 @@ const ForgePage = () => {
       <Typography color="text1" size={16} weight={400}>
         Maximize your return by staking your SDAO LP tokens.
       </Typography>
-      <a href="#">Learn more</a>
+     
       <div className="py-4 mt-5">
         <Row className="my-3">
           <Col lg={4}>
-            <ForgeBasket title="SDAO/WETH Pool" apy={"3.3%"}/>
+            <ForgeBasket title="SDAO/ETH Pool" apy=""/>
           </Col>
           <Col lg={4}>
-            <ForgeBasket title="AGIX/WETH Pool" apy={"11.5%"}/>
+            <ForgeBasket title="AGIX/ETH Pool" apy=""/>
           </Col>
         </Row>
       </div>
     </Container>
   );
 };
-
+// <a href="#">Learn more</a>
 ForgePage.layout = Admin;
 
 export default ForgePage;

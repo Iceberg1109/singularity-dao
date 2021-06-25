@@ -16,8 +16,8 @@
 */
 import HomeIcon from './assets/img/icons/home.svg';
 import SwapIcon from './assets/img/icons/swap.svg';
-import LiquidityIcon from './assets/img/icons/liquidity.svg';
-import StakeIcon from './assets/img/icons/stake.svg';
+import LiquidityIcon from './assets/img/icons/sdao_liquidity.svg';
+import StakeIcon from './assets/img/icons/icon-stake.svg';
 import FarmsIcon from './assets/img/icons/farms.svg';
 import StatsIcon from './assets/img/icons/stats.svg';
 
@@ -48,7 +48,7 @@ const routes = [
   },{
     collapse: false,
     name: "Staking",
-    icon: LiquidityIcon,
+    icon: StakeIcon,
     state: "formsCollapse",
     path: "/staking",
     layout: "",
