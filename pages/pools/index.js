@@ -10,7 +10,7 @@ import ForgeBasket from "../../components/PoolBasket";
 //     3: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
 const baskets = [
   {
-    poolId: "SDAO-WETH",
+    poolId: "SDAO-ETH",
     apy: "13%",
     share: "0.005",
     tokens: {
