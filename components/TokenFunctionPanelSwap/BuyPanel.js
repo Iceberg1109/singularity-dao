@@ -287,9 +287,18 @@ const BuyPanel = () => {
         </Typography>
       ) : null} */}
       <div className="d-flex justify-content-center">
-        <GradientButton onClick={handleSwapping} disabled={swapping}>
-          <span>Swap</span>
-          {swapping ? <Spinner color="white" size="sm" className="ml-2" /> : null}
+        <GradientButton
+          onClick={handleSwapping}
+          disabled={swapping}
+          style={{ width: 130, height: 56 }}
+          className="d-flex align-middle"
+        >
+          <span style={{ lineHeight: "40px" }}>Swap</span>
+          {swapping ? (
+            <span style={{ lineHeight: "35px" }}>
+              <Spinner color="white" size="sm" className="ml-2" />
+            </span>
+          ) : null}
         </GradientButton>
       </div>
       {pendingTxn ? (

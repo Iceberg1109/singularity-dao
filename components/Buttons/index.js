@@ -23,6 +23,7 @@ export const GradientButton = styled(Button)`
   font-weight: 600;
   font-size: 16px;
   padding: 5px 36px;
+  border-radius: 8px;
 `;
 
 GradientButton.defaultProps = {
