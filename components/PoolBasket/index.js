@@ -64,7 +64,6 @@ const ForgeBasket = ({ title, apy, tokens }) => {
 
   useEffect(() => userLiquidityRefetch(), [chainId]);
 
-  console.log({ loading: userLiquidityLoading, data: userLiquidityData, error: userLiquidityError });
 
   if (userLiquidityError) {
     toast(userLiquidityError.message, { type: "error" });
@@ -141,7 +140,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   const totalLiquidity = userLiquidityLoading
     ? "loading"
     : userLiquidityData?.pair?.reserveUSD
-    ? BigNumber(userLiquidityData.pair.reserveUSD).decimalPlaces(Currencies.ETH.decimal).toString()
+    ? BigNumber(userLiquidityData.pair.reserveUSD).decimalPlaces(4).toString()
     : "NA";
 
   const userLiquidityShare = useCallback(() => {
@@ -211,6 +210,12 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       </div>
     </Card>
   );
+};
+
+ForgeBasket.defaultProps = {
+  title: "",
+  apy: "'",
+  tokens: {},
 };
 
 export default ForgeBasket;

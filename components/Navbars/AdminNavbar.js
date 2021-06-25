@@ -143,24 +143,26 @@ function AdminNavbar({ theme, sidenavOpen, toggleSidenav }) {
                   </div>
                 </div>
               </NavItem>
-
+              {/* 
               <NavItem>
                 <NavLink onClick={openSearch}>Governance</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink onClick={openSearch}>Docs</NavLink>
+              </NavItem> */}
+              <NavItem>
+                <a href="https://github.com/Singularity-DAO" target="_blank" rel="noreferrer noopener">
+                  <NavLink>GitHub</NavLink>
+                </a>
               </NavItem>
               <NavItem>
-                <NavLink onClick={openSearch}>GitHub</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink onClick={openSearch}>Support</NavLink>
+                <a href="mailto:info@singularitydao.ai" target="_blank" rel="noreferrer noopener">
+                  <NavLink>Support</NavLink>
+                </a>
               </NavItem>
               {network && (
                 <NavItem>
-                  <GradientTypography >
-                    {network}
-                  </GradientTypography>
+                  <GradientTypography>{network}</GradientTypography>
                 </NavItem>
               )}
               <NavItem>
