@@ -1,9 +1,9 @@
 import React from "react";
 import { Card as DefaultCard } from "reactstrap";
 import Typography from "components/Typography";
-import { GradientButton } from "components/Buttons";
+// import { GradientButton } from "components/Buttons";
 import styled from "styled-components";
-import { DetailLabel } from "../TokenFunctionPanelStake/Label";
+// import { DetailLabel } from "../TokenFunctionPanelStake/Label";
 import Skeleton from "react-loading-skeleton";
 import { useQuery } from "@apollo/client";
 import { PAIR_QUERY } from "../../queries/pair";
@@ -50,14 +50,14 @@ const PoolInfoPanel = ({ pairAddress }) => {
       <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
         Pool Info
       </Typography>
-      <DetailLabel title={`${token1Symbol}→${token0Symbol}`} desc={`${token0Price} ${token0Symbol}`} />
+      {/* <DetailLabel title={`${token1Symbol}→${token0Symbol}`} desc={`${token0Price} ${token0Symbol}`} />
       <DetailLabel title={`${token0Symbol}→${token1Symbol}`} desc={`${token1Price} ${token1Symbol}`} />
-      <DetailLabel title="Total Liquidity" desc={`~ US$ ${totalLiquidity}`} />
+      <DetailLabel title="Total Liquidity" desc={`~ US$ ${totalLiquidity}`} /> */}
 
       <div className="mt-4" />
-      <DetailLabel title="Slippage" desc="0.5%" />
+      {/* <DetailLabel title="Slippage" desc="0.5%" />
       <DetailLabel title={`Pool ${token0Symbol}`} desc={`${reserve0} ${token0Symbol}`} />
-      <DetailLabel title={`Pool ${token1Symbol}`} desc={`${reserve1} ${token1Symbol}`} />
+      <DetailLabel title={`Pool ${token1Symbol}`} desc={`${reserve1} ${token1Symbol}`} /> */}
     </Card>
   );
 };
