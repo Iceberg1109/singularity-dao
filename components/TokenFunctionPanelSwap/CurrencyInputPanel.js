@@ -24,7 +24,7 @@ const Input = styled(DefaultInput)`
   box-shadow: none !important;
   border: none !important;
   border: none;
-  padding: 28px 24px 35px;
+  padding: 28px 26px 35px;
   border-radius: 10px;
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;

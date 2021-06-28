@@ -24,18 +24,26 @@ const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
   font-weight: 600;
   background: transparent;
+  padding:24px 28px 30px;
   border-radius: 8px;
 `;
 
 const InputGroup = styled(DefaultInputGroup)`
   background: ${({ theme }) => theme.color.violet0};
-  border-radius: 8px;
+  position: relative;
+  border-radius: 10px;
 `;
 
 const DropdownToggle = styled(DefaultDropdownToggle)`
   background: white !important;
   color: black !important;
   border-radius: 8px;
+`;
+
+const CurrencyContainer = styled.div`
+  position: absolute;
+  right: 12px;
+  top: 9px;
 `;
 
 const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabled }) => {
@@ -81,6 +89,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
         {getName()}
       </Typography>
       <InputGroup className={classnames("input-group-merge", { focused })}>
+  
         <Input
           placeholder={balance}
           onChange={changeprice}
@@ -90,6 +99,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
           value={amount}
           disabled={disabled}
         />
+            <CurrencyContainer>
         <UncontrolledDropdown>
           <DropdownToggle
             caret
@@ -106,6 +116,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
             {getName()}
           </DropdownToggle>
         </UncontrolledDropdown>
+        </CurrencyContainer>
       </InputGroup>
       <div className="d-flex justify-content-between mt-1">
         <Typography size={14} weight={400} color="text2" className="pl-1">
