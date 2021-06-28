@@ -4,7 +4,6 @@ import Typography from "components/Typography";
 // import { GradientButton } from "components/Buttons";
 import styled from "styled-components";
 // import { DetailLabel } from "../TokenFunctionPanelStake/Label";
-// import Skeleton from "react-loading-skeleton";
 import { useQuery } from "@apollo/client";
 import { PAIR_QUERY } from "../../queries/pair";
 import BigNumber from "bignumber.js";
@@ -31,23 +30,14 @@ const PoolInfoPanel = ({ pairAddress }) => {
   });
 
   console.log(pairAddress, "PoolInfoPanel", data);
-  if(!data){
-    return null
-  }
 
-  // if (!pairAddress || loading) {
-  //   return (
-  //     <Card className="p-4">
-  //       <div className="d-flex justify-content-center">
-  //         <Skeleton height={25} width={200} />
-  //       </div>
-  //       <br />
-  //       <Skeleton count={4} />
-  //       <br />
-  //       <Skeleton count={4} />
-  //     </Card>
-  //   );
-  // }
+  if (!pairAddress || loading) {
+    return (
+      <Card className="p-4">
+        <p>Loading</p>
+      </Card>
+    );
+  }
 
   const cleanBigNumber = (value) => (value ? BigNumber(value).decimalPlaces(4).toString() : "");
 
