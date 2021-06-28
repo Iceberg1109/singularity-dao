@@ -40,7 +40,7 @@ const Index = () => {
             <Col md="6">
               <h2 className="display-3 text-black">How it works</h2>
               <p className="lead text-black">
-                With SingularityDAO, you can swap, stake, and farm your assets in easy steps.
+                With SingularityDAO, you can <span style={{fontWeight:"600"}}>swap</span>, <span style={{fontWeight:"600"}}>stake</span>, and <span style={{fontWeight:"600"}}>farm</span> your assets in easy steps.
               </p>
             </Col>
           </Row>
