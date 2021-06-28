@@ -4,7 +4,7 @@ import Typography from "components/Typography";
 // import { GradientButton } from "components/Buttons";
 import styled from "styled-components";
 // import { DetailLabel } from "../TokenFunctionPanelStake/Label";
-import Skeleton from "react-loading-skeleton";
+// import Skeleton from "react-loading-skeleton";
 import { useQuery } from "@apollo/client";
 import { PAIR_QUERY } from "../../queries/pair";
 import BigNumber from "bignumber.js";
@@ -12,6 +12,17 @@ import BigNumber from "bignumber.js";
 const Card = styled(DefaultCard)`
   border-radius: 8px;
 `;
+
+// export const DetailLabel = ({ title, desc }) => (
+//   <div className="d-flex justify-content-between">
+//     <Typography size="14" weight="400" color="text2">
+//       {title}
+//     </Typography>
+//     <Typography size="14" weight="600" color="text1">
+//       {desc}
+//     </Typography>
+//   </div>
+// );
 
 const PoolInfoPanel = ({ pairAddress }) => {
   const { loading, data, error } = useQuery(PAIR_QUERY, {
@@ -21,19 +32,19 @@ const PoolInfoPanel = ({ pairAddress }) => {
 
   console.log(pairAddress, "PoolInfoPanel", data);
 
-  if (!pairAddress || loading) {
-    return (
-      <Card className="p-4">
-        <div className="d-flex justify-content-center">
-          <Skeleton height={25} width={200} />
-        </div>
-        <br />
-        <Skeleton count={4} />
-        <br />
-        <Skeleton count={4} />
-      </Card>
-    );
-  }
+  // if (!pairAddress || loading) {
+  //   return (
+  //     <Card className="p-4">
+  //       <div className="d-flex justify-content-center">
+  //         <Skeleton height={25} width={200} />
+  //       </div>
+  //       <br />
+  //       <Skeleton count={4} />
+  //       <br />
+  //       <Skeleton count={4} />
+  //     </Card>
+  //   );
+  // }
 
   const cleanBigNumber = (value) => (value ? BigNumber(value).decimalPlaces(4).toString() : "");
 
