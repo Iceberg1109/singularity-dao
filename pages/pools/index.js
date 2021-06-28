@@ -75,7 +75,7 @@ function ForgePage(){
     </Container>
   );
 };
-//    <a href="#">Learn more.</a>
+
 ForgePage.layout = Admin;
 
 export default ForgePage;
