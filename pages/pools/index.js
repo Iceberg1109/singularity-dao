@@ -1,6 +1,6 @@
-// import { Col, Container, Row } from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
 import Admin from "layouts/Admin.js";
-// import Typography from "../../components/Typography";
+import Typography from "../../components/Typography";
 // import ForgeBasket from "../../components/PoolBasket";
 import React, { useEffect, useState } from "react";
 
