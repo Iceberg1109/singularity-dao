@@ -29,9 +29,11 @@ function ForgePage() {
       <Typography color="text1" size={32} weight={600}>
         Liquidity
       </Typography>
+          <br/>
       <Typography color="gray80" size={14}>
         Select one of the liquidity pools available, then add liquidity and start to earn fees.
       </Typography>
+      <br/>
       <div className="py-4 mt-5">
         <Row className="my-3">
           {baskets.map((basket) => (

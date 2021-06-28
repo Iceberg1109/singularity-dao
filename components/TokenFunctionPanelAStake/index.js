@@ -99,11 +99,12 @@ const TokenFunctionPanel = ({ panelType,apy }) => {
       <MainCard>
         <div className="d-flex justify-content-between">
           <div>
-            <Typography size={15} style={{ textAlign: "left" }}>
-              Total Staked
-            </Typography>
-            <Typography size={20} style={{ textAlign: "left" }} className="mb-3">
+        
+            <Typography size={30} weight={600} style={{ textAlign: "left" }} >
               {userInfoAmount} SDAO
+            </Typography>
+             <Typography size={12} style={{ textAlign: "left",color:"#ABABAB" }}>
+              Currently staked
             </Typography>
           </div>
           {/* <div>
@@ -120,10 +121,10 @@ const TokenFunctionPanel = ({ panelType,apy }) => {
         </Col>
         <Col lg={6}>
           <MainCard>
-            <Typography size={20}>SDAO earned</Typography>
-            <Typography size={24} weight={600} className="mb-3">
+            <Typography size={24} weight={600} >
               {pendingRewards} SDAO
             </Typography>
+            <Typography size={12} style={{color:"#ABABAB"}}>SDAO earned</Typography>
             <DetailLabel title="APY return" desc="13 %" />
             <DetailLabel title="Ends in" desc="60 days" />
           </MainCard>

@@ -24,7 +24,7 @@ const Input = styled(DefaultInput)`
   box-shadow: none !important;
   border: none !important;
   border: none;
-  padding: 28px 14px;
+  padding: 28px 26px 35px;
   border-radius: 10px;
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -50,7 +50,6 @@ const CurrencyItem = styled.div`
   padding: 7px 21px;
   border-radius: 12px;
   cursor: pointer;
-
   &:hover {
     background: #eeeeee;
   }
@@ -133,8 +132,8 @@ const CurrencyInputPanel = ({
       <InputGroup>
         <Input placeholder={balance} onChange={changeprice} value={amount} type="text" disabled={disabled} />
         <CurrencyContainer>
-          <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} disabled={disabled}>
-            <DropdownToggle type="button" color="secondary" caret>
+          <ButtonDropdown isOpen={dropdownOpen} toggle={toggle} disabled={disabled}  >
+            <DropdownToggle type="button" color="secondary" caret >
               <img alt="..." src={getIcon()} style={{ width: "15px" }} className="mr-2" />
               {getName()}
             </DropdownToggle>

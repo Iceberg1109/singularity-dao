@@ -159,6 +159,20 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive, router }
   const scrollBarInner = (
     <div className="scrollbar-inner">
       <div className="sidenav-header d-flex align-items-center">
+         <div className="ml-auto">
+          <div
+            className={classnames("sidenav-toggler d-none d-xl-block", {
+              active: sidenavOpen,
+            })}
+            onClick={toggleSidenav}
+          >
+            <div className="sidenav-toggler-inner">
+              <i className="sidenav-toggler-line" />
+              <i className="sidenav-toggler-line" />
+              <i className="sidenav-toggler-line" />
+            </div>
+          </div>
+        </div>
         {logo && logo.innerLink ? (
           <Link href={logo.innerLink}>
             <span>
@@ -173,20 +187,7 @@ function Sidebar({ toggleSidenav, sidenavOpen, routes, logo, rtlActive, router }
             <img alt={logo.imgAlt} className="navbar-brand-img" src={logo.imgSrc} />
           </NavbarBrand>
         ) : null}
-        <div className="ml-auto">
-          <div
-            className={classnames("sidenav-toggler d-none d-xl-block", {
-              active: sidenavOpen,
-            })}
-            onClick={toggleSidenav}
-          >
-            <div className="sidenav-toggler-inner">
-              <i className="sidenav-toggler-line" />
-              <i className="sidenav-toggler-line" />
-              <i className="sidenav-toggler-line" />
-            </div>
-          </div>
-        </div>
+     
       </div>
       <div className="navbar-inner">
         <Collapse navbar isOpen={true}>

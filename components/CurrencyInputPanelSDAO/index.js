@@ -32,7 +32,7 @@ const CurrencyInputPanelSDAO = (props) => {
   };
 
   return (
-    <FormGroup className="my-4 w-100">
+    <FormGroup className="my-6 w-100" >
       <Typography size={12} weight={300} className="pl-1">
         {props.label}
       </Typography>

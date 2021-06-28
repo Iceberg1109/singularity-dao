@@ -67,7 +67,7 @@ function Admin({ router, children }) {
           routes={routes}
           logo={{
             innerLink: "/",
-            imgSrc: require("assets/img/brand/singdao.svg"),
+            imgSrc: require("assets/img/brand/logo_Beta1.svg"),
             imgAlt: "...",
           }}
           toggleSidenav={toggleSidenav}
