@@ -31,7 +31,7 @@ import React, { useEffect, useState } from "react";
 //   // },
 // ];
 
-function ForgePage(){
+function ForgePage() {
   const baskets = [
     {
       poolId: "SDAO-ETH",
@@ -55,29 +55,28 @@ function ForgePage(){
     // },
   ];
 
-  return null
-  
-  // return (
-  //   <Container className="my-4">
-  //     <Typography color="text1" size={32} weight={600}>
-  //       Liquidity
-  //     </Typography>
-  //     <Typography color="gray80" size={14}>
-  //       Select one of the liquidity pools available, then add liquidity and start to earn fees.
-  //     </Typography>
-  
-  //     <div className="py-4 mt-5">
-  //       <Row className="my-3">
-  //         {baskets.map((basket) => (
-  //           <Col lg={4} key={basket.poolId}>
-  //             <ForgeBasket title={basket.poolId} apy={basket.apy} tokens={basket.tokens} />
-  //           </Col>
-  //         ))}
-  //       </Row>
-  //     </div>
-  //   </Container>
-  // );
-};
+  return (
+    <Container className="my-4">
+      <Typography color="text1" size={32} weight={600}>
+        Liquidity
+      </Typography>
+      <Typography color="gray80" size={14}>
+        Select one of the liquidity pools available, then add liquidity and start to earn fees.
+      </Typography>
+    </Container>
+  );
+}
+
+// add the below after testing
+//     <div className="py-4 mt-5">
+//       <Row className="my-3">
+//         {baskets.map((basket) => (
+//           <Col lg={4} key={basket.poolId}>
+//             <ForgeBasket title={basket.poolId} apy={basket.apy} tokens={basket.tokens} />
+//           </Col>
+//         ))}
+//       </Row>
+//     </div>
 
 ForgePage.layout = Admin;
 
