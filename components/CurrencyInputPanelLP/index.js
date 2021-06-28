@@ -45,7 +45,7 @@ const CurrencyContainer = styled.div`
   top: 9px;
 `;
 
-const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabled }) => {
+const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabled, token }) => {
   const [focused, setFocused] = useState();
   const { library, account, network, chainId } = useUser();
   const [balance, setBalance] = useState("0");
