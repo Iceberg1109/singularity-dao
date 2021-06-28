@@ -1,7 +1,7 @@
 import { Col, Container, Row } from "reactstrap";
 import Admin from "layouts/Admin.js";
 import Typography from "../../components/Typography";
-// import ForgeBasket from "../../components/PoolBasket";
+import ForgeBasket from "../../components/PoolBasket";
 import React, { useEffect, useState } from "react";
 
 //["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
@@ -63,20 +63,18 @@ function ForgePage() {
       <Typography color="gray80" size={14}>
         Select one of the liquidity pools available, then add liquidity and start to earn fees.
       </Typography>
+      <div className="py-4 mt-5">
+      <Row className="my-3">
+        {baskets.map((basket) => (
+          <Col lg={4} key={basket.poolId}>
+            <ForgeBasket title={basket.poolId} apy={basket.apy} tokens={basket.tokens} />
+          </Col>
+        ))}
+      </Row>
+    </div>
     </Container>
   );
 }
-
-// add the below after testing
-//     <div className="py-4 mt-5">
-//       <Row className="my-3">
-//         {baskets.map((basket) => (
-//           <Col lg={4} key={basket.poolId}>
-//             <ForgeBasket title={basket.poolId} apy={basket.apy} tokens={basket.tokens} />
-//           </Col>
-//         ))}
-//       </Row>
-//     </div>
 
 ForgePage.layout = Admin;
 

@@ -176,8 +176,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   if (userLiquidityLoading || !poolAddress) {
     return (
       <Card className="p-4 forge-card">
-        <Skeleton circle height={50} width={50} className="mb-3" />
-        <Skeleton count={4} />
+        <p>Loading</p>
       </Card>
     );
   }
