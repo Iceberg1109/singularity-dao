@@ -14,7 +14,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import arrow from "assets/img/icons/arrow-right-short.svg"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,7 +108,7 @@ const Index = () => {
                   function. To provide liquidity you will need equal values of ETH and AGIX/SDAO.
                 </p>
                 <Link href="/swap">
-                  <a className="font-weight-bold text-purple mt-5">Buy SDAO -></a>
+                  <a className="font-weight-bold text-purple mt-5">Buy SDAO <img src={arrow}/></a>
                 </Link>
               </div>
             </Col>
@@ -135,7 +135,7 @@ const Index = () => {
                   liquidity provider remains entirely in control of the token.
                 </p>
                 <Link href="/pools">
-                  <a className="font-weight-bold text-purple mt-5">Get LP tokens -></a>
+                  <a className="font-weight-bold text-purple mt-5">Get LP tokens <img src={arrow}/></a>
                 </Link>
               </div>
             </Col>
@@ -161,7 +161,7 @@ const Index = () => {
                   your liquidity works double-time earning fees and farming yield.
                 </p>
                 <Link href="/farms">
-                  <a className="font-weight-bold text-purple mt-5">Farm now -></a>
+                  <a className="font-weight-bold text-purple mt-5">Farm now <img src={arrow}/></a>
                 </Link>
               </div>
             </Col>

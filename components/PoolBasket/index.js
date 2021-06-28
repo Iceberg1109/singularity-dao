@@ -195,7 +195,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       </Row>
       <div className="mt-2">
         <DetailLabel title="Liquidity" desc={`$ ${totalLiquidity}`} />
-        <DetailLabel title="APY(approx.)" desc={`${apy} %`} />
+        <DetailLabel title="APY (approx.)" desc={`${apy} %`} />
         <DetailLabel title="Your share" desc={`${userLiquidityShare} %`} />
         <DetailLabel title="Balance" desc={`${userLiqudityTokenBalance} SDAO LP`} />
       </div>
