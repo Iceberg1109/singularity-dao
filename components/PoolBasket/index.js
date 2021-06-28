@@ -13,7 +13,7 @@ import { ContractAddress } from "../../assets/constants/addresses";
 import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
 import web3 from "web3";
 import { Currencies, getErc20TokenById } from "../../utils/currencies";
-import { toast } from "react-toastify";
+import { toast } from 'react-nextjs-toast'
 import Skeleton from "react-loading-skeleton";
 
 // import { TOKEN_DAY_DATAS_QUERY } from "../../queries/tokenDailyAggregated";
@@ -66,7 +66,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
 
 
   if (userLiquidityError) {
-    toast(userLiquidityError.message, { type: "error" });
+    toast.notify(userLiquidityError.message, { type: "error" });
   }
 
   // console.table(ethPriceData?.bundles);
@@ -117,7 +117,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       // console.log();
     } catch (error) {
       console.log(title, "pair erorrrr", error);
-      toast(error.message, { type: "error" });
+      toast.notify(error.message, { type: "error" });
       // setShowError(true);
     }
   };

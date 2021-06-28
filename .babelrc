@@ -1,8 +1,6 @@
 {
   "presets": ["next/babel"],
-  //   "@emotion" must be the first plugin in your babel config plugins list.
   "plugins": [
-    "@emotion",
     [
       "babel-plugin-styled-components",
       {

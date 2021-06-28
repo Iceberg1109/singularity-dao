@@ -17,7 +17,7 @@ import Typography from "../Typography";
 import { LinkButton } from "../Buttons";
 import { useUser } from "components/UserContext";
 import { getBalance, getCurrencyById } from "../../utils/currencies";
-import { toast } from "react-toastify";
+import { toast } from 'react-nextjs-toast'
 
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
@@ -64,7 +64,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
       const balance = await getBalance(currencyId, account, { chainId, network, signer });
       setBalance(balance);
     } catch (error) {
-      toast("unable to fetch the latest balance", { type: "error" });
+      toast.notify("unable to fetch the latest balance", { type: "error" });
       console.log("error", error);
     }
   };

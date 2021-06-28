@@ -17,7 +17,7 @@ import { addSlippage, defaultApprovalSDAO, defaultGasLimit, getGasPrice, reduceS
 import { ContractAddress } from "../../assets/constants/addresses";
 import { Spinner } from "reactstrap";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
-import { toast } from "react-toastify";
+import { toast } from 'react-nextjs-toast'
 import SwapSuccessModal from "./SwapSuccessModal";
 import { useQuery } from "@apollo/client";
 import { ETH_PRICE_QUERY } from "../../queries/price";
@@ -148,7 +148,7 @@ const BuyPanel = () => {
       setPendingTxn(txn.hash);
       await txn.wait();
       setPendingTxn(undefined);
-      toast("Approval success: Please confirm the swap now");
+      toast.notify("Approval success: Please confirm the swap now");
     }
   };
 
@@ -205,10 +205,10 @@ const BuyPanel = () => {
       setPendingTxn(tx.hash);
       const receipt = await tx.wait();
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-      toast(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
+      toast.notify(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
       setShowSuccessModal(true);
     } catch (error) {
-      toast(`Operation Failed: ${error.message}`, { type: "error" });
+      toast.notify(`Operation Failed: ${error.message}`, { type: "error" });
       console.log("error", error);
     } finally {
       setSwapping(false);
