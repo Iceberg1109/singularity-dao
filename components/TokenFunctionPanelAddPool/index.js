@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row } from "reactstrap";
 import AddLiquidityPanel from "components/AddLiquidityPanel";
-// import PoolInfoPanel from "components/PoolInfoPanel";
+import PoolInfoPanel from "components/PoolInfoPanel";
 
 
 export default function TokenFunctionPanelAddPool({tokens, pairAddress}) {
