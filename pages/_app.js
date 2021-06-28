@@ -10,6 +10,8 @@ import { Web3Provider } from "@ethersproject/providers";
 import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-client";
 import { ToastContainer } from "react-toastify";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 
 // plugins styles from node_modules
 import "react-notification-alert/dist/animate.css";
@@ -27,6 +29,9 @@ import "assets/vendor/nucleo/css/nucleo.css";
 import "assets/scss/nextjs-argon-dashboard-pro.scss?v1.1.0";
 
 import ThemeProvider from "../theme";
+
+const key = "emotion";
+const emotionCache = createCache({ key });
 
 Router.events.on("routeChangeStart", (url) => {
   console.log(`Loading: ${url}`);
@@ -69,23 +74,28 @@ export default class MyApp extends App {
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
           <title>Singularity DAO</title>
         </Head>
-        <script type="text/javascript" src="https://singularitynet.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/sb53l8/b/2/bc54840da492f9ca037209037ef0522a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-GB&collectorId=cf55b16d"></script>
+        <script
+          type="text/javascript"
+          src="https://singularitynet.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/sb53l8/b/2/bc54840da492f9ca037209037ef0522a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-GB&collectorId=cf55b16d"
+        ></script>
         <ThemeProvider>
           <Web3ReactProvider getLibrary={this.getLibrary}>
             <UserProvider>
               <Layout>
                 <ApolloProvider client={client}>
-                  <Component {...pageProps} />
-                  <ToastContainer
-                    position="top-right"
-                    autoClose={8000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    draggable={false}
-                    pauseOnVisibilityChange
-                    closeOnClick
-                    pauseOnHover
-                  />
+                  <CacheProvider value={emotionCache}>
+                    <Component {...pageProps} />
+                    <ToastContainer
+                      position="top-right"
+                      autoClose={8000}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      draggable={false}
+                      pauseOnVisibilityChange
+                      closeOnClick
+                      pauseOnHover
+                    />
+                  </CacheProvider>
                 </ApolloProvider>
               </Layout>
             </UserProvider>
