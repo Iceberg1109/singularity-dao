@@ -1,6 +1,6 @@
 import { Col, Container, Row } from "reactstrap";
 import Admin from "layouts/Admin.js";
-// import Typography from "../../components/Typography";
+import Typography from "../../components/Typography";
 // import ForgeBasket from "../../components/PoolBasket";
 import React, { useEffect, useState } from "react";
 
@@ -57,12 +57,12 @@ function ForgePage() {
 
   return (
     <Container className="my-4">
-      {/* <Typography color="text1" size={32} weight={600}>
+      <Typography color="text1" size={32} weight={600}>
         Liquidity
       </Typography>
       <Typography color="gray80" size={14}>
         Select one of the liquidity pools available, then add liquidity and start to earn fees.
-      </Typography> */}
+      </Typography>
     </Container>
   );
 }
