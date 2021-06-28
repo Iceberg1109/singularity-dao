@@ -1,6 +1,6 @@
 // Hook
 import { useEffect, useState } from "react";
-import { debounceDelay } from "../constants";
+import { debounceDelay } from "../constants/time";
 
 export default function useDebounce(value, delay = debounceDelay, dependencies = []) {
   // State and setters for debounced value
