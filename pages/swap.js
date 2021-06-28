@@ -17,45 +17,45 @@ import AirdropABI from "../assets/constants/abi/AirdropABI.json";
 import TokenFunctionPanel from "../components/TokenFunctionPanelSwap/index.js";
 import { getGasPrice } from "../utils/ethereum";
 
-const GradientRow = styled(Row)`
-  background: ${({ theme }) => theme.color.gradient2};
-  border-radius: 8px;
-  padding: 24px 28px;
-`;
+// const GradientRow = styled(Row)`
+//   background: ${({ theme }) => theme.color.gradient2};
+//   border-radius: 8px;
+//   padding: 24px 28px;
+// `;
 
-const DetailTitle = styled(Typography)`
-  color: ${({ theme }) => theme.color.grayLight};
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 10px;
-`;
+// const DetailTitle = styled(Typography)`
+//   color: ${({ theme }) => theme.color.grayLight};
+//   font-size: 14px;
+//   font-weight: 600;
+//   margin-bottom: 10px;
+// `;
 
-const StepTitle = styled(GradientTypography)`
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 15px;
-`;
+// const StepTitle = styled(GradientTypography)`
+//   font-size: 18px;
+//   font-weight: 600;
+//   margin-bottom: 15px;
+// `;
 
-const StepDescription = styled(Typography)`
-  font-size: 14px;
-  padding-left: 6px;
-`;
+// const StepDescription = styled(Typography)`
+//   font-size: 14px;
+//   padding-left: 6px;
+// `;
 
-const SubCard = styled(Card)`
-  padding: 32px 24px;
-  margin-bottom: 0px;
-  height: 100%;
-`;
+// const SubCard = styled(Card)`
+//   padding: 32px 24px;
+//   margin-bottom: 0px;
+//   height: 100%;
+// `;
 
-const SubTitle = styled(Typography)`
-  font-size: 20px;
-  font-weight: 600;
-`;
+// const SubTitle = styled(Typography)`
+//   font-size: 20px;
+//   font-weight: 600;
+// `;
 
-const AddressInput = styled(Input)`
-  max-width: 420px;
-  font-size: 18px;
-`;
+// const AddressInput = styled(Input)`
+//   max-width: 420px;
+//   font-size: 18px;
+// `;
 
 let minABI = [
   // balanceOf

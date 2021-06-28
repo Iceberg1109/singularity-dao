@@ -13,7 +13,14 @@ import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route } f
 
 import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
-import { addSlippage, defaultApprovalSDAO, defaultGasLimit, getGasPrice, reduceSlippage } from "../../utils/ethereum";
+import {
+  addSlippage,
+  defaultApprovalSDAO,
+  defaultGasLimit,
+  getGasPrice,
+  reduceSlippage,
+  unitBlockTime,
+} from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { Spinner } from "reactstrap";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
@@ -23,6 +30,8 @@ import { useQuery } from "@apollo/client";
 import { ETH_PRICE_QUERY } from "../../queries/price";
 import { toast } from "react-toastify";
 import { sanitizeNumber } from "../../utils/input";
+import useInterval from "../../utils/hooks/useInterval";
+import BigNumber from "bignumber.js";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -46,9 +55,11 @@ const BuyPanel = () => {
   const [toAmount, setToAmount] = useState("0");
   const [fromAmount, setFromAmount] = useState("0");
   const [swapping, setSwapping] = useState(false);
+  const [approving, setApproving] = useState(false);
   const [pendingTxn, setPendingTxn] = useState();
   const [fromCurrency, setFromCurrency] = useState(Currencies.ETH.id);
   const [toCurrency, setToCurrency] = useState(Currencies.SDAO.id);
+  const [fromTokenAllowance, setFromTokenAllowance] = useState("0");
   const [conversionRate, setConversionRate] = useState(undefined);
   const slippage = 0.5;
   const fee = 0.3;
@@ -73,6 +84,8 @@ const BuyPanel = () => {
     const route = await getSwappingRoute();
     setSwappingRoute(route);
   }, [fromCurrency, toCurrency]);
+
+  useInterval(() => updateFromTokenAllowance(), unitBlockTime, [account, fromCurrency]);
 
   const getTokens = useCallback(() => {
     const fromToken = getUniswapToken(fromCurrency);
@@ -103,11 +116,22 @@ const BuyPanel = () => {
     return trade.executionPrice.toSignificant(6);
   };
 
+  const updateFromTokenAllowance = async () => {
+    if (!account || fromCurrency === Currencies.ETH.id) return;
+    if (!library) return;
+    const signer = await library.getSigner(account);
+    const fromToken = getErc20TokenById(fromCurrency, { signer });
+
+    const allowance = await fromToken.allowance(account, ContractAddress.UNISWAP);
+    setFromTokenAllowance(allowance.toString());
+  };
+
   const handleFromAmountChange = async (value) => {
     value = sanitizeNumber(value);
     // VALIDATION
 
     if (!value) return resetAmounts();
+    if (value === ".") return setFromAmount("0.");
     // CONVERSION
     setFromAmount(value);
     setToAmount("calculating ...");
@@ -121,6 +145,7 @@ const BuyPanel = () => {
     // VALIDATION
 
     if (!value) return resetAmounts();
+    if (value === ".") return setToAmount("0.");
     // CONVERSION
     setToAmount(value);
     setFromAmount("calculating...");
@@ -129,20 +154,33 @@ const BuyPanel = () => {
     setFromAmount(price.toFixed(18));
   };
 
+  const approveTokens = async () => {
+    try {
+      if (!library) return;
+      const signer = await library.getSigner(account);
+      const fromToken = getErc20TokenById(fromCurrency, { signer });
+
+      setApproving(true);
+      const txn = await fromToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
+      setPendingTxn(txn.hash);
+      await txn.wait();
+      setPendingTxn(undefined);
+      toast("Approval success: Please confirm the swap now");
+    } catch (error) {
+      throw error;
+    } finally {
+      setApproving(false);
+    }
+  };
+
   const validateSDAOAllowanceForUniswap = async () => {
     if (!library) return;
     const signer = await library.getSigner(account);
     const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
 
     const allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
-    console.log("allowance", allowance.toString());
-    console.log("to be transferred", web3.utils.toWei(fromAmount, "ether"));
     if (allowance.lte(web3.utils.toWei(fromAmount, "ether"))) {
-      const txn = await sdaoToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
-      setPendingTxn(txn.hash);
-      await txn.wait();
-      setPendingTxn(undefined);
-      toast("Approval success: Please confirm the swap now");
+      await approveTokens();
     }
   };
 
@@ -242,6 +280,14 @@ const BuyPanel = () => {
     return usdValue;
   }, [fromCurrency, toCurrency, fromAmount, toAmount]);
 
+  const showApproval = () => {
+    if (fromCurrency === Currencies.ETH.id || !sanitizeNumber(fromAmount) || isNaN(sanitizeNumber(fromAmount)))
+      return false;
+    const allowance = BigNumber(fromTokenAllowance);
+    const amount = BigNumber(web3.utils.toWei(sanitizeNumber(fromAmount), "ether"));
+    return allowance.comparedTo(amount) !== 1;
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between">
@@ -275,15 +321,22 @@ const BuyPanel = () => {
         <Typography size={14}>Slippage:</Typography>
         <Typography size={14}>{slippage.toFixed(2)} %</Typography>
       </FeeBlock>
-      {/* {conversionRate ? (
-        <Typography>
-          1 {fromCurrency} => {conversionRate} {toCurrency}
-        </Typography>
-      ) : null} */}
-      <div className="d-flex justify-content-center">
+      {showApproval() ? (
+        <div className="d-flex justify-content-center">
+          <GradientButton onClick={approveTokens} disabled={swapping || approving} style={{ width: 180, height: 56 }}>
+            Approve
+            {approving ? (
+              <span style={{ lineHeight: "35px" }}>
+                <Spinner color="white" size="sm" className="ml-2" />
+              </span>
+            ) : null}
+          </GradientButton>
+        </div>
+      ) : null}
+      <div className="d-flex justify-content-center mt-4">
         <GradientButton
           onClick={handleSwapping}
-          disabled={swapping}
+          disabled={swapping || approving}
           style={{ width: 130, height: 56 }}
           className="d-flex align-middle"
         >
