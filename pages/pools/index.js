@@ -17,7 +17,7 @@ const baskets = [
     poolId: "AGIX-ETH",
     apy: "4.82",
     tokens: {
-      1: ["0x5B7533812759B45C2B44C19e320ba2cD2681b542", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
+      1: ["0x5b7533812759b45c2b44c19e320ba2cd2681b542", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
       3: ["0xA1e841e8F770E5c9507E2f8cfd0aA6f73009715d", "0xc778417e063141139fce010982780140aa0cd5ab"],
     },
   },
