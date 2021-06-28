@@ -9,11 +9,13 @@ import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
 import web3 from "web3";
 import { useUser } from "../UserContext";
 import { ethers } from "ethers";
-import { defaultGasLimit, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
+import { defaultGasLimit, getGasPrice, defaultApprovalSDAO, unitBlockTime } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
 import { toast } from "react-toastify";
 import { sanitizeNumber } from "../../utils/input";
+import useInterval from "../../utils/hooks/useInterval";
+import BigNumber from "bignumber.js";
 
 const fromCurrency = Currencies.SDAO.id;
 const toCurrency = Currencies.ETH.id;
@@ -30,7 +32,9 @@ const AddLiquidityPanel = () => {
   const { library, account, network, chainId } = useUser();
   const [pendingTxn, setPendingTxn] = useState();
   const [addingLiquidity, setAddingLiquidity] = useState(false);
+  const [approving, setApproving] = useState(false);
   const [swappingRoute, setSwappingRoute] = useState(undefined);
+  const [fromTokenAllowance, setFromTokenAllowance] = useState("0");
 
   useEffect(async () => {
     const route = await getSwappingRoute();
@@ -42,6 +46,18 @@ const AddLiquidityPanel = () => {
     const route = await getSwappingRoute();
     setSwappingRoute(route);
   }, [fromCurrency, toCurrency]);
+
+  useInterval(() => updateFromTokenAllowance(), unitBlockTime, [account, fromCurrency]);
+
+  const updateFromTokenAllowance = async () => {
+    if (!account || fromCurrency === Currencies.ETH.id) return;
+    if (!library) return;
+    const signer = await library.getSigner(account);
+    const fromToken = getErc20TokenById(fromCurrency, { signer });
+
+    const allowance = await fromToken.allowance(account, ContractAddress.UNISWAP);
+    setFromTokenAllowance(allowance.toString());
+  };
 
   const getTokens = useCallback(() => {
     const fromToken = getUniswapToken(fromCurrency);
@@ -96,24 +112,24 @@ const AddLiquidityPanel = () => {
     setToAmount("0");
   };
 
-  const approveLiquidity = async () => {
+  const approveTokens = async () => {
     try {
+      if (!library) return;
       const signer = await library.getSigner(account);
-      const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
-      const gasPrice = await getGasPrice();
-      const tx = await tokenContract.approve(ContractAddress.UNISWAP, defaultApprovalSDAO, {
-        gasLimit: defaultGasLimit,
-        gasPrice,
-      });
-      setPendingTxn(tx.hash);
-      console.log(`Transaction hash: ${tx.hash}`);
-      const receipt = await tx.wait();
-      console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+      const fromToken = getErc20TokenById(fromCurrency, { signer });
+
+      setApproving(true);
+      const txn = await fromToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
+      setPendingTxn(txn.hash);
+      await txn.wait();
+      setPendingTxn(undefined);
+      updateFromTokenAllowance();
+      toast("Approval success: Please confirm the swap now", { type: "success" });
     } catch (error) {
-      console.log("unable to approve");
+      toast(`Failed to Approve: ${error.message}`, { type: "error" });
       throw error;
     } finally {
-      setPendingTxn(undefined);
+      setApproving(false);
     }
   };
 
@@ -177,6 +193,14 @@ const AddLiquidityPanel = () => {
     }
   };
 
+  const showApproval = () => {
+    if (fromCurrency === Currencies.ETH.id || !sanitizeNumber(fromAmount) || isNaN(sanitizeNumber(fromAmount)))
+      return false;
+    const allowance = BigNumber(fromTokenAllowance);
+    const amount = BigNumber(web3.utils.toWei(sanitizeNumber(fromAmount), "ether"));
+    return allowance.comparedTo(amount) !== 1;
+  };
+
   return (
     <Card className="p-4" style={{ borderRadius: 8 }}>
       <Typography color="text1" size={20} weight={600} className="d-flex justify-content-center">
@@ -196,12 +220,29 @@ const AddLiquidityPanel = () => {
         selectedCurrency={toCurrency}
         disabled={!swappingRoute}
       />
-      <div className="d-flex justify-content-center">
+      {showApproval() ? (
+        <div className="d-flex justify-content-center">
+          <GradientButton
+            onClick={approveTokens}
+            disabled={!toAmount || addingLiquidity || approving}
+            style={{ width: 186, height: 56 }}
+            className="d-flex align-middle justify-content-center"
+          >
+            <span style={{ lineHeight: "40px" }}>Approve</span>
+            {approving ? (
+              <span style={{ lineHeight: "35px" }}>
+                <Spinner color="white" size="sm" className="ml-2" />
+              </span>
+            ) : null}
+          </GradientButton>
+        </div>
+      ) : null}
+      <div className="d-flex justify-content-center mt-4">
         <GradientButton
           onClick={handleClick}
-          disabled={!toAmount || addingLiquidity}
+          disabled={!toAmount || toAmount <= 0 || addingLiquidity || approving || showApproval()}
           style={{ width: addingLiquidity ? 212 : 186, height: 56 }}
-          className="d-flex align-middle"
+          className="d-flex align-middle justify-content-center"
         >
           <span style={{ lineHeight: "40px" }}>Add Liquidity</span>
           {addingLiquidity ? (
