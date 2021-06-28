@@ -9,7 +9,7 @@ import { abi as DynasetABI } from "assets/constants/abi/Dynaset.json";
 import { useUser } from "components/UserContext";
 import { ethers } from "ethers";
 import { Fetcher, Token } from "@uniswap/sdk";
-// import TokenFunctionPanelAddPool from "components/TokenFunctionPanelAddPool";
+import TokenFunctionPanelAddPool from "components/TokenFunctionPanelAddPool";
 
 function Add() {
   const router = useRouter();
@@ -92,7 +92,7 @@ function Add() {
         earn fees proportional to your share of the pool, and can be redeemed at any time.
       </Typography>
       <a>Learn more</a>
-      {/* <TokenFunctionPanelAddPool tokens={tokens} pairAddress={pairAddress} /> */}
+      <TokenFunctionPanelAddPool tokens={tokens} pairAddress={pairAddress} />
     </Container>
   );
 }
