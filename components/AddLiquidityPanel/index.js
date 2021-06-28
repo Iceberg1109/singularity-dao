@@ -9,7 +9,6 @@ import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
 import web3 from "web3";
 import { useUser } from "../UserContext";
 import { ethers } from "ethers";
-import axios from "axios";
 import { defaultGasLimit, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
