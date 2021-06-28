@@ -31,6 +31,9 @@ const PoolInfoPanel = ({ pairAddress }) => {
   });
 
   console.log(pairAddress, "PoolInfoPanel", data);
+  if(!data){
+    return null
+  }
 
   // if (!pairAddress || loading) {
   //   return (
