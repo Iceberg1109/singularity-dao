@@ -13,7 +13,7 @@ import axios from "axios";
 import { defaultGasLimit, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
-import { toast } from 'react-nextjs-toast'
+
 
 const fromCurrency = Currencies.SDAO.id;
 const toCurrency = Currencies.ETH.id;
@@ -142,7 +142,7 @@ const AddLiquidityPanel = () => {
       console.log(`Transaction hash: ${tx.hash}`);
       const receipt = await tx.wait();
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-      toast.notify(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
+      // // toast.notify(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
     } catch (error) {
       console.log("unable to add liquidity");
       throw error;
@@ -163,7 +163,7 @@ const AddLiquidityPanel = () => {
       setPendingTxn(txn.hash);
       await txn.wait();
       setPendingTxn(undefined);
-      toast.notify("Approval success: Please confirm the add-liquidity now");
+      // toast.notify("Approval success: Please confirm the add-liquidity now");
     }
   };
 
@@ -173,7 +173,7 @@ const AddLiquidityPanel = () => {
       await approveIfInsufficientAllowance();
       await buyLiquidity();
     } catch (error) {
-      toast.notify(`Operation Failed: ${error.message}`, { type: "error" });
+      // toast.notify(`Operation Failed: ${error.message}`, { type: "error" });
       console.log("errrrrrrrrrr", error);
     } finally {
       setAddingLiquidity(false);

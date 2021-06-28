@@ -9,7 +9,7 @@ import { abi as DynasetABI } from "../../../assets/constants/abi/Dynaset.json";
 import { useUser } from "components/UserContext";
 import { ethers } from "ethers";
 import { Fetcher, Token } from "@uniswap/sdk";
-import { toast } from 'react-nextjs-toast'
+
 
 
 function Add() {
@@ -79,7 +79,7 @@ function Add() {
       console.log();
     } catch (error) {
       console.log("pair erorrrr", error);
-      toast.notify(error.message, { type: "error" });
+      // toast.notify(error.message, { type: "error" });
     }
   };
 

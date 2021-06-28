@@ -6,7 +6,7 @@ import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelSDAO";
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
 import Typography from "../Typography";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
-import { toast } from 'react-nextjs-toast'
+
 
 import { GradientButton } from "../Buttons";
 import PropTypes from "prop-types";
@@ -87,7 +87,7 @@ const AddLiquidityPanel = ({ type, token, dynasetid }) => {
     console.log(`Transaction hash: ${tx.hash}`);
     const receipt = await tx.wait();
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-    toast.notify("Approval success: Please confirm the add-liquidity now");
+    // toast.notify("Approval success: Please confirm the add-liquidity now");
   };
 
   const buy = async () => {
@@ -129,9 +129,9 @@ const AddLiquidityPanel = ({ type, token, dynasetid }) => {
 
       const receipt = await tx.wait();
 
-      toast.notify(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
+      // toast.notify(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
     } catch (error) {
-      toast.notify(`Operation Failed: ${error.message}`, { type: "error" });
+      // toast.notify(`Operation Failed: ${error.message}`, { type: "error" });
       console.log("error", error);
     }
   };

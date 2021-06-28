@@ -9,7 +9,6 @@ import PageChange from "components/PageChange/PageChange.js";
 import { Web3Provider } from "@ethersproject/providers";
 import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-client";
-import { ToastContainer } from "react-nextjs-toast";
 
 // plugins styles from node_modules
 import "react-notification-alert/dist/animate.css";
@@ -79,7 +78,6 @@ export default class MyApp extends App {
               <Layout>
                 <ApolloProvider client={client}>
                   <Component {...pageProps} />
-                  <ToastContainer position="top" align="right" />
                 </ApolloProvider>
               </Layout>
             </UserProvider>
