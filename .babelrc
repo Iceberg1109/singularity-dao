@@ -1,11 +1,18 @@
 {
-    "presets": ["next/babel"],
-    "plugins": [["babel-plugin-styled-components", {
+  "presets": ["next/babel"],
+  //   "@emotion" must be the first plugin in your babel config plugins list.
+  "plugins": [
+    "@emotion",
+    [
+      "babel-plugin-styled-components",
+      {
         "ssr": true,
         "minify": true,
         "transpileTemplateLiterals": true,
         "pure": true,
         "displayName": true,
         "preprocess": false
-    }]]
+      }
+    ]
+  ]
 }
