@@ -13,7 +13,7 @@ import { defaultGasLimit, getGasPrice, defaultApprovalSDAO } from "../../utils/e
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
 import { toast } from "react-toastify";
-
+import { sanitizeNumber } from "../../utils/input";
 
 const fromCurrency = Currencies.SDAO.id;
 const toCurrency = Currencies.ETH.id;
@@ -72,12 +72,8 @@ const AddLiquidityPanel = () => {
   };
 
   const handleFromAmountChange = async (value) => {
-    console.log("value", value);
-    if (value == 0) {
-      setFromAmount(0);
-      setToAmount(0);
-      return;
-    }
+    value = sanitizeNumber(value);
+    if (!value) return resetAmounts();
     setFromAmount(value);
     setToAmount("Calculating ...");
     const tradeExecutionPrice = await getConversionRate(value, conversionTypes.FROM);
@@ -86,17 +82,18 @@ const AddLiquidityPanel = () => {
   };
 
   const handleToAmountChange = async (value) => {
-    console.log("value", value);
-    if (value == 0) {
-      setFromAmount(0);
-      setToAmount(0);
-      return;
-    }
+    value = sanitizeNumber(value);
+    if (!value) return resetAmounts();
     setToAmount(value);
     setFromAmount("Calculating ...");
     const tradeExecutionPrice = await getConversionRate(value, conversionTypes.TO);
     const price = value / tradeExecutionPrice;
     setFromAmount(price);
+  };
+
+  const resetAmounts = () => {
+    setFromAmount("0");
+    setToAmount("0");
   };
 
   const approveLiquidity = async () => {
