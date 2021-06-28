@@ -21,6 +21,7 @@ import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/curr
 import SwapSuccessModal from "./SwapSuccessModal";
 import { useQuery } from "@apollo/client";
 import { ETH_PRICE_QUERY } from "../../queries/price";
+import { toast } from "react-toastify";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -148,7 +149,7 @@ const BuyPanel = () => {
       setPendingTxn(txn.hash);
       await txn.wait();
       setPendingTxn(undefined);
-      // toast.notify("Approval success: Please confirm the swap now");
+      toast("Approval success: Please confirm the swap now");
     }
   };
 
@@ -205,10 +206,10 @@ const BuyPanel = () => {
       setPendingTxn(tx.hash);
       const receipt = await tx.wait();
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-      // toast.notify(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
+      toast(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
       setShowSuccessModal(true);
     } catch (error) {
-      // toast.notify(`Operation Failed: ${error.message}`, { type: "error" });
+      toast(`Operation Failed: ${error.message}`, { type: "error" });
       console.log("error", error);
     } finally {
       setSwapping(false);

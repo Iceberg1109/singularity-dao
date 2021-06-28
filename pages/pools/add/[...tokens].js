@@ -10,6 +10,7 @@ import { useUser } from "components/UserContext";
 import { ethers } from "ethers";
 import { Fetcher, Token } from "@uniswap/sdk";
 import TokenFunctionPanelAddPool from "components/TokenFunctionPanelAddPool";
+import { toast } from "react-toastify";
 
 function Add() {
   const router = useRouter();
@@ -78,7 +79,7 @@ function Add() {
       console.log();
     } catch (error) {
       console.log("pair erorrrr", error);
-      // toast.notify(error.message, { type: "error" });
+      toast(error.message, { type: "error" });
     }
   };
 

@@ -18,6 +18,7 @@ import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { defaultGasLimit, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
+import { toast } from "react-toastify";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -87,7 +88,7 @@ const AddLiquidityPanel = ({ type, token, dynasetid }) => {
     console.log(`Transaction hash: ${tx.hash}`);
     const receipt = await tx.wait();
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-    // toast.notify("Approval success: Please confirm the add-liquidity now");
+    toast("Approval success: Please confirm the add-liquidity now");
   };
 
   const buy = async () => {
@@ -129,9 +130,9 @@ const AddLiquidityPanel = ({ type, token, dynasetid }) => {
 
       const receipt = await tx.wait();
 
-      // toast.notify(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
+      toast(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
     } catch (error) {
-      // toast.notify(`Operation Failed: ${error.message}`, { type: "error" });
+      toast(`Operation Failed: ${error.message}`, { type: "error" });
       console.log("error", error);
     }
   };

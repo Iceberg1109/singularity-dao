@@ -21,6 +21,7 @@ import BigNumber from "bignumber.js";
 import { useQuery } from "@apollo/client";
 import { USER_LIQUIDITY_QUERY } from "../../queries/liquidity";
 import { unitBlockTime } from "../../utils/ethereum";
+import { toast } from "react-toastify";
 
 // const CustomProgress = styled(Progress)`
 //   .progress-bar {
@@ -63,7 +64,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   useEffect(() => userLiquidityRefetch(), [chainId]);
 
   if (userLiquidityError) {
-    // toast.notify(userLiquidityError.message, { type: "error" });
+    toast(userLiquidityError.message, { type: "error" });
   }
 
   // console.table(ethPriceData?.bundles);
@@ -114,7 +115,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       // console.log();
     } catch (error) {
       console.log(title, "pair erorrrr", error);
-      // toast.notify(error.message, { type: "error" });
+      toast(error.message, { type: "error" });
       // setShowError(true);
     }
   };

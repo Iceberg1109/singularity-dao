@@ -9,7 +9,7 @@ import PageChange from "components/PageChange/PageChange.js";
 import { Web3Provider } from "@ethersproject/providers";
 import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-client";
-
+import { ToastContainer } from "react-toastify";
 // plugins styles from node_modules
 import "react-notification-alert/dist/animate.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
@@ -24,7 +24,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/vendor/nucleo/css/nucleo.css";
 // core styles
 import "assets/scss/nextjs-argon-dashboard-pro.scss?v1.1.0";
-
+import "react-toastify/dist/ReactToastify.css";
 import ThemeProvider from "../theme";
 
 Router.events.on("routeChangeStart", (url) => {
@@ -78,6 +78,16 @@ export default class MyApp extends App {
               <Layout>
                 <ApolloProvider client={client}>
                   <Component {...pageProps} />
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={8000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    draggable={false}
+                    pauseOnVisibilityChange
+                    closeOnClick
+                    pauseOnHover
+                  />
                 </ApolloProvider>
               </Layout>
             </UserProvider>
