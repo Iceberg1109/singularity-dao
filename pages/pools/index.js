@@ -4,8 +4,6 @@ import Typography from "../../components/Typography";
 import ForgeBasket from "../../components/PoolBasket";
 import React, { useEffect, useState } from "react";
 
-//["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xc778417e063141139fce010982780140aa0cd5ab"],
-
 const baskets = [
   {
     poolId: "SDAO-ETH",
@@ -19,8 +17,8 @@ const baskets = [
     poolId: "AGIX-ETH",
     apy: "4.82",
     tokens: {
-      1: ["0x993864e43caa7f7f12953ad6feb1d1ca635b875f", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
-      3: ["0x5e94577b949a56279637ff74dfcff2c28408f049", "0xa898150fef6ac506476e70f9bf1c03a11b55bdf9"],
+      1: ["0x5B7533812759B45C2B44C19e320ba2cD2681b542", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"],
+      3: ["0xA1e841e8F770E5c9507E2f8cfd0aA6f73009715d", "0xc778417e063141139fce010982780140aa0cd5ab"],
     },
   },
 ];
