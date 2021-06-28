@@ -22,6 +22,7 @@ import SwapSuccessModal from "./SwapSuccessModal";
 import { useQuery } from "@apollo/client";
 import { ETH_PRICE_QUERY } from "../../queries/price";
 import { toast } from "react-toastify";
+import { sanitizeNumber } from "../../utils/input";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -31,14 +32,6 @@ const FeeBlock = styled(Row)`
   margin: 20px 0;
   padding: 8px 0;
 `;
-
-const sanitizeNumber = (number) =>
-  `${number}`
-    .replace(/[^0-9.]/g, "")
-    .replace(/\b0+/g, "")
-    .split(".")
-    .slice(0, 2)
-    .join(".");
 
 const memoizedRoute = {};
 const setMemoizedRoute = (fromAddress, toAddress, value) => (memoizedRoute[`${fromAddress}_${toAddress}`] = value);
