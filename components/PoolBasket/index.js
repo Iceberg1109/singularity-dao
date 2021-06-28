@@ -1,18 +1,18 @@
-import { Card, Col, Progress, Row } from "reactstrap";
-import styled from "styled-components";
+import { Card, Col, Row } from "reactstrap";
+// import styled from "styled-components";
 import { OutlinedButton } from "../Buttons";
 import Typography from "../Typography";
 import { useRouter } from "next/router";
 import { DetailLabel } from "../TokenFunctionPanelStake/Label";
-import { ChainId, Token, WETH, Fetcher } from "@uniswap/sdk";
-import IUniswapV2ERC20 from "@uniswap/v2-core/build/IUniswapV2ERC20.json";
+import { Token, Fetcher } from "@uniswap/sdk";
+// import IUniswapV2ERC20 from "@uniswap/v2-core/build/IUniswapV2ERC20.json";
 import { useUser } from "../UserContext";
 import { useCallback, useEffect, useState } from "react";
-import { ethers } from "ethers";
-import { ContractAddress } from "../../assets/constants/addresses";
-import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
-import web3 from "web3";
-import { Currencies, getErc20TokenById } from "../../utils/currencies";
+// import { ethers } from "ethers";
+// import { ContractAddress } from "../../assets/constants/addresses";
+// import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
+// import web3 from "web3";
+// import { Currencies, getErc20TokenById } from "../../utils/currencies";
 
 import Skeleton from "react-loading-skeleton";
 
@@ -24,13 +24,13 @@ import { useQuery } from "@apollo/client";
 import { USER_LIQUIDITY_QUERY } from "../../queries/liquidity";
 import { unitBlockTime } from "../../utils/ethereum";
 
-const CustomProgress = styled(Progress)`
-  .progress-bar {
-    background-color: ${({ theme }) => `${theme.color.interactive3} !important`};
-  }
-  height: 8px !important;
-  margin-bottom: 10px !important;
-`;
+// const CustomProgress = styled(Progress)`
+//   .progress-bar {
+//     background-color: ${({ theme }) => `${theme.color.interactive3} !important`};
+//   }
+//   height: 8px !important;
+//   margin-bottom: 10px !important;
+// `;
 
 const ForgeBasket = ({ title, apy, tokens }) => {
   const router = useRouter();
@@ -63,7 +63,6 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   });
 
   useEffect(() => userLiquidityRefetch(), [chainId]);
-
 
   if (userLiquidityError) {
     // toast.notify(userLiquidityError.message, { type: "error" });
