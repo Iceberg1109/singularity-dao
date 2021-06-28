@@ -10,9 +10,9 @@ export default function TokenFunctionPanelAddPool({tokens, pairAddress}) {
       <Col lg={7}>
         <AddLiquidityPanel tokens={tokens} />
       </Col>
-      {/* <Col lg={5}>
+      <Col lg={5}>
         <PoolInfoPanel pairAddress={pairAddress} />
-      </Col> */}
+      </Col>
     </Row>
   );
 }
