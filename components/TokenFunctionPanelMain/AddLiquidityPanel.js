@@ -6,7 +6,7 @@ import CurrencyInputPanelSDAO from "../../components/CurrencyInputPanelSDAO";
 import arrowDownIcon from "../../assets/img/icons/arrow-down.png";
 import Typography from "../Typography";
 import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
-import { toast } from "react-toastify";
+
 
 import { GradientButton } from "../Buttons";
 import PropTypes from "prop-types";
@@ -18,6 +18,7 @@ import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
 import { defaultGasLimit, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
+import { toast } from "react-toastify";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};

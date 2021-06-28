@@ -19,6 +19,7 @@ import { useUser } from "components/UserContext";
 import { getBalance, getCurrencyById } from "../../utils/currencies";
 import { toast } from "react-toastify";
 
+
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
   font-weight: 600;

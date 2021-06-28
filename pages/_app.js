@@ -10,7 +10,6 @@ import { Web3Provider } from "@ethersproject/providers";
 import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-client";
 import { ToastContainer } from "react-toastify";
-
 // plugins styles from node_modules
 import "react-notification-alert/dist/animate.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
@@ -20,12 +19,12 @@ import "sweetalert2/dist/sweetalert2.min.css";
 import "select2/dist/css/select2.min.css";
 import "quill/dist/quill.core.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import "react-toastify/dist/ReactToastify.css";
+
 // plugins styles downloaded
 import "assets/vendor/nucleo/css/nucleo.css";
 // core styles
 import "assets/scss/nextjs-argon-dashboard-pro.scss?v1.1.0";
-
+import "react-toastify/dist/ReactToastify.css";
 import ThemeProvider from "../theme";
 
 Router.events.on("routeChangeStart", (url) => {
@@ -69,7 +68,10 @@ export default class MyApp extends App {
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
           <title>Singularity DAO</title>
         </Head>
-        <script type="text/javascript" src="https://singularitynet.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/sb53l8/b/2/bc54840da492f9ca037209037ef0522a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-GB&collectorId=cf55b16d"></script>
+        <script
+          type="text/javascript"
+          src="https://singularitynet.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/sb53l8/b/2/bc54840da492f9ca037209037ef0522a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-GB&collectorId=cf55b16d"
+        ></script>
         <ThemeProvider>
           <Web3ReactProvider getLibrary={this.getLibrary}>
             <UserProvider>

@@ -17,10 +17,11 @@ import { addSlippage, defaultApprovalSDAO, defaultGasLimit, getGasPrice, reduceS
 import { ContractAddress } from "../../assets/constants/addresses";
 import { Spinner } from "reactstrap";
 import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
-import { toast } from "react-toastify";
+
 import SwapSuccessModal from "./SwapSuccessModal";
 import { useQuery } from "@apollo/client";
 import { ETH_PRICE_QUERY } from "../../queries/price";
+import { toast } from "react-toastify";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};

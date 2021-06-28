@@ -1,20 +1,18 @@
-import { Card, Col, Progress, Row } from "reactstrap";
-import styled from "styled-components";
+import { Card, Col, Row } from "reactstrap";
+// import styled from "styled-components";
 import { OutlinedButton } from "../Buttons";
 import Typography from "../Typography";
 import { useRouter } from "next/router";
 import { DetailLabel } from "../TokenFunctionPanelStake/Label";
-import { ChainId, Token, WETH, Fetcher } from "@uniswap/sdk";
-import IUniswapV2ERC20 from "@uniswap/v2-core/build/IUniswapV2ERC20.json";
+import { Token, Fetcher } from "@uniswap/sdk";
+// import IUniswapV2ERC20 from "@uniswap/v2-core/build/IUniswapV2ERC20.json";
 import { useUser } from "../UserContext";
 import { useCallback, useEffect, useState } from "react";
-import { ethers } from "ethers";
-import { ContractAddress } from "../../assets/constants/addresses";
-import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
-import web3 from "web3";
-import { Currencies, getErc20TokenById } from "../../utils/currencies";
-import { toast } from "react-toastify";
-import Skeleton from "react-loading-skeleton";
+// import { ethers } from "ethers";
+// import { ContractAddress } from "../../assets/constants/addresses";
+// import StakingRewardABI from "../../assets/constants/abi/StakingReward.json";
+// import web3 from "web3";
+// import { Currencies, getErc20TokenById } from "../../utils/currencies";
 
 // import { TOKEN_DAY_DATAS_QUERY } from "../../queries/tokenDailyAggregated";
 // import { useQuery } from "@apollo/client";
@@ -23,14 +21,15 @@ import BigNumber from "bignumber.js";
 import { useQuery } from "@apollo/client";
 import { USER_LIQUIDITY_QUERY } from "../../queries/liquidity";
 import { unitBlockTime } from "../../utils/ethereum";
+import { toast } from "react-toastify";
 
-const CustomProgress = styled(Progress)`
-  .progress-bar {
-    background-color: ${({ theme }) => `${theme.color.interactive3} !important`};
-  }
-  height: 8px !important;
-  margin-bottom: 10px !important;
-`;
+// const CustomProgress = styled(Progress)`
+//   .progress-bar {
+//     background-color: ${({ theme }) => `${theme.color.interactive3} !important`};
+//   }
+//   height: 8px !important;
+//   margin-bottom: 10px !important;
+// `;
 
 const ForgeBasket = ({ title, apy, tokens }) => {
   const router = useRouter();
@@ -64,7 +63,6 @@ const ForgeBasket = ({ title, apy, tokens }) => {
 
   useEffect(() => userLiquidityRefetch(), [chainId]);
 
-
   if (userLiquidityError) {
     toast(userLiquidityError.message, { type: "error" });
   }
@@ -97,28 +95,28 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       // console.log("liquidityToken", liquidityToken.address);
       // console.log("reserve0", reserve0.toSignificant(6));
       // console.log("reserve1", reserve1.toSignificant(6));
-      // BALANCE OF LIQUIDITY TOKEN IN STAKING
+      // // BALANCE OF LIQUIDITY TOKEN IN STAKING
       // const signer = await library.getSigner(account);
       // const lpToken = new ethers.Contract(liquidityToken.address, IUniswapV2ERC20.abi, signer);
       // const lpBalance = await lpToken.callStatic.balanceOf(account);
       // console.log(lpBalance.toString(), "converted balance", web3.utils.fromWei(lpBalance.toString()));
       // const totalSupply = await lpToken.callStatic.totalSupply();
       // console.log("totalSupply", web3.utils.fromWei(totalSupply.toString()));
-      // setBalance(web3.utils.fromWei(lpBalance.toString()));
-      // BALANCE OF LIQUIDITY IN SDAO
+      // // setBalance(web3.utils.fromWei(lpBalance.toString()));
+      // // BALANCE OF LIQUIDITY IN SDAO
       // const sdaoToken = await getErc20TokenById(Currencies.SDAO.id, { chainId, signer });
       // const lpSDAOBalance = await sdaoToken.callStatic.balanceOf(liquidityToken.address);
       // console.log("lpSDAOBalance ", web3.utils.fromWei(lpSDAOBalance.toString()));
-      // CALCULATE YOUR SHARE PERCENT
+      // // CALCULATE YOUR SHARE PERCENT
       // console.log("balance", lpBalance.toString());
       // console.log("totalSupply", totalSupply.toString());
       // const percent = BigNumber(lpBalance.toString()).div(BigNumber(totalSupply.toString())).multipliedBy(100);
-      // setShare(percent.toString());
-      console.log();
+      // // setShare(percent.toString());
+      // console.log();
     } catch (error) {
       console.log(title, "pair erorrrr", error);
       toast(error.message, { type: "error" });
-      setShowError(true);
+      // setShowError(true);
     }
   };
 
@@ -177,8 +175,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   if (userLiquidityLoading || !poolAddress) {
     return (
       <Card className="p-4 forge-card">
-        <Skeleton circle height={50} width={50} className="mb-3" />
-        <Skeleton count={4} />
+        <p>Loading</p>
       </Card>
     );
   }
