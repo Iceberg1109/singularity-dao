@@ -23,6 +23,8 @@ import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
 import { useRouter } from "next/router";
 import { Currencies } from "../../utils/currencies";
+import { toast } from "react-toastify";
+import { Spinner } from "reactstrap";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -33,26 +35,109 @@ const FeeBlock = styled(Row)`
   padding: 8px 0;
 `;
 
-const RewardStakePanel = ({ token, dynasetid }) => {
+const RewardStakePanel = ({ token, dynasetid ,address }) => {
   const [fromCurrency, setFromCurrency] = useState("ETH");
   const [fromCurrencyPrice, setFromCurrencyPrice] = useState("0");
   const [balance, setBalance] = useState(0);
+  const [staking, setstaking] = useState(false);
+  const [approving, setapproving] = useState(false);
   const [amounteth, setamountEth] = useState(0);
   const [toCurrency, setToCurrency] = useState("AGI");
   const [toCurrencyPrice, setToCurrencyPrice] = useState(0);
-  const [approved, setApproved] = useState(undefined);
+  const [approved, setApproved] = useState(false);
 
   const [fee, setFee] = useState(0);
   const [amount, setAmount] = useState();
   const { library, account } = useUser();
   const [showStakeSuccessModal, setShowStakeSuccessModal] = useState(false);
   const router = useRouter();
+  
+  let minABI = [
+  // balanceOf
+  {
+    constant: true,
+    inputs: [{ name: "_owner", type: "address" }],
+    name: "balanceOf",
+    outputs: [{ name: "balance", type: "uint256" }],
+    type: "function",
+  },
+  // decimals
+  {
+    constant: true,
+    inputs: [],
+    name: "decimals",
+    outputs: [{ name: "", type: "uint8" }],
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "_spender",
+        type: "address",
+      },
+      {
+        name: "_value",
+        type: "uint256",
+      },
+    ],
+    name: "approve",
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+      },
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
+  const checkenoughtokens = async() =>{
+
+     const signer = await library.getSigner(account);
+
+     const LPtoken = new ethers.Contract(Currencies.SDAO.address, minABI, signer);
+
+     const balance = await LPtoken.balanceOf(account);
+     
+     console.log("balance");
+     console.log(web3.utils.fromWei(balance.toString()));
+
+     const stakeAmount = parseFloat(fromCurrencyPrice); //
+     
+     console.log("stakeAmount");
+     console.log(stakeAmount);
+
+   //  console.log(BigNumber.from(fromCurrencyPrice.toString()) > balance);
+
+       if(web3.utils.fromWei(balance.toString()) < stakeAmount || web3.utils.fromWei("0")  >= stakeAmount){
+
+         return toast("Not enough tokens", { type: "error" });
+
+       } else {
+
+       try{
+          await approveTokens();
+        
+        } catch {
+         
+          toast("error: look console for details", { type: "error" });
+       }
+      
+     }
+
+
+  }
 
   const stakeToken = async () => {
-    if (typeof approved === "undefined") {
+    if (!approved) {
       return alert("Please Approve before staking");
     }
     try {
+      
+      setapproving(true)
       const signer = await library.getSigner(account);
 
       const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
@@ -70,9 +155,12 @@ const RewardStakePanel = ({ token, dynasetid }) => {
       const receipt = await tx.wait();
 
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+      setapproving(false)
+      toast("Staking succesfull",{ type: "successfull" })
     } catch (error) {
+      setapproving(false)
       console.log("error", error);
-      alert("error: look console for details");
+       toast("Staking failed",{ type: "error" })
     }
   };
 
@@ -87,6 +175,10 @@ const RewardStakePanel = ({ token, dynasetid }) => {
     console.log(`Transaction hash: ${tx.hash}`);
     const receipt = await tx.wait();
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+
+     setApproved(true);
+
+
   };
   const getPendingRewards = async () => {
     const signer = await library.getSigner(account);
@@ -105,10 +197,10 @@ const RewardStakePanel = ({ token, dynasetid }) => {
 
   const handleSubmit = async () => {
     // return await getPendingRewards();
-    if (typeof approved === "undefined") {
+    if (!approved) {
       try {
-        await approveTokens();
-        setApproved(toCurrencyPrice);
+        await checkenoughtokens();
+       
       } catch (error) {
         console.log("error", error);
         alert("error: look console for details");
@@ -130,20 +222,24 @@ const RewardStakePanel = ({ token, dynasetid }) => {
         // balance={toCurrencyPrice}
         amount={fromCurrencyPrice}
         onAmountChange={setFromCurrencyPrice}
-        selectedCurrency={Currencies.SDAO_LP.id}
-      />
-      <CurrencyInputPanelLP
-        // balance={toCurrencyPrice}
-        amount={toCurrencyPrice}
-        onAmountChange={setToCurrencyPrice}
         selectedCurrency={Currencies.SDAO.id}
-        hideBalance={true}
       />
+
+    
       <div className="d-flex justify-content-center">
         <DefaultButton background="white" color="black" borderColor="black">
           Cancel
         </DefaultButton>
-        <GradientButton onClick={handleSubmit}>{!approved ? "Confirm Stake" : "Farm"}</GradientButton>
+        {!approved ? <GradientButton disabled={staking || approving} onClick={handleSubmit} >Approve {approving ? (
+            <span style={{ lineHeight: "35px" }}>
+              <Spinner color="white" size="sm" className="ml-2" />
+            </span>
+          ) : null}</GradientButton> : <GradientButton disabled={staking || approving} onClick={stakeToken} >Farm {approving ? (
+            <span style={{ lineHeight: "35px" }}>
+              <Spinner color="white" size="sm" className="ml-2" />
+            </span>
+          ) : null}</GradientButton>}
+   
       </div>
       <StakeSuccessModal
         modalOpen={showStakeSuccessModal}

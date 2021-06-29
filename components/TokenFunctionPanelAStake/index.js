@@ -41,7 +41,7 @@ export const PanelTypes = {
   CLAIM: "CLAIM",
 };
 
-const TokenFunctionPanel = ({ panelType,apy }) => {
+const TokenFunctionPanel = ({ panelType,apy,address }) => {
   const poolId = 0;
   const [pendingRewards, setPendingRewards] = useState(0);
   const [userInfoAmount, setUserInfoAmount] = useState(0);
@@ -116,7 +116,7 @@ const TokenFunctionPanel = ({ panelType,apy }) => {
       <Row>
         <Col lg={6}>
           <MainCard>
-            <MainPanel />
+            <MainPanel address={address}/>
           </MainCard>
         </Col>
         <Col lg={6}>

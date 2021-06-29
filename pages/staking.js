@@ -20,7 +20,7 @@ const ForgePage = () => {
       <div className="py-4 mt-5">
         <Row className="my-3">
           <Col lg={4}>
-            <ForgeBasket title="SDAO Staking" apy={"22.5%"}/>
+            <ForgeBasket title="SDAO Staking" apy={"22.5%"} />
           </Col>
         </Row>
       </div>

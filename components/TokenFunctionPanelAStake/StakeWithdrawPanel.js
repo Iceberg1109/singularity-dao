@@ -19,6 +19,7 @@ import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
 import { useRouter } from "next/router";
 import { Currencies } from "../../utils/currencies";
+import { toast } from "react-toastify";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -40,23 +41,41 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   const [showStakeSuccessModal, setShowStakeSuccessModal] = useState(false);
   const [pendingRewards, setPendingRewards] = useState("0");
   const router = useRouter();
+ 
 
-  const withdrawAndHarvest = async () => {
+   const withdrawAndHarvest = async () => {
+
     const signer = await library.getSigner(account);
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
-    const withdrawAmount = web3.utils.toWei(amount.toString());
+    const withdrawAmount =  parseFloat(amount.toString());
     console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
-
-    const tx = await stakingContract.withdrawAndHarvest(poolId, withdrawAmount, account, {
+    
+    const rewards = await stakingContract.pendingRewards("0", account, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
 
-    console.log(`Transaction hash: ${tx.hash}`);
-    const receipt = await tx.wait();
-    console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+    console.log(web3.utils.fromWei(rewards.toString()));
+
+     if(web3.utils.fromWei(rewards.toString()) >= withdrawAmount || web3.utils.fromWei("0")  >= withdrawAmount){
+        toast("issuficient withdraw amount")
+ 
+     }else{
+
+     const tx = await stakingContract.withdrawAndHarvest("0", withdrawAmount, account, {
+        gasLimit: defaultGasLimit,
+        gasPrice,
+      });
+
+      console.log(`Transaction hash: ${tx.hash}`);
+      const receipt = await tx.wait();
+      console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+        
+
+     }
+
   };
 
   const handleSubmit = async () => {
