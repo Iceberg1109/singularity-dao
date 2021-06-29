@@ -207,6 +207,7 @@ const AddLiquidityPanel = ({ tokens }) => {
       setAddingLiquidity(true);
       await approveIfInsufficientAllowance();
       await buyLiquidity();
+      resetAmounts();
     } catch (error) {
       toast(`Operation Failed: ${error.message}`, { type: "error" });
       console.log("errrrrrrrrrr", error);

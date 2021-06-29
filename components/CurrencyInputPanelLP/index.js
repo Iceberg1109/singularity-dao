@@ -18,6 +18,8 @@ import { useTokenDetails } from "../../utils/token";
 import web3 from "web3";
 import BigNumber from "bignumber.js";
 import { toFraction } from "../../utils/balance";
+import useInterval from "../../utils/hooks/useInterval";
+import { unitBlockTime } from "../../utils/ethereum";
 
 const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
@@ -52,7 +54,8 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
   const { loading: tokenLoading, data: tokenData, error: tokenError } = useTokenDetails(token, account, library);
   console.log("tokenData", tokenData);
   console.log("tokenError", tokenError);
-  useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency, tokenLoading]);
+  // useEffect(() => updateBalance(selectedCurrency), );
+  useInterval(()=>updateBalance(selectedCurrency), unitBlockTime, [account, selectedCurrency, tokenLoading])
 
   const getCurrency = useCallback(() => getCurrencyById(selectedCurrency), [selectedCurrency]);
 
