@@ -5,13 +5,12 @@ import { GradientButton } from "components/Buttons";
 import CurrencyInputPanelLP from "../../components/CurrencyInputPanelLP";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { Token, Trade, TokenAmount, TradeType, Fetcher, Route, InsufficientReservesError } from "@uniswap/sdk";
-import { abi as DynasetABI } from "../../assets/constants/abi/Dynaset.json";
 import web3 from "web3";
 import { useUser } from "../UserContext";
 import { ethers } from "ethers";
 import { defaultGasLimit, getGasPrice, defaultApprovalAmount, unitBlockTime } from "../../utils/ethereum";
 import { abi as IUniswapV2Router02ABI } from "../../assets/constants/abi/IUniswapV2Router02.json";
-import { Currencies, getErc20TokenById, getUniswapToken } from "../../utils/currencies";
+import { Currencies } from "../../utils/currencies";
 import { toast } from "react-toastify";
 import { sanitizeNumber } from "../../utils/input";
 import useInterval from "../../utils/hooks/useInterval";
@@ -20,9 +19,8 @@ import { useTokenDetails } from "../../utils/hooks/useTokenDetails";
 import { fromFraction, toFraction } from "../../utils/balance";
 import { useQuery } from "@apollo/client";
 import { ETH_PRICE_QUERY } from "../../queries/price";
-
-const fromCurrency = Currencies.SDAO.id;
-const toCurrency = Currencies.ETH.id;
+import AddLiquiditySuccessModal from "./AddLiquiditySuccessModal";
+import IUniswapV2ERC20 from "@uniswap/v2-core/build/IUniswapV2ERC20.json";
 
 const conversionTypes = { FROM: "FROM", TO: "TO" };
 
@@ -39,6 +37,7 @@ const AddLiquidityPanel = ({ tokens }) => {
   const [approving, setApproving] = useState(false);
   const [swappingRoute, setSwappingRoute] = useState(undefined);
   const [fromTokenAllowance, setFromTokenAllowance] = useState("0");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const {
     loading: token0Loading,
     data: token0Data,
@@ -52,6 +51,7 @@ const AddLiquidityPanel = ({ tokens }) => {
   const [insufficientReserves, setInsufficientReserves] = useState(false);
   const [conversionRate, setConversionRate] = useState(undefined);
   const [invertedConversionRate, setInvertedConversionRate] = useState(undefined);
+  const [lpBalance, setLpBalance] = useState(undefined);
 
   console.log({ token0Loading, token0Data, token0Error });
   const { data: ethPriceData } = useQuery(ETH_PRICE_QUERY);
@@ -250,7 +250,7 @@ const AddLiquidityPanel = ({ tokens }) => {
       setAddingLiquidity(true);
       await approveIfInsufficientAllowance();
       await buyLiquidity();
-      resetAmounts();
+      setShowSuccessModal(true);
     } catch (error) {
       toast(`Operation Failed: ${error.message}`, { type: "error" });
       console.log("errrrrrrrrrr", error);
@@ -268,6 +268,27 @@ const AddLiquidityPanel = ({ tokens }) => {
     console.log("showApproval comparision", allowance.comparedTo(BigNumber(amount)));
     return allowance.comparedTo(BigNumber(amount)) !== 1;
   };
+
+  const handleModalClose = () => {
+    resetAmounts();
+    setShowSuccessModal(false);
+  };
+
+  const updateLpBalance = useCallback(async () => {
+    if (!swappingRoute?.pairs[0]?.liquidityToken || !account) return "NA";
+    const signer = await library.getSigner(account);
+    const lpTokenAddress = swappingRoute?.pairs[0]?.liquidityToken.address;
+    const lpTokenDecimals = swappingRoute?.pairs[0]?.liquidityToken.decimals;
+    const contract = new ethers.Contract(lpTokenAddress, IUniswapV2ERC20.abi, signer);
+    let balance = await contract.callStatic.balanceOf(account);
+    balance = toFraction(balance.toString(), lpTokenDecimals);
+    setLpBalance(balance)
+  }, [swappingRoute?.input?.address, swappingRoute?.output?.address, account]);
+
+  useEffect(
+    () => updateLpBalance(),
+    [swappingRoute?.input?.address, swappingRoute?.output?.address, account, showSuccessModal]
+  );
 
   return (
     <Card className="p-4" style={{ borderRadius: 8 }}>
@@ -340,6 +361,17 @@ const AddLiquidityPanel = ({ tokens }) => {
           </a>
         </Typography>
       ) : null}
+      <AddLiquiditySuccessModal
+        modalOpen={showSuccessModal}
+        setModalOpen={handleModalClose}
+        title="Liquidity added successfully!"
+        itemsList={[
+          { label: token0Data?.symbol, desc: `${fromAmount} ${token0Data?.symbol}` },
+          { label: token1Data?.symbol, desc: `${toAmount} ${token1Data?.symbol}` },
+        ]}
+        resultsList={[{ label: "LP Balance", desc: `${lpBalance} ${token0Data?.symbol}-${token1Data?.symbol}` }]}
+        primaryAction={{ label: "Ok", onClick: handleModalClose }}
+      />
     </Card>
   );
 };
