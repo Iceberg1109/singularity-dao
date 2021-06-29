@@ -116,8 +116,8 @@ const AddLiquidityPanel = ({ tokens }) => {
     value = sanitizeNumber(value);
     if (!value) return resetAmounts();
     if (value === ".") return setFromAmount("0.");
-    if(`${value}`.charAt(0) === "."){
-      value = `0${value}`
+    if (`${value}`.charAt(0) === ".") {
+      value = `0${value}`;
     }
     setFromAmount(value);
     setToAmount("Calculating ...");
@@ -130,8 +130,8 @@ const AddLiquidityPanel = ({ tokens }) => {
     value = sanitizeNumber(value);
     if (!value) return resetAmounts();
     if (value === ".") return setFromAmount("0.");
-    if(`${value}`.charAt(0) === "."){
-      value = `0${value}`
+    if (`${value}`.charAt(0) === ".") {
+      value = `0${value}`;
     }
     setToAmount(value);
     setFromAmount("Calculating ...");
@@ -179,7 +179,6 @@ const AddLiquidityPanel = ({ tokens }) => {
       // console.log("amountTokenDesired", amountTokenDesired);
 
       const amountTokenDesired = fromFraction(fromAmount.toString(), token0Data.decimals);
-      console.log("fractAmount", amountTokenDesired);
 
       const slippage = Currencies.SDAO.slippagePercent;
       const slippageMulFactor = 1 - slippage / 100;
@@ -209,10 +208,11 @@ const AddLiquidityPanel = ({ tokens }) => {
     const signer = await library.getSigner(account);
     const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
 
-    const allowance = await token0Data.contract.allowance(account, ContractAddress.UNISWAP);
-    console.log("allowance", allowance.toString());
-    console.log("wei Amount", fromFraction(fromAmount, token0Data.decimals));
-    if (allowance.lte(web3.utils.toWei(fromAmount, "gwei"))) {
+    let allowance = await token0Data.contract.allowance(account, ContractAddress.UNISWAP);
+    allowance = BigNumber(allowance.toString());
+    const amount = fromFraction(fromAmount, token0Data?.decimals);
+
+    if (allowance.comparedTo(BigNumber(amount)) !== 1) {
       const txn = await sdaoToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
       setPendingTxn(txn.hash);
       await txn.wait();
@@ -239,8 +239,11 @@ const AddLiquidityPanel = ({ tokens }) => {
     if (fromCurrency === Currencies.ETH.id || !sanitizeNumber(fromAmount) || isNaN(sanitizeNumber(fromAmount)))
       return false;
     const allowance = BigNumber(fromTokenAllowance);
-    const amount = BigNumber(web3.utils.toWei(sanitizeNumber(fromAmount), "ether"));
-    return allowance.comparedTo(amount) !== 1;
+    const amount = fromFraction(fromAmount, token0Data?.decimals);
+    // console.log("showApproval allowance", allowance.toString());
+    // console.log("showApproval amount", amount);
+    // console.log("showApproval comparision", allowance.comparedTo(BigNumber(amount)));
+    return allowance.comparedTo(BigNumber(amount)) !== 1;
   };
 
   return (
