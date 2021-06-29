@@ -58,8 +58,8 @@ const StakeWithdrawPanel = ({ type, token, dynasetid ,id,currencyid}) => {
     });
 
     console.log(web3.utils.fromWei(rewards.toString()));
-    
-     if(web3.utils.fromWei(rewards.toString()) < withdrawAmount){
+
+     if(web3.utils.fromWei(rewards.toString()) < withdrawAmount || web3.utils.fromWei("0")  >= withdrawAmount){
         toast("issuficient withdraw amount")
  
      }else{

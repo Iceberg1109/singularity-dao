@@ -111,7 +111,7 @@ let minABI = [
 
    //  console.log(BigNumber.from(fromCurrencyPrice.toString()) > balance);
 
-       if(web3.utils.fromWei(balance.toString()) < stakeAmount){
+       if(web3.utils.fromWei(balance.toString()) < stakeAmount || web3.utils.fromWei("0")  >= stakeAmount){
 
          return toast("Not enough tokens", { type: "error" });
 
