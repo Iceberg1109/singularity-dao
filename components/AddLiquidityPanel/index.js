@@ -85,7 +85,7 @@ const AddLiquidityPanel = ({ tokens }) => {
     if (!token0Data) return;
     let allowance = await token0Data.contract.allowance(account, ContractAddress.UNISWAP);
     allowance = BigNumber(allowance.toString());
-    const amount = fromFraction(fromAmount, token0Data?.decimals);
+    const amount = fromFraction(allowance, token0Data?.decimals);
 
     setFromTokenAllowance(amount.toString());
   };
@@ -234,9 +234,6 @@ const AddLiquidityPanel = ({ tokens }) => {
 
   const approveIfInsufficientAllowance = async () => {
     if (!token0Data) return;
-    // if (!library) return;
-    // const signer = await library.getSigner(account);
-    // const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
 
     let allowance = await token0Data.contract.allowance(account, ContractAddress.UNISWAP);
     allowance = BigNumber(allowance.toString());
