@@ -129,7 +129,7 @@ const AddLiquidityPanel = ({ tokens }) => {
   const handleToAmountChange = async (value) => {
     value = sanitizeNumber(value);
     if (!value) return resetAmounts();
-    if (value === ".") return setFromAmount("0.");
+    if (value === ".") return setToAmount("0.");
     if (`${value}`.charAt(0) === ".") {
       value = `0${value}`;
     }
