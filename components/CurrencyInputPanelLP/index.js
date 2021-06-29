@@ -23,7 +23,7 @@ const Input = styled(DefaultInput)`
   color: ${({ theme }) => `${theme.color.default} !important`};
   font-weight: 600;
   background: transparent;
-  padding:24px 28px 30px;
+  padding: 24px 28px 30px;
   border-radius: 8px;
 `;
 
@@ -54,12 +54,12 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
   console.log("tokenError", tokenError);
   useEffect(() => updateBalance(selectedCurrency), [account, selectedCurrency, tokenLoading]);
 
-  // const getCurrency = useCallback(() => getCurrencyById(selectedCurrency), [selectedCurrency]);
+  const getCurrency = useCallback(() => getCurrencyById(selectedCurrency), [selectedCurrency]);
 
-  // const getName = useCallback(() => {
-  //   const currency = getCurrency();
-  //   return currency ? currency.name : "'";
-  // }, [selectedCurrency]);
+  const getName = useCallback(() => {
+    const currency = getCurrency();
+    return currency ? currency.name : "'";
+  }, [selectedCurrency]);
 
   const changeprice = async (event) => {
     let { value } = event.target;
@@ -67,8 +67,16 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
     onAmountChange(value);
   };
 
-  const updateBalance = async () => {
+  const updateBalance = async (currencyId) => {
     try {
+      if (!token) {
+        // DEPRECATED: Fallback block. Will be removed in future
+        if (!library) return;
+        const signer = await library.getSigner(account);
+        const balance = await getBalance(currencyId, account, { chainId, network, signer });
+        setBalance(balance);
+        return;
+      }
       if (tokenData) {
         const balance = await tokenData.getBalance();
         const fraction = toFraction(balance.toString(), tokenData.decimals);
@@ -85,13 +93,20 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
     onAmountChange(balance);
   };
 
+  const tokenSymbol = () => {
+    if (!token) {
+      // DEPRECATED: Fallback block. Will be removed in future
+      return getName();
+    }
+    return tokenData?.symbol;
+  };
+
   return (
     <FormGroup className="my-4 w-100">
       <Typography size={12} weight={300} className="pl-1">
-        {tokenData?.symbol}
+        {tokenSymbol()}
       </Typography>
       <InputGroup className={classnames("input-group-merge", { focused })}>
-  
         <Input
           placeholder={balance}
           onChange={changeprice}
@@ -101,23 +116,23 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
           value={amount}
           disabled={disabled}
         />
-            <CurrencyContainer>
-        <UncontrolledDropdown>
-          <DropdownToggle
-            caret
-            color="secondary"
-            id="dropdownMenuButton"
-            type="button"
-            style={{ backgroundColor: "#000000", color: "#ffff" }}
-          >
-            {/* <img
+        <CurrencyContainer>
+          <UncontrolledDropdown>
+            <DropdownToggle
+              caret
+              color="secondary"
+              id="dropdownMenuButton"
+              type="button"
+              style={{ backgroundColor: "#000000", color: "#ffff" }}
+            >
+              {/* <img
               alt="..."
               src="https://www.singularitydao.ai/file/2021/05/SINGDAO-LOGO-1-768x768.jpg"
               style={{ width: "15px" }}
             ></img> */}
-            {tokenData?.symbol}
-          </DropdownToggle>
-        </UncontrolledDropdown>
+              {tokenSymbol()}
+            </DropdownToggle>
+          </UncontrolledDropdown>
         </CurrencyContainer>
       </InputGroup>
       <div className="d-flex justify-content-between mt-1">
