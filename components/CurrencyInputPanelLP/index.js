@@ -45,6 +45,7 @@ const CurrencyContainer = styled.div`
   position: absolute;
   right: 12px;
   top: 9px;
+  z-index: 3;
 `;
 
 const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabled, token }) => {
