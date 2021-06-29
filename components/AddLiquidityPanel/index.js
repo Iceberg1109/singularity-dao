@@ -180,7 +180,7 @@ const AddLiquidityPanel = ({ tokens }) => {
       await txn.wait();
 
       await updateFromTokenAllowance();
-      toast("Approval success: Please confirm the add-liquidity now");
+      toast("Approval completed successfully.");
       setPendingTxn(undefined);
     } catch (error) {
       toast(`Failed to Approve: ${error.message}`, { type: "error" });
