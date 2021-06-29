@@ -53,9 +53,6 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
   const { library, account, network, chainId } = useUser();
   const [balance, setBalance] = useState("0");
   const { loading: tokenLoading, data: tokenData, error: tokenError } = useTokenDetails(token, account, library);
-  console.log("tokenData", tokenData);
-  console.log("tokenError", tokenError);
-  // useEffect(() => updateBalance(selectedCurrency), );
   useInterval(() => updateBalance(selectedCurrency), unitBlockTime, [account, selectedCurrency, tokenLoading]);
 
   const getCurrency = useCallback(() => getCurrencyById(selectedCurrency), [selectedCurrency]);
