@@ -18,6 +18,8 @@ import useInterval from "../../utils/hooks/useInterval";
 import BigNumber from "bignumber.js";
 import { useTokenDetails } from "../../utils/hooks/useTokenDetails";
 import { fromFraction, toFraction } from "../../utils/balance";
+import { useQuery } from "@apollo/client";
+import { ETH_PRICE_QUERY } from "../../queries/price";
 
 const fromCurrency = Currencies.SDAO.id;
 const toCurrency = Currencies.ETH.id;
@@ -43,6 +45,7 @@ const AddLiquidityPanel = ({ tokens }) => {
     error: token0Error,
   } = useTokenDetails(tokens ? tokens[0] : "", account, library);
   console.log({ token0Loading, token0Data, token0Error });
+  const { data: ethPriceData } = useQuery(ETH_PRICE_QUERY);
   // const {
   //   loading: token1Loading,
   //   data: token1Data,
@@ -60,6 +63,14 @@ const AddLiquidityPanel = ({ tokens }) => {
     const route = await getSwappingRoute();
     setSwappingRoute(route);
   }, [fromCurrency, toCurrency]);
+
+  const getUSDValue = useCallback(() => {
+    const ethPriceInUSD = ethPriceData?.bundles[0]?.ethPrice;
+    const eth = Number(toAmount);
+    const usdValue = eth * Number(ethPriceInUSD);
+    if (isNaN(usdValue)) return undefined;
+    return usdValue.toFixed(4);
+  }, [fromCurrency, toCurrency, fromAmount, toAmount]);
 
   useInterval(() => updateFromTokenAllowance(), unitBlockTime, [account, fromCurrency]);
 
@@ -243,6 +254,7 @@ const AddLiquidityPanel = ({ tokens }) => {
         selectedCurrency={fromCurrency}
         disabled={!swappingRoute}
         token={tokens ? tokens[0] : ""}
+        USDValue={getUSDValue()}
       />
 
       <Typography className="d-flex justify-content-center">+</Typography>
@@ -252,6 +264,7 @@ const AddLiquidityPanel = ({ tokens }) => {
         selectedCurrency={toCurrency}
         disabled={!swappingRoute}
         token={tokens ? tokens[1] : ""}
+        USDValue={getUSDValue()}
       />
       {showApproval() ? (
         <div className="d-flex justify-content-center">
