@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import { sanitizeNumber } from "../../utils/input";
 import useInterval from "../../utils/hooks/useInterval";
 import BigNumber from "bignumber.js";
-import { useTokenDetails } from "../../utils/token";
+import { useTokenDetails } from "../../utils/hooks/useTokenDetails";
 import { fromFraction, toFraction } from "../../utils/balance";
 
 const fromCurrency = Currencies.SDAO.id;
