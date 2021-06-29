@@ -115,6 +115,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
           onBlur={() => setFocused(false)}
           value={amount}
           disabled={disabled}
+          className="border rounded"
         />
         <CurrencyContainer>
           <UncontrolledDropdown>
