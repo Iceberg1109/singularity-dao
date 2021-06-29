@@ -8,6 +8,9 @@ import ForgeBasket from "../../components/ForgeBasket";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 const ForgePage = () => {
+
+
+
   return (
     <Container className="my-4">
       <Typography color="text1" size={32} weight={600}>
