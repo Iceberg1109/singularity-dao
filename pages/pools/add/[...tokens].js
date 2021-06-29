@@ -88,13 +88,13 @@ function Add() {
       <Typography color="text1" size={32} weight={600}>
         {fromCurrency}→{toCurrency}
       </Typography>
-        <br/>
+      <br />
       <Typography color="gray80" size={14}>
         Tip: When you add liquidity, you will receive pool tokens representing your position. These tokens automatically
         earn fees proportional to your share of the pool, and can be redeemed at any time.
       </Typography>
-          <br/>
-              <br/>
+      <br />
+      <br />
       <TokenFunctionPanelAddPool tokens={tokens} pairAddress={pairAddress} />
     </Container>
   );
