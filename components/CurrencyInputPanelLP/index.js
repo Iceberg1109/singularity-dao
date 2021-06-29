@@ -14,7 +14,7 @@ import { LinkButton } from "../Buttons";
 import { useUser } from "components/UserContext";
 import { getBalance, getCurrencyById } from "../../utils/currencies";
 import { toast } from "react-toastify";
-import { useTokenDetails } from "../../utils/token";
+import { useTokenDetails } from "../../utils/hooks/useTokenDetails";
 import web3 from "web3";
 import BigNumber from "bignumber.js";
 import { toFraction } from "../../utils/balance";
