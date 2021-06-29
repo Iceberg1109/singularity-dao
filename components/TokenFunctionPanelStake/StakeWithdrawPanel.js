@@ -19,6 +19,8 @@ import { ContractAddress } from "../../assets/constants/addresses";
 import StakeSuccessModal from "./StakeSuccessModal";
 import { useRouter } from "next/router";
 import { Currencies } from "../../utils/currencies";
+import { toast } from "react-toastify";
+import { Spinner } from "reactstrap";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -29,7 +31,7 @@ const FeeBlock = styled(Row)`
   padding: 8px 0;
 `;
 
-const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
+const StakeWithdrawPanel = ({ type, token, dynasetid ,id,currencyid}) => {
   const [toCurrencyPrice, setToCurrencyPrice] = useState(0);
   const [approved, setApproved] = useState(undefined);
 
@@ -42,21 +44,38 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   const router = useRouter();
 
   const withdrawAndHarvest = async () => {
+
     const signer = await library.getSigner(account);
     const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
-    const withdrawAmount = web3.utils.toWei(amount.toString());
+    const withdrawAmount =  parseFloat(amount.toString());
     console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
-
-    const tx = await stakingContract.withdrawAndHarvest(poolId, withdrawAmount, account, {
+    
+    const rewards = await stakingContract.pendingRewards(id, account, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
 
-    console.log(`Transaction hash: ${tx.hash}`);
-    const receipt = await tx.wait();
-    console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+    console.log(web3.utils.fromWei(rewards.toString()));
+    
+     if(web3.utils.fromWei(rewards.toString()) < withdrawAmount){
+        toast("issuficient withdraw amount")
+ 
+     }else{
+
+     const tx = await stakingContract.withdrawAndHarvest(id, withdrawAmount, account, {
+        gasLimit: defaultGasLimit,
+        gasPrice,
+      });
+
+      console.log(`Transaction hash: ${tx.hash}`);
+      const receipt = await tx.wait();
+      console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+        
+
+     }
+
   };
 
   const handleSubmit = async () => {
@@ -86,14 +105,14 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
     <>
       <div className="d-flex justify-content-between">
         <Typography size={20} style={{ textAlign: "left" }}>
-          Start Staking
+          Withdraw
         </Typography>
       </div>
       <CurrencyInputPanelSDAOLP
         balance={balance}
         amount={amount}
         onAmountChange={setAmount}
-        selectedCurrency={Currencies.SDAO.id}
+        selectedCurrency={currencyid}
         label="SDAO LP"
       />
       <div className="d-flex justify-content-center">

@@ -33,7 +33,7 @@ const FeeBlock = styled(Row)`
   padding: 8px 0;
 `;
 
-const StakeClaimPanel = ({ token }) => {
+const StakeClaimPanel = ({ token ,id,currencyid}) => {
   const [toCurrencyPrice, setToCurrencyPrice] = useState(0);
   const [approved, setApproved] = useState(undefined);
 
@@ -48,11 +48,16 @@ const StakeClaimPanel = ({ token }) => {
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
     const withdrawAmount = web3.utils.toWei(amount.toString()); //amount.toString()
+    
+    const rewards = await stakingContract.pendingRewards(id, account, {
+      gasLimit: defaultGasLimit,
+      gasPrice,
+    });
 
     console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
 
-    const tx = await stakingContract.withdrawAndHarvest(poolId, withdrawAmount, account, {
+    const tx = await stakingContract.withdrawAndHarvest(id.toString(), withdrawAmount, account, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
@@ -69,15 +74,13 @@ const StakeClaimPanel = ({ token }) => {
   return (
     <>
       <div className="d-flex justify-content-between">
-        <Typography size={20} style={{ textAlign: "left" }}>
-          Start Staking
-        </Typography>
+
       </div>
       <CurrencyInputPanelSDAOLP
         balance={balance}
         amount={amount}
         onAmountChange={setAmount}
-        selectedCurrency={Currencies.SDAO_LP.id}
+        selectedCurrency={currencyid}
       />
       <div className="d-flex justify-content-center">
         <DefaultButton background="white" color="black" borderColor="black">

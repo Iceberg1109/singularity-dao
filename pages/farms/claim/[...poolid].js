@@ -5,7 +5,7 @@ import { Card, Container, Row, Col, Input, Modal, Button } from "reactstrap";
 // layout for this page
 import Admin from "layouts/Admin.js";
 
-import Typography, { GradientTypography } from "../../components/Typography";
+import Typography, { GradientTypography } from "../../../components/Typography";
 // import { OutlinedButton } from "../components/Buttons";
 // import styled from "styled-components";
 // import { useRouter } from "next/router";
@@ -14,8 +14,9 @@ import Typography, { GradientTypography } from "../../components/Typography";
 // import { ethers } from "ethers";
 import classnames from "classnames";
 // import AirdropABI from "../assets/constants/abi/AirdropABI.json";
-import TokenFunctionPanel, { PanelTypes } from "../../components/TokenFunctionPanelStake/index.js";
-
+import TokenFunctionPanel, { PanelTypes } from "../../../components/TokenFunctionPanelStake/index.js";
+import { useRouter } from "next/router";
+import { Currencies } from "../../../utils/currencies";
 // const GradientRow = styled(Row)`
 //   background: ${({ theme }) => theme.color.gradient2};
 //   border-radius: 8px;
@@ -132,9 +133,27 @@ const DetailLabel = ({ name, value, isDetail = true, icon }) => (
 );
 
 function StakeClaim() {
-  // const { library, account } = useUser();
-  // const router = useRouter();
 
+  // const { library, account } = useUser();
+  const router = useRouter();
+ const { poolid } = router.query;
+ let token;
+ let address; 
+ let currencyid;
+ console.log(poolid[0]);
+
+ if(poolid[0].toString() === "0"){
+   console.log("test");
+   token = "SDAO LP";
+   address = "0x4c78b6566864ae6304c2c2a4c43b74dafaac167e";
+   currencyid = Currencies.SDAO_LP.id;
+
+ }else if(poolid[0].toString() === "1"){
+      token = "AGIX LP";
+      address = "0x5318855ad173220e446002c01d5ee5f940502e70";
+      currencyid = Currencies.AGIX_LP.id; 
+      console.log("test 1");
+ }
   // const [eligible, seteligible] = useState(false);
   // const [defaultModal, setDefaultModal] = useState(false);
   // const [isError, setIsError] = useState(false);
@@ -209,7 +228,7 @@ function StakeClaim() {
 
   return (
     <Container className="my-4">
-      <TokenFunctionPanel panelType={PanelTypes.CLAIM} />
+      <TokenFunctionPanel panelType="CLAIM" id={poolid[0].toString()} token={token} address={address} currencyid={currencyid}/>
     </Container>
   );
 }

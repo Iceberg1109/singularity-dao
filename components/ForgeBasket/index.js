@@ -13,8 +13,13 @@ const CustomProgress = styled(Progress)`
   margin-bottom: 10px !important;
 `;
 
-const ForgeBasket = ({ data, title,apy }) => {
+const ForgeBasket = ({ data, title,apy,poolid,name }) => {
   const router = useRouter();
+
+  const routeLinkwithdraw = poolid ? `farms/withdraw/${poolid}` : "#";
+  const routeLinkdeposit = poolid ? `farms/deposit/${poolid}` : "#";
+  const routeLinkclaim = poolid ? `farms/claim/${poolid}` : "#";
+
   return (
     <Card className="p-4 forge-card" style={{borderRadius:8}}>
       <Row>
@@ -28,19 +33,19 @@ const ForgeBasket = ({ data, title,apy }) => {
         </Col>
       </Row>
       <DetailLabel title="APY" desc={apy} />
-      <DetailLabel title="Your stake" desc="40.0 SDAO LP" />
+      <DetailLabel title="Your stake" desc={name} />
       <div className="text-align-center mt-3">
-        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `stake/withdraw` })}>
+        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: routeLinkwithdraw })}>
           Withdraw
         </OutlinedButton>
-        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `stake/deposit` })}>
+        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: routeLinkdeposit })}>
           Farm
         </OutlinedButton>
       </div>
       <hr />
       <DetailLabel title="SDAO earned" desc="0.0000 SDAO" />
       <div className="text-align-center mt-3">
-        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: `stake/claim` })}>
+        <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: routeLinkclaim })}>
           Harvest
         </OutlinedButton>
       </div>

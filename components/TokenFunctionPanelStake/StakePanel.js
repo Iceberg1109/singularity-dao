@@ -29,7 +29,7 @@ const FeeBlock = styled(Row)`
   padding: 8px 0;
 `;
 
-const StakePanel = ({ type, token, dynasetid }) => {
+const StakePanel = ({ type, token, dynasetid, id }) => {
   const [fromCurrency, setFromCurrency] = useState("ETH");
   const [balance, setBalance] = useState(0);
   const [amounteth, setamountEth] = useState(0);
@@ -82,14 +82,21 @@ const StakePanel = ({ type, token, dynasetid }) => {
 
   const getAllowance = async () => {
     const signer = await library.getSigner(account);
-    const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
+    
+    const tokenContract = new ethers.Contract(ContractAddress.LP_TOKEN_SDAO, DynasetABI, signer);
+
+   // const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
     const allowance = await tokenContract.allowance(account, ContractAddress.STAKING_REWARD);
     console.log("allowance", allowance.toString());
   };
 
   const approveTokens = async () => {
     const signer = await library.getSigner(account);
-    const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
+   
+    const tokenContract = new ethers.Contract(ContractAddress.LP_TOKEN_SDAO, DynasetABI, signer);
+   
+
+  //  const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
     const gasPrice = await getGasPrice();
     const tx = await tokenContract.approve(ContractAddress.FARMING_REWARD, defaultApprovalAmount, {
       gasLimit: defaultGasLimit,
