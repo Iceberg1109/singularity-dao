@@ -93,7 +93,6 @@ function Add() {
         Tip: When you add liquidity, you will receive pool tokens representing your position. These tokens automatically
         earn fees proportional to your share of the pool, and can be redeemed at any time.
       </Typography>
-      <a>Learn more</a>
           <br/>
               <br/>
       <TokenFunctionPanelAddPool tokens={tokens} pairAddress={pairAddress} />
