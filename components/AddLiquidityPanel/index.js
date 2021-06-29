@@ -230,7 +230,6 @@ const AddLiquidityPanel = ({ tokens }) => {
       // swappingRoute?.pairs[0]?.liquidityToken.decimals
 
       console.log("Receipt", receipt);
-      debugger;
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
       toast(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
     } catch (error) {
