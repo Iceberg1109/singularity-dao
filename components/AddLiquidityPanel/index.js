@@ -51,7 +51,8 @@ const AddLiquidityPanel = ({ tokens }) => {
   const [insufficientReserves, setInsufficientReserves] = useState(false);
   const [conversionRate, setConversionRate] = useState(undefined);
   const [invertedConversionRate, setInvertedConversionRate] = useState(undefined);
-  const [lpBalance, setLpBalance] = useState(undefined);
+  // const [lpBalance, setLpBalance] = useState(undefined);
+  const [liquidityReceived, setLiquidityReceived] = useState(undefined);
 
   console.log({ token0Loading, token0Data, token0Error });
   const { data: ethPriceData } = useQuery(ETH_PRICE_QUERY);
@@ -193,13 +194,9 @@ const AddLiquidityPanel = ({ tokens }) => {
   const buyLiquidity = async () => {
     try {
       if (!token0Data) return;
-      console.log(
-        "Adding ",
-        web3.utils.toWei(toAmount.toString(), "ether"),
-        " ",
-        token1Data.symbol,
-        " to liquidity pool"
-      );
+
+      const oldLpBalance = await getBalance(swappingRoute?.pairs[0]?.liquidityToken.address);
+
       const signer = await library.getSigner(account);
       const uniswap = new ethers.Contract(ContractAddress.UNISWAP, IUniswapV2Router02ABI, signer);
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
@@ -222,6 +219,18 @@ const AddLiquidityPanel = ({ tokens }) => {
       setPendingTxn(tx.hash);
       console.log(`Transaction hash: ${tx.hash}`);
       const receipt = await tx.wait();
+
+      const newLpBalance = await getBalance(swappingRoute?.pairs[0]?.liquidityToken.address);
+
+      let lpReceived = newLpBalance.sub(oldLpBalance);
+
+      lpReceived = toFraction(lpReceived.toString(), swappingRoute?.pairs[0]?.liquidityToken.decimals);
+
+      setLiquidityReceived(lpReceived);
+      // swappingRoute?.pairs[0]?.liquidityToken.decimals
+
+      console.log("Receipt", receipt);
+      debugger;
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
       toast(`Transaction was mined in block ${receipt.blockNumber}`, { type: "success" });
     } catch (error) {
@@ -243,6 +252,13 @@ const AddLiquidityPanel = ({ tokens }) => {
       await approveTokens();
       // const txn = await token0Data.contract.approve(ContractAddress.UNISWAP, defaultApprovalAmount);
     }
+  };
+
+  const getBalance = async (tokenAddress) => {
+    const signer = await library.getSigner(account);
+    const contract = new ethers.Contract(tokenAddress, IUniswapV2ERC20.abi, signer);
+    let balance = await contract.callStatic.balanceOf(account);
+    return balance;
   };
 
   const handleClick = async () => {
@@ -273,22 +289,6 @@ const AddLiquidityPanel = ({ tokens }) => {
     resetAmounts();
     setShowSuccessModal(false);
   };
-
-  const updateLpBalance = useCallback(async () => {
-    if (!swappingRoute?.pairs[0]?.liquidityToken || !account) return "NA";
-    const signer = await library.getSigner(account);
-    const lpTokenAddress = swappingRoute?.pairs[0]?.liquidityToken.address;
-    const lpTokenDecimals = swappingRoute?.pairs[0]?.liquidityToken.decimals;
-    const contract = new ethers.Contract(lpTokenAddress, IUniswapV2ERC20.abi, signer);
-    let balance = await contract.callStatic.balanceOf(account);
-    balance = toFraction(balance.toString(), lpTokenDecimals);
-    setLpBalance(balance)
-  }, [swappingRoute?.input?.address, swappingRoute?.output?.address, account]);
-
-  useEffect(
-    () => updateLpBalance(),
-    [swappingRoute?.input?.address, swappingRoute?.output?.address, account, showSuccessModal]
-  );
 
   return (
     <Card className="p-4" style={{ borderRadius: 8 }}>
@@ -369,7 +369,7 @@ const AddLiquidityPanel = ({ tokens }) => {
           { label: token0Data?.symbol, desc: `${fromAmount} ${token0Data?.symbol}` },
           { label: token1Data?.symbol, desc: `${toAmount} ${token1Data?.symbol}` },
         ]}
-        resultsList={[{ label: "LP Balance", desc: `${lpBalance} ${token0Data?.symbol}-${token1Data?.symbol}` }]}
+        resultsList={[{ label: "LP Received", desc: `${liquidityReceived}` }]}
         primaryAction={{ label: "Ok", onClick: handleModalClose }}
       />
     </Card>
