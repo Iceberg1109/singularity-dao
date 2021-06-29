@@ -67,7 +67,6 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
 
   const changeprice = async (event) => {
     let { value } = event.target;
-    value = value && value > 0 ? value : 0;
     onAmountChange(value);
   };
 

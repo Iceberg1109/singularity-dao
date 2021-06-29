@@ -104,6 +104,10 @@ const AddLiquidityPanel = ({ tokens }) => {
   const handleFromAmountChange = async (value) => {
     value = sanitizeNumber(value);
     if (!value) return resetAmounts();
+    if (value === ".") return setFromAmount("0.");
+    if(`${value}`.charAt(0) === "."){
+      value = `0${value}`
+    }
     setFromAmount(value);
     setToAmount("Calculating ...");
     const tradeExecutionPrice = await getConversionRate(value, conversionTypes.FROM);
@@ -114,6 +118,10 @@ const AddLiquidityPanel = ({ tokens }) => {
   const handleToAmountChange = async (value) => {
     value = sanitizeNumber(value);
     if (!value) return resetAmounts();
+    if (value === ".") return setFromAmount("0.");
+    if(`${value}`.charAt(0) === "."){
+      value = `0${value}`
+    }
     setToAmount(value);
     setFromAmount("Calculating ...");
     const tradeExecutionPrice = await getConversionRate(value, conversionTypes.TO);

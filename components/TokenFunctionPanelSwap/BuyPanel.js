@@ -132,6 +132,9 @@ const BuyPanel = () => {
 
     if (!value) return resetAmounts();
     if (value === ".") return setFromAmount("0.");
+    if(`${value}`.charAt(0) === "."){
+      value = `0${value}`
+    }
     // CONVERSION
     setFromAmount(value);
     setToAmount("calculating ...");
@@ -146,6 +149,9 @@ const BuyPanel = () => {
 
     if (!value) return resetAmounts();
     if (value === ".") return setToAmount("0.");
+    if(`${value}`.charAt(0) === "."){
+      value = `0${value}`
+    }
     // CONVERSION
     setToAmount(value);
     setFromAmount("calculating...");
