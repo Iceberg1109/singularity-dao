@@ -34,6 +34,18 @@ import { Currencies, getErc20TokenById } from "../../utils/currencies";
 //   margin-bottom: 10px !important;
 // `;
 
+// function useTokenDetails() {
+//   const [details, setDetails] = useState({ loading: false, data: undefined, error: undefined });
+
+//   function fetchDetails() {
+
+//   }
+
+//   useEffect(() => fetchDetails(), []);
+
+//   return { ...details, refetch: fetchDetails };
+// }
+
 const ForgeBasket = ({ title, apy, tokens }) => {
   const router = useRouter();
   // const account = "0x0ad7a09575e3ec4c109c4faa3be7cdafc5a4adba";
@@ -49,6 +61,8 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   //   variables: { tokenAddress: ContractAddress.SDAO },
   // });
   const [showError, setShowError] = useState(false);
+
+
   const {
     loading: userLiquidityLoading,
     data: userLiquidityData,
@@ -89,6 +103,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       const token1 = new Token(chainId, tokenPair[0], 18);
       const token2 = new Token(chainId, tokenPair[1], 18);
       const pair = await Fetcher.fetchPairData(token1, token2);
+
       console.log(title, "pair dataa", pair);
       const liquidityToken = pair.liquidityToken;
       setPoolAddress(liquidityToken.address.toLowerCase());

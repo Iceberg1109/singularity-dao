@@ -16,6 +16,8 @@ import { toast } from "react-toastify";
 import { sanitizeNumber } from "../../utils/input";
 import useInterval from "../../utils/hooks/useInterval";
 import BigNumber from "bignumber.js";
+import { useTokenDetails } from "../../utils/token";
+import { fromFraction, toFraction } from "../../utils/balance";
 
 const fromCurrency = Currencies.SDAO.id;
 const toCurrency = Currencies.ETH.id;
@@ -26,7 +28,7 @@ const memoizedRoute = {};
 const setMemoizedRoute = (fromAddress, toAddress, value) => (memoizedRoute[`${fromAddress}_${toAddress}`] = value);
 const getMemoizedRoute = (fromAddress, toAddress) => memoizedRoute[`${fromAddress}_${toAddress}`];
 
-const AddLiquidityPanel = () => {
+const AddLiquidityPanel = ({ tokens }) => {
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
   const { library, account, network, chainId } = useUser();
@@ -35,6 +37,18 @@ const AddLiquidityPanel = () => {
   const [approving, setApproving] = useState(false);
   const [swappingRoute, setSwappingRoute] = useState(undefined);
   const [fromTokenAllowance, setFromTokenAllowance] = useState("0");
+  const {
+    loading: token0Loading,
+    data: token0Data,
+    error: token0Error,
+  } = useTokenDetails(tokens ? tokens[0] : "", account, library);
+  console.log({ token0Loading, token0Data, token0Error });
+  // const {
+  //   loading: token1Loading,
+  //   data: token1Data,
+  //   error: token1Error,
+  // } = useTokenDetails(tokens ? tokens[1] : "", account, library);
+  // console.log({ token1Loading, token1Data, token1Error });
 
   useEffect(async () => {
     const route = await getSwappingRoute();
@@ -135,18 +149,24 @@ const AddLiquidityPanel = () => {
 
   const buyLiquidity = async () => {
     try {
+      if (!token0Data) return;
       console.log("Adding ", web3.utils.toWei(toAmount.toString(), "ether"), " ", toCurrency, " to liquidity pool");
       const signer = await library.getSigner(account);
       const uniswap = new ethers.Contract(ContractAddress.UNISWAP, IUniswapV2Router02ABI, signer);
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
       const gasPrice = await getGasPrice();
 
-      const amountTokenDesired = web3.utils.toWei(fromAmount.toString(), "ether");
+      // const amountTokenDesired = web3.utils.toWei(fromAmount.toString(), "ether");
+      // console.log("amountTokenDesired", amountTokenDesired);
+
+      const amountTokenDesired = fromFraction(fromAmount.toString(), token0Data.decimals);
+      console.log("fractAmount", amountTokenDesired);
+
       const slippage = Currencies.SDAO.slippagePercent;
       const slippageMulFactor = 1 - slippage / 100;
       const amountTokenMin = ethers.BigNumber.from(amountTokenDesired) * slippageMulFactor;
       const amountETHMin = web3.utils.toWei(toAmount.toString(), "ether");
-      const tx = await uniswap.addLiquidityETH(ContractAddress.SDAO, amountTokenDesired, "0", "0", account, deadline, {
+      const tx = await uniswap.addLiquidityETH(token0Data.address, amountTokenDesired, "0", "0", account, deadline, {
         gasLimit: defaultGasLimit,
         gasPrice,
         value: web3.utils.toWei(toAmount.toString()),
@@ -165,12 +185,14 @@ const AddLiquidityPanel = () => {
   };
 
   const approveIfInsufficientAllowance = async () => {
-    if (!library) return;
+    if (!token0Data) return;
+    // if (!library) return;
     const signer = await library.getSigner(account);
     const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
 
-    const allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
+    const allowance = await token0Data.contract.allowance(account, ContractAddress.UNISWAP);
     console.log("allowance", allowance.toString());
+    console.log("wei Amount", fromFraction(fromAmount, token0Data.decimals));
     if (allowance.lte(web3.utils.toWei(fromAmount, "gwei"))) {
       const txn = await sdaoToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
       setPendingTxn(txn.hash);
@@ -211,6 +233,7 @@ const AddLiquidityPanel = () => {
         amount={fromAmount}
         selectedCurrency={fromCurrency}
         disabled={!swappingRoute}
+        token={tokens ? tokens[0] : ""}
       />
 
       <Typography className="d-flex justify-content-center">+</Typography>
@@ -219,6 +242,7 @@ const AddLiquidityPanel = () => {
         amount={toAmount}
         selectedCurrency={toCurrency}
         disabled={!swappingRoute}
+        token={tokens ? tokens[1] : ""}
       />
       {showApproval() ? (
         <div className="d-flex justify-content-center">
@@ -240,7 +264,7 @@ const AddLiquidityPanel = () => {
       <div className="d-flex justify-content-center mt-4">
         <GradientButton
           onClick={handleClick}
-          disabled={!toAmount || toAmount <= 0 || addingLiquidity || approving || showApproval()}
+          disabled={!toAmount || toAmount <= 0 || addingLiquidity || approving || showApproval() || token0Loading}
           style={{ width: addingLiquidity ? 212 : 186, height: 56 }}
           className="d-flex align-middle justify-content-center"
         >
