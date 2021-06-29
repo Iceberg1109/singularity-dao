@@ -140,7 +140,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
       </InputGroup>
       <div className="d-flex justify-content-between mt-1">
         <Typography size={14} weight={400} color="text2" className="pl-1">
-          {USDValue ? `~ $ ${USDValue}` : null}
+          {USDValue && Number(USDValue) > 0 ? `~ $ ${USDValue}` : null}
         </Typography>
         <div className="d-flex">
           <Typography size={14} weight={400} className="pl-1">

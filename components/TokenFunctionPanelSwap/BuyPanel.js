@@ -15,7 +15,7 @@ import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
 import {
   addSlippage,
-  defaultApprovalSDAO,
+  defaultApprovalAmount,
   defaultGasLimit,
   getGasPrice,
   reduceSlippage,
@@ -165,7 +165,7 @@ const BuyPanel = () => {
       const fromToken = getErc20TokenById(fromCurrency, { signer });
 
       setApproving(true);
-      const txn = await fromToken.approve(ContractAddress.UNISWAP, defaultApprovalSDAO);
+      const txn = await fromToken.approve(ContractAddress.UNISWAP, defaultApprovalAmount);
       setPendingTxn(txn.hash);
       await txn.wait();
       setPendingTxn(undefined);
