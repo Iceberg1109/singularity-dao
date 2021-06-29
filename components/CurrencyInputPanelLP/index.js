@@ -48,7 +48,7 @@ const CurrencyContainer = styled.div`
   z-index: 3;
 `;
 
-const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabled, token }) => {
+const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabled, token, USDValue }) => {
   const [focused, setFocused] = useState();
   const { library, account, network, chainId } = useUser();
   const [balance, setBalance] = useState("0");
@@ -56,7 +56,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
   console.log("tokenData", tokenData);
   console.log("tokenError", tokenError);
   // useEffect(() => updateBalance(selectedCurrency), );
-  useInterval(()=>updateBalance(selectedCurrency), unitBlockTime, [account, selectedCurrency, tokenLoading])
+  useInterval(() => updateBalance(selectedCurrency), unitBlockTime, [account, selectedCurrency, tokenLoading]);
 
   const getCurrency = useCallback(() => getCurrencyById(selectedCurrency), [selectedCurrency]);
 
@@ -67,7 +67,6 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
 
   const changeprice = async (event) => {
     let { value } = event.target;
-    value = value && value > 0 ? value : 0;
     onAmountChange(value);
   };
 
@@ -141,7 +140,7 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
       </InputGroup>
       <div className="d-flex justify-content-between mt-1">
         <Typography size={14} weight={400} color="text2" className="pl-1">
-          ~ $ value
+          {USDValue ? `~ $ ${USDValue}` : null}
         </Typography>
         <div className="d-flex">
           <Typography size={14} weight={400} className="pl-1">

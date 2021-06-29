@@ -65,9 +65,7 @@ const BuyPanel = () => {
   const fee = 0.3;
   const [swappingRoute, setSwappingRoute] = useState(undefined);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const { loading, data, error } = useQuery(ETH_PRICE_QUERY);
-
-  console.log({ loading, data, error });
+  const { data } = useQuery(ETH_PRICE_QUERY);
 
   const conversionTypes = {
     FROM: "FROM",
@@ -132,6 +130,9 @@ const BuyPanel = () => {
 
     if (!value) return resetAmounts();
     if (value === ".") return setFromAmount("0.");
+    if(`${value}`.charAt(0) === "."){
+      value = `0${value}`
+    }
     // CONVERSION
     setFromAmount(value);
     setToAmount("calculating ...");
@@ -146,6 +147,9 @@ const BuyPanel = () => {
 
     if (!value) return resetAmounts();
     if (value === ".") return setToAmount("0.");
+    if(`${value}`.charAt(0) === "."){
+      value = `0${value}`
+    }
     // CONVERSION
     setToAmount(value);
     setFromAmount("calculating...");
@@ -277,7 +281,7 @@ const BuyPanel = () => {
     const eth = fromCurrency === Currencies.ETH.id ? Number(fromAmount) : Number(toAmount);
     const usdValue = eth * Number(ethPriceInUSD);
     if (isNaN(usdValue)) return undefined;
-    return usdValue;
+    return usdValue.toFixed(4);
   }, [fromCurrency, toCurrency, fromAmount, toAmount]);
 
   const showApproval = () => {
