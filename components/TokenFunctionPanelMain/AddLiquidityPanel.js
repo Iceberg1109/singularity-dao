@@ -16,7 +16,7 @@ import { ChainId, Token, WETH, Trade, TokenAmount, TradeType, Fetcher, Route, Pe
 
 import { ethers } from "ethers";
 import IUniswapV2Router02ABI from "../../assets/constants/abi/IUniswapV2Router02.json";
-import { defaultGasLimit, getGasPrice, defaultApprovalSDAO } from "../../utils/ethereum";
+import { defaultGasLimit, getGasPrice, defaultApprovalAmount } from "../../utils/ethereum";
 import { ContractAddress } from "../../assets/constants/addresses";
 import { toast } from "react-toastify";
 
@@ -81,7 +81,7 @@ const AddLiquidityPanel = ({ type, token, dynasetid }) => {
     const signer = await library.getSigner(account);
     const tokenContract = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
     const gasPrice = await getGasPrice();
-    const tx = await tokenContract.approve(ContractAddress.UNISWAP, defaultApprovalSDAO, {
+    const tx = await tokenContract.approve(ContractAddress.UNISWAP, defaultApprovalAmount, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });

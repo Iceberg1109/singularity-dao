@@ -47,5 +47,5 @@ export const reduceSlippage = (amount, slippage = Currencies.SDAO.slippagePercen
   (Number(amount) * (1 - slippage / 100)).toFixed(8);
 
 export const defaultGasLimit = 210000;
-export const defaultApprovalSDAO = ethers.BigNumber.from(10).pow(28).toString(); // Inspired from UNISWAP default Approval
+export const defaultApprovalAmount = ethers.BigNumber.from(10).pow(28).toString(); // Inspired from UNISWAP default Approval
 export const unitBlockTime = 13500; // milliseconds

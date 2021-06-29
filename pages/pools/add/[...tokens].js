@@ -37,22 +37,18 @@ function Add() {
     const signer = await library.getSigner(account);
     const tokenContract = new ethers.Contract(address, DynasetABI, signer);
     const currency = await tokenContract.symbol();
-
     return currency;
   };
 
   const getSymbols = async (tokens) => {
     if (tokens) {
-      const fromCurrency = await getCurrency(tokens[0]);
-      const toCurrency = await getCurrency(tokens[1]);
+      const [fromCurrency, toCurrency] = await Promise.all([getCurrency(tokens[0]), getCurrency(tokens[1])]);
       setFromCurrency(fromCurrency);
       setToCurrency(toCurrency);
     }
   };
 
-  useEffect(() => {
-    getSymbols(tokens);
-  }, [tokens]);
+  useEffect(() => getSymbols(tokens), [tokens, account]);
 
   useEffect(() => getPairData(), []);
 
