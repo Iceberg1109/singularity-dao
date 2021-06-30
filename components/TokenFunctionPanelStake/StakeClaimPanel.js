@@ -47,7 +47,7 @@ const StakeClaimPanel = ({ token ,id,currencyid}) => {
     const signer = await library.getSigner(account);
     const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
-    const withdrawAmount = web3.utils.toWei(amount.toString()); //amount.toString()
+    const withdrawAmount = web3.utils.toWei(amount.toString()); //
     
     const rewards = await stakingContract.pendingRewards(id, account, {
       gasLimit: defaultGasLimit,
@@ -57,7 +57,7 @@ const StakeClaimPanel = ({ token ,id,currencyid}) => {
     console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
 
-    const tx = await stakingContract.withdrawAndHarvest(id.toString(), withdrawAmount, account, {
+    const tx = await stakingContract.withdrawAndHarvest(id, withdrawAmount, account, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
