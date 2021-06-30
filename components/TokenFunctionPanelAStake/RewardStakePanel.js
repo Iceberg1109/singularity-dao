@@ -225,7 +225,6 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
         selectedCurrency={Currencies.SDAO.id}
       />
 
-    
       <div className="d-flex justify-content-center">
         <DefaultButton background="white" color="black" borderColor="black">
           Cancel

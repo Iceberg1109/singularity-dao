@@ -84,7 +84,7 @@ const StakeClaimPanel = ({ token }) => {
         <DefaultButton background="white" color="black" borderColor="black">
           Cancel
         </DefaultButton>
-        <GradientButton onClick={handleSubmit}>Harvest</GradientButton>
+        <GradientButton onClick={handleSubmit}>Claim</GradientButton>
       </div>
       <StakeSuccessModal
         modalOpen={showStakeSuccessModal}
