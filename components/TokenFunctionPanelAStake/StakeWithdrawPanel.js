@@ -49,6 +49,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
     const withdrawAmount =  parseFloat(amount.toString());
+    const withdraw = web3.utils.toWei(amount.toString());
     console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
     
@@ -64,7 +65,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
  
      }else{
 
-     const tx = await stakingContract.withdrawAndHarvest("0", withdrawAmount, account, {
+     const tx = await stakingContract.withdrawAndHarvest("0", withdraw, account, {
         gasLimit: defaultGasLimit,
         gasPrice,
       });
@@ -104,9 +105,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   return (
     <>
       <div className="d-flex justify-content-between">
-        <Typography size={20} style={{ textAlign: "left" }}>
-          Start Staking
-        </Typography>
+      
       </div>
       <CurrencyInputPanelSDAOLP
         balance={balance}
@@ -116,7 +115,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
         label="SDAO"
       />
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/staking")}>
           Cancel
         </DefaultButton>
         <GradientButton onClick={handleSubmit}>Withdraw</GradientButton>
@@ -126,10 +125,10 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
         setModalOpen={setShowStakeSuccessModal}
         title="Withdraw done successfully!"
         itemsList={[
-          { label: "Stake Balance", desc: "960.0000 SDAO LP" },
-          { label: "APY (approx.)", desc: "34.74 %" },
+          { label: "", desc: "" },
+          { label: "", desc: "" },
         ]}
-        resultsList={[{ label: "Withdrawn", desc: "345.2500 SDAO" }]}
+        resultsList={[{ label: "Withdrawn", desc: "" }]}
         primaryAction={{ label: "Ok", onClick: () => router.push("/") }}
         secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
       />

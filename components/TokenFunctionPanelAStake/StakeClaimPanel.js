@@ -44,6 +44,7 @@ const StakeClaimPanel = ({ token }) => {
   const router = useRouter();
 
   const withdrawAndHarvest = async () => {
+
     const signer = await library.getSigner(account);
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
@@ -69,31 +70,29 @@ const StakeClaimPanel = ({ token }) => {
   return (
     <>
       <div className="d-flex justify-content-between">
-        <Typography size={20} style={{ textAlign: "left" }}>
-          Start Staking
-        </Typography>
+ 
       </div>
       <CurrencyInputPanelSDAOLP
         balance={balance}
         amount={amount}
         onAmountChange={setAmount}
-        selectedCurrency={Currencies.SDAO_LP.id}
+        selectedCurrency={Currencies.SDAO.id}
       />
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/staking")}>
           Cancel
         </DefaultButton>
-        <GradientButton onClick={handleSubmit}>Harvest</GradientButton>
+        <GradientButton onClick={handleSubmit}>Claim</GradientButton>
       </div>
       <StakeSuccessModal
         modalOpen={showStakeSuccessModal}
         setModalOpen={setShowStakeSuccessModal}
         title="Harvest done successfully!"
         itemsList={[
-          { label: "Stake Balance", desc: "960.0000 SDAO LP" },
-          { label: "APY (approx.)", desc: "34.74 %" },
+          { label: "Stake Balance", desc: "" },
+          { label: "APY (approx.)", desc: "" },
         ]}
-        resultsList={[{ label: "Withdrawn", desc: "345.2500 SDAO" }]}
+        resultsList={[{ label: "Withdrawn", desc: "" }]}
         primaryAction={{ label: "Ok", onClick: () => router.push("/") }}
         secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
       />

@@ -45,9 +45,9 @@ const StakeClaimPanel = ({ token ,id,currencyid}) => {
 
   const withdrawAndHarvest = async () => {
     const signer = await library.getSigner(account);
-    const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
+    const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
-    const withdrawAmount = web3.utils.toWei(amount.toString()); //amount.toString()
+    const withdrawAmount = web3.utils.toWei(amount.toString()); //
     
     const rewards = await stakingContract.pendingRewards(id, account, {
       gasLimit: defaultGasLimit,
@@ -57,7 +57,7 @@ const StakeClaimPanel = ({ token ,id,currencyid}) => {
     console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
 
-    const tx = await stakingContract.withdrawAndHarvest(id.toString(), withdrawAmount, account, {
+    const tx = await stakingContract.withdrawAndHarvest(id, withdrawAmount, account, {
       gasLimit: defaultGasLimit,
       gasPrice,
     });
@@ -83,7 +83,7 @@ const StakeClaimPanel = ({ token ,id,currencyid}) => {
         selectedCurrency={currencyid}
       />
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/farms")}>
           Cancel
         </DefaultButton>
         <GradientButton onClick={handleSubmit}>Harvest</GradientButton>
@@ -97,7 +97,7 @@ const StakeClaimPanel = ({ token ,id,currencyid}) => {
           { label: "APY (approx.)", desc: "34.74 %" },
         ]}
         resultsList={[{ label: "Withdrawn", desc: "345.2500 SDAO" }]}
-        primaryAction={{ label: "Ok", onClick: () => router.push("/") }}
+        primaryAction={{ label: "Ok", onClick: () => router.push("/farms") }}
         secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
       />
     </>

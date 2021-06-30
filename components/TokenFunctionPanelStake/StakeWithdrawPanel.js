@@ -49,6 +49,8 @@ const StakeWithdrawPanel = ({ type, token, dynasetid ,id,currencyid}) => {
     const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
     const withdrawAmount =  parseFloat(amount.toString());
+    const withdraw = web3.utils.toWei(amount.toString());
+
     console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
     
@@ -64,7 +66,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid ,id,currencyid}) => {
  
      }else{
 
-     const tx = await stakingContract.withdrawAndHarvest(id, withdrawAmount, account, {
+     const tx = await stakingContract.withdrawAndHarvest(id, withdraw , account, {
         gasLimit: defaultGasLimit,
         gasPrice,
       });
@@ -116,7 +118,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid ,id,currencyid}) => {
         label="SDAO LP"
       />
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/farms")}>
           Cancel
         </DefaultButton>
         <GradientButton onClick={handleSubmit}>Withdraw</GradientButton>
@@ -130,7 +132,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid ,id,currencyid}) => {
           { label: "APY (approx.)", desc: "34.74 %" },
         ]}
         resultsList={[{ label: "Withdrawn", desc: "345.2500 SDAO" }]}
-        primaryAction={{ label: "Ok", onClick: () => router.push("/") }}
+        primaryAction={{ label: "Ok", onClick: () => router.push("/farms") }}
         secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
       />
     </>

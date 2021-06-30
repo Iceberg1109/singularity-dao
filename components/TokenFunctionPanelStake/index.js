@@ -15,6 +15,7 @@ import { unitBlockTime } from "../../utils/ethereum";
 import Web3 from "web3";
 import useInterval from "../../utils/hooks/useInterval";
 import { Currencies } from "../../utils/currencies";
+import countdown from "countdown";
 
 const MainCard = styled(Card)`
   padding: 40px;
@@ -47,8 +48,37 @@ const TokenFunctionPanel = ({ panelType,id ,token, address,currencyid}) => {
   const [pendingRewards, setPendingRewards] = useState(0);
   const [userInfoAmount, setUserInfoAmount] = useState(0);
   const { library, account } = useUser();
+  const [days,setdays] = useState(0);
 
   useInterval(() => getUserStakeDetails(), unitBlockTime, [account]);
+;
+
+ const countdown = ()=>{
+
+    var end = new Date('09/01/2021 10:1 AM');
+
+    var _second = 1000;
+    var _minute = _second * 60;
+    var _hour = _minute * 60;
+    var _day = _hour * 24;
+    var timer;
+
+
+    var now = new Date();
+    var distance = end - now;
+
+    var day = Math.floor(distance / _day);
+    var hours = Math.floor((distance % _day) / _hour);
+    var minutes = Math.floor((distance % _hour) / _minute);
+    var seconds = Math.floor((distance % _minute) / _second);
+
+    console.log("days");
+    console.log(day);
+
+    setdays(day);
+
+ }
+
 
   const MainPanel = useCallback(() => {
     switch (panelType) {
@@ -64,6 +94,7 @@ const TokenFunctionPanel = ({ panelType,id ,token, address,currencyid}) => {
   const getUserStakeDetails = () => {
     getPendingRewards();
     getStateUserInfo();
+    countdown();
   };
 
   const getPendingRewards = async () => {
@@ -116,7 +147,7 @@ const TokenFunctionPanel = ({ panelType,id ,token, address,currencyid}) => {
       <Row>
         <Col lg={6}>
           <MainCard>
-            <MainPanel id={id} address={address} currencyid={currencyid}/>
+            <MainPanel id={id} token={token} address={address} currencyid={currencyid}/>
           </MainCard>
         </Col>
         <Col lg={6}>
@@ -126,7 +157,7 @@ const TokenFunctionPanel = ({ panelType,id ,token, address,currencyid}) => {
             </Typography>
              <Typography size={15} style={{ textAlign: "left",color:"#ABABAB" }}>SDAO farmed</Typography>
             <DetailLabel title="APY return" desc="13 %" />
-            <DetailLabel title="Ends in" desc="60 days" />
+            <DetailLabel title="Ends in" desc={`${days} days`} />
           </MainCard>
         </Col>
       </Row>

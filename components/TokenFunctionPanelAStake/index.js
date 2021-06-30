@@ -45,6 +45,7 @@ const TokenFunctionPanel = ({ panelType,apy,address }) => {
   const poolId = 0;
   const [pendingRewards, setPendingRewards] = useState(0);
   const [userInfoAmount, setUserInfoAmount] = useState(0);
+  const [days,setdays]= useState(0);
   const { library, account } = useUser();
 
   useInterval(() => getUserStakeDetails(), unitBlockTime, [account]);
@@ -63,7 +64,34 @@ const TokenFunctionPanel = ({ panelType,apy,address }) => {
   const getUserStakeDetails = () => {
     getPendingRewards();
     getStateUserInfo();
+    countdown();
   };
+
+   const countdown = ()=>{
+
+    var end = new Date('09/01/2021 10:1 AM');
+
+    var _second = 1000;
+    var _minute = _second * 60;
+    var _hour = _minute * 60;
+    var _day = _hour * 24;
+    var timer;
+
+
+    var now = new Date();
+    var distance = end - now;
+
+    var day = Math.floor(distance / _day);
+    var hours = Math.floor((distance % _day) / _hour);
+    var minutes = Math.floor((distance % _hour) / _minute);
+    var seconds = Math.floor((distance % _minute) / _second);
+
+    console.log("days");
+    console.log(day);
+
+    setdays(day);
+
+ }
 
   const getPendingRewards = async () => {
     try {
@@ -126,7 +154,7 @@ const TokenFunctionPanel = ({ panelType,apy,address }) => {
             </Typography>
             <Typography size={12} style={{color:"#ABABAB"}}>SDAO earned</Typography>
             <DetailLabel title="APY return" desc="13 %" />
-            <DetailLabel title="Ends in" desc="60 days" />
+            <DetailLabel title="Ends in" desc={`${days} days`} />
           </MainCard>
         </Col>
       </Row>

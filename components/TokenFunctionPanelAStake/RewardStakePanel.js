@@ -122,7 +122,7 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
           await approveTokens();
         
         } catch {
-         
+           setapproving(false);
           toast("error: look console for details", { type: "error" });
        }
       
@@ -165,6 +165,7 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
   };
 
   const approveTokens = async () => {
+    setapproving(true);
     const signer = await library.getSigner(account);
     const lpToken = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
     const gasPrice = await getGasPrice();
@@ -176,8 +177,9 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
     const receipt = await tx.wait();
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
 
-     setApproved(true);
 
+     setApproved(true);
+      setapproving(false);
 
   };
   const getPendingRewards = async () => {
@@ -225,16 +227,15 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
         selectedCurrency={Currencies.SDAO.id}
       />
 
-    
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/staking")}>
           Cancel
         </DefaultButton>
         {!approved ? <GradientButton disabled={staking || approving} onClick={handleSubmit} >Approve {approving ? (
             <span style={{ lineHeight: "35px" }}>
               <Spinner color="white" size="sm" className="ml-2" />
             </span>
-          ) : null}</GradientButton> : <GradientButton disabled={staking || approving} onClick={stakeToken} >Farm {approving ? (
+          ) : null}</GradientButton> : <GradientButton disabled={staking || approving} onClick={stakeToken} >Stake {approving ? (
             <span style={{ lineHeight: "35px" }}>
               <Spinner color="white" size="sm" className="ml-2" />
             </span>

@@ -17,7 +17,7 @@ const ForgePage = () => {
         Yield Farming
       </Typography>
       <Typography color="text1" size={16} weight={400}>
-        Maximize your return by staking your SDAO LP tokens.
+        Maximize your return by staking your SDAO LP or AGIX LP tokens.
       </Typography>
      
       <div className="py-4 mt-5">

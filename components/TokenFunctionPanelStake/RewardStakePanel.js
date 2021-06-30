@@ -135,15 +135,14 @@ let minABI = [
     }
 
     try {
-       setapproving(true)
+      
+      setapproving(true)
       const signer = await library.getSigner(account);
 
       const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
       const poolId = 0;
       const stakeAmount = web3.utils.toWei(fromCurrencyPrice.toString()); //
       const gasPrice = await getGasPrice();
-
-
 
       
       const tx = await stakingContract.deposit(id, stakeAmount, account, {
@@ -156,7 +155,7 @@ let minABI = [
       const receipt = await tx.wait();
 
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-       setapproving(false)
+       setapproving(false);
        setShowStakeSuccessModal(true);
     } catch (error) {
        setapproving(false)
@@ -237,7 +236,7 @@ let minABI = [
       />
 
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/farms")}>
           Cancel
         </DefaultButton>
         {!approved ? <GradientButton disabled={staking || approving} onClick={handleSubmit} >Approve {approving ? (
@@ -256,11 +255,11 @@ let minABI = [
         setModalOpen={setShowStakeSuccessModal}
         title="Token staked successfully!"
         itemsList={[
-          { label: "Staked", desc: ""+fromCurrencyPrice+{token} },
+          { label: "Staked", desc: `${fromCurrencyPrice} ${token}` },
           { label: "APY (approx.)", desc: " 13 %" },
         ]}
         resultsList={[{ label: "", desc: "" }]}
-        primaryAction={{ label: "Ok", onClick: () => router.push("/") }}
+        primaryAction={{ label: "Ok", onClick: () => router.push("/farms") }}
         secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
       />
     </>
