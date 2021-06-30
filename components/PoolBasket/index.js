@@ -23,9 +23,10 @@ import { USER_LIQUIDITY_QUERY } from "../../queries/liquidity";
 import { unitBlockTime } from "../../utils/ethereum";
 import { toast } from "react-toastify";
 import { ethers } from "ethers";
-import web3 from "web3";
-import { Currencies, getErc20TokenById } from "../../utils/currencies";
+// import web3 from "web3";
+// import { Currencies, getErc20TokenById } from "../../utils/currencies";
 import { toFraction } from "../../utils/balance";
+// import UniswapV2Pair from "@uniswap/v2-core/build/UniswapV2Pair.json";
 
 // const CustomProgress = styled(Progress)`
 //   .progress-bar {
@@ -56,7 +57,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   const { account, chainId, library } = useUser();
   const tokenPair = tokens[chainId];
   const [balance, setBalance] = useState("...");
-  // const [share, setShare] = useState("...");
+  const [share, setShare] = useState("...");
   // const { loading: ethLoading, data: ethPriceData } = useQuery(ETH_PRICE_QUERY);
   // const { loading: tokenDayDatasLoading, data: tokenDayDatas } = useQuery(TOKEN_QUERY, {
   //   variables: { tokenAddress: ContractAddress.SDAO },
@@ -117,13 +118,23 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       const signer = await library.getSigner(account);
       const lpToken = new ethers.Contract(liquidityToken.address.toLowerCase(), IUniswapV2ERC20.abi, signer);
       console.log(title, "lpToken", lpToken);
-      const decimals = await lpToken.callStatic.decimals();
+      const lpDecimals = await lpToken.callStatic.decimals();
       let lpBalance = await lpToken.callStatic.balanceOf(account);
-      lpBalance = toFraction(lpBalance.toString(), decimals);
+      lpBalance = toFraction(lpBalance.toString(), lpDecimals);
       console.log(title, "baalanceeeee", lpBalance);
       setBalance(lpBalance);
 
-      // const totalSupply = await lpToken.callStatic.totalSupply();
+      let totalSupply = await lpToken.callStatic.totalSupply();
+      totalSupply = toFraction(totalSupply.toString(), lpDecimals);
+
+      const percentShare = BigNumber(lpBalance)
+        .dividedBy(BigNumber(totalSupply))
+        .multipliedBy(100)
+        .decimalPlaces(4)
+        .toString();
+      setShare(percentShare);
+      console.log(title, "percentShare web3 calc", percentShare);
+
       // console.log("totalSupply from Web3", web3.utils.fromWei(totalSupply.toString()));
       // // setBalance(web3.utils.fromWei(lpBalance.toString()));
       // // BALANCE OF LIQUIDITY IN SDAO
@@ -168,6 +179,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
     ? BigNumber(userLiquidityData.pair.reserveUSD).decimalPlaces(4).toString()
     : "0";
 
+  // DEPRECATED: Will be removed once the state `share` is tested
   const userLiquidityShare = useCallback(() => {
     if (userLiquidityLoading) return "loading";
     let totalSupply = userLiquidityData?.pair?.totalSupply;
@@ -176,6 +188,8 @@ const ForgeBasket = ({ title, apy, tokens }) => {
     totalSupply = new BigNumber(totalSupply);
     return BigNumber(balance).div(totalSupply).multipliedBy(100).toString();
   }, [userLiquidityData?.pair?.totalSupply])();
+
+  console.log(title, "userLiquidityShare", userLiquidityShare);
 
   if (showError || !!userLiquidityError) {
     return (
@@ -224,7 +238,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       <div className="mt-2">
         <DetailLabel title="Liquidity" desc={`$ ${totalLiquidity}`} />
         <DetailLabel title="APY (approx.)" desc={`${apy} %`} />
-        <DetailLabel title="Your share" desc={`${userLiquidityShare} %`} />
+        <DetailLabel title="Your share" desc={`${share ? share : 0} %`} />
         <DetailLabel title="Balance" desc={`${balance} ${title}`} />
       </div>
 
