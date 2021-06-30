@@ -236,7 +236,7 @@ let minABI = [
       />
 
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/farms")}>
           Cancel
         </DefaultButton>
         {!approved ? <GradientButton disabled={staking || approving} onClick={handleSubmit} >Approve {approving ? (
@@ -259,7 +259,7 @@ let minABI = [
           { label: "APY (approx.)", desc: " 13 %" },
         ]}
         resultsList={[{ label: "", desc: "" }]}
-        primaryAction={{ label: "Ok", onClick: () => router.push("/") }}
+        primaryAction={{ label: "Ok", onClick: () => router.push("/farms") }}
         secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
       />
     </>

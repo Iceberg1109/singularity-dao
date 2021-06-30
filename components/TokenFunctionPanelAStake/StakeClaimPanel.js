@@ -79,7 +79,7 @@ const StakeClaimPanel = ({ token }) => {
         selectedCurrency={Currencies.SDAO.id}
       />
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/staking")}>
           Cancel
         </DefaultButton>
         <GradientButton onClick={handleSubmit}>Claim</GradientButton>

@@ -177,7 +177,7 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
     const receipt = await tx.wait();
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
 
-    
+
      setApproved(true);
       setapproving(false);
 
@@ -228,7 +228,7 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
       />
 
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/staking")}>
           Cancel
         </DefaultButton>
         {!approved ? <GradientButton disabled={staking || approving} onClick={handleSubmit} >Approve {approving ? (

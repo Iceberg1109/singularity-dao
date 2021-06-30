@@ -83,7 +83,7 @@ const StakeClaimPanel = ({ token ,id,currencyid}) => {
         selectedCurrency={currencyid}
       />
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/farms")}>
           Cancel
         </DefaultButton>
         <GradientButton onClick={handleSubmit}>Harvest</GradientButton>
@@ -97,7 +97,7 @@ const StakeClaimPanel = ({ token ,id,currencyid}) => {
           { label: "APY (approx.)", desc: "34.74 %" },
         ]}
         resultsList={[{ label: "Withdrawn", desc: "345.2500 SDAO" }]}
-        primaryAction={{ label: "Ok", onClick: () => router.push("/") }}
+        primaryAction={{ label: "Ok", onClick: () => router.push("/farms") }}
         secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
       />
     </>

@@ -115,7 +115,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
         label="SDAO"
       />
       <div className="d-flex justify-content-center">
-        <DefaultButton background="white" color="black" borderColor="black">
+        <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/staking")}>
           Cancel
         </DefaultButton>
         <GradientButton onClick={handleSubmit}>Withdraw</GradientButton>
