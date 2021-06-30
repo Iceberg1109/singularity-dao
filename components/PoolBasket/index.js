@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 import { ethers } from "ethers";
 import web3 from "web3";
 import { Currencies, getErc20TokenById } from "../../utils/currencies";
+import { toFraction } from "../../utils/balance";
 
 // const CustomProgress = styled(Progress)`
 //   .progress-bar {
@@ -61,7 +62,6 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   //   variables: { tokenAddress: ContractAddress.SDAO },
   // });
   const [showError, setShowError] = useState(false);
-
 
   const {
     loading: userLiquidityLoading,
@@ -116,11 +116,11 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       // BALANCE OF USER IN LIQUIDITY TOKEN
       const signer = await library.getSigner(account);
       const lpToken = new ethers.Contract(liquidityToken.address.toLowerCase(), IUniswapV2ERC20.abi, signer);
-      console.log("lpToken", lpToken);
+      console.log(title, "lpToken", lpToken);
+      const decimals = await lpToken.callStatic.decimals();
       let lpBalance = await lpToken.callStatic.balanceOf(account);
-      lpBalance = web3.utils.fromWei(lpBalance.toString(), "ether");
-      lpBalance = BigNumber(lpBalance).decimalPlaces(4).toString();
-      console.log("baalanceeeee", lpBalance);
+      lpBalance = toFraction(lpBalance.toString(), decimals);
+      console.log(title, "baalanceeeee", lpBalance);
       setBalance(lpBalance);
 
       // const totalSupply = await lpToken.callStatic.totalSupply();
@@ -208,7 +208,7 @@ const ForgeBasket = ({ title, apy, tokens }) => {
   }
 
   const routeLink = tokenPair ? `pools/add/${tokenPair[0]}/${tokenPair[1]}` : "#";
- 
+
   return (
     <Card className="p-4 forge-card">
       <Row>
