@@ -342,7 +342,7 @@ const BuyPanel = () => {
           onClick={handleSwapping}
           disabled={swapping || approving}
           style={{ width: 130, height: 56 }}
-          className="d-flex align-middle"
+          className="d-flex align-middle justify-content-center"
         >
           <span style={{ lineHeight: "40px" }}>Swap</span>
           {swapping ? (
