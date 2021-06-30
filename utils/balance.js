@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+BigNumber.config({ EXPONENTIAL_AT: 1e9 });
 
 /**
  *
@@ -15,9 +16,9 @@ export const toFraction = (balance, decimals, precision = 8) => {
 };
 
 /**
- * 
- * @param {BigNumber | String | Number} balance 
- * @param {BigNumber | String | Number} decimals 
+ *
+ * @param {BigNumber | String | Number} balance
+ * @param {BigNumber | String | Number} decimals
  * @returns {String} balance
  */
 export const fromFraction = (balance, decimals) => {

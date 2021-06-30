@@ -201,11 +201,10 @@ const AddLiquidityPanel = ({ tokens }) => {
       const uniswap = new ethers.Contract(ContractAddress.UNISWAP, IUniswapV2Router02ABI, signer);
       const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
       const gasPrice = await getGasPrice();
-
       // const amountTokenDesired = web3.utils.toWei(fromAmount.toString(), "ether");
       // console.log("amountTokenDesired", amountTokenDesired);
 
-      const amountTokenDesired = fromFraction(fromAmount.toString(), token0Data.decimals);
+      const amountTokenDesired = fromFraction(fromAmount, token0Data.decimals);
 
       const slippage = Currencies.SDAO.slippagePercent;
       const slippageMulFactor = 1 - slippage / 100;
@@ -368,7 +367,9 @@ const AddLiquidityPanel = ({ tokens }) => {
           { label: token0Data?.symbol, desc: `${fromAmount} ${token0Data?.symbol}` },
           { label: token1Data?.symbol, desc: `${toAmount} ${token1Data?.symbol}` },
         ]}
-        resultsList={[{ label: "LP Received", desc: `${liquidityReceived} ${token0Data?.symbol}-${token1Data?.symbol}` }]}
+        resultsList={[
+          { label: "LP Received", desc: `${liquidityReceived} ${token0Data?.symbol}-${token1Data?.symbol}` },
+        ]}
         primaryAction={{ label: "Ok", onClick: handleModalClose }}
       />
     </Card>
