@@ -83,7 +83,10 @@ const CurrencyInputPanelLP = ({ amount, onAmountChange, selectedCurrency, disabl
         setBalance(fraction);
       }
     } catch (error) {
-      toast("unable to fetch the latest balance", { type: "error" });
+      toast("unable to fetch the latest balance", {
+        type: "error",
+        toastId: !!token ? `${token}-balance-error` : `${selectedCurrency}-balance-error`,
+      });
       console.log("unable to fetch the latest balance error", error);
     }
   };
