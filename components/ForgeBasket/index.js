@@ -43,11 +43,13 @@ const ForgeBasket = ({ data, title,apy,poolid,name }) => {
     try {
       if (!library) return;
       const signer = await library.getSigner(account);
+
+
       const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
       const poolId = 0;
 
       const rewards = await stakingContract.callStatic.pendingRewards(poolid, account);
-      console.log("rewards Withdraw ", rewards.toString());
+      console.log("rewards Withdraw "+poolid, rewards.toString());
       setPendingRewards(Web3.utils.fromWei(rewards.toString()));
       return rewards;
     } catch (error) {
@@ -62,7 +64,7 @@ const ForgeBasket = ({ data, title,apy,poolid,name }) => {
       const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
       const userInfo = await stakingContract.callStatic.userInfo(poolid, account);
       setUserInfoAmount(Web3.utils.fromWei(userInfo.amount.toString()));
-      console.log("userInfo", userInfo.amount.toString());
+      console.log("userInfo"+poolid, userInfo.amount.toString());
     } catch (error) {
       console.log("userInfo erorrrrrrrrrrrrrrrr", error);
     }
@@ -82,7 +84,7 @@ const ForgeBasket = ({ data, title,apy,poolid,name }) => {
         </Col>
       </Row>
       <DetailLabel title="APY" desc={apy} />
-      <DetailLabel title="Your stake" desc={`${userInfoAmount} SDAO`} />
+      <DetailLabel title="Your stake" desc={`${userInfoAmount} ${name}`} />
       <div className="text-align-center mt-3">
         <OutlinedButton color="interactive2" onClick={() => router.push({ pathname: routeLinkwithdraw })}>
           Withdraw

@@ -135,15 +135,14 @@ let minABI = [
     }
 
     try {
-       setapproving(true)
+      
+      setapproving(true)
       const signer = await library.getSigner(account);
 
       const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
       const poolId = 0;
       const stakeAmount = web3.utils.toWei(fromCurrencyPrice.toString()); //
       const gasPrice = await getGasPrice();
-
-
 
       
       const tx = await stakingContract.deposit(id, stakeAmount, account, {
@@ -156,7 +155,7 @@ let minABI = [
       const receipt = await tx.wait();
 
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-       setapproving(false)
+       setapproving(false);
        setShowStakeSuccessModal(true);
     } catch (error) {
        setapproving(false)
