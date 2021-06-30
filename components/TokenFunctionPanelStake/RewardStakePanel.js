@@ -255,7 +255,7 @@ let minABI = [
         setModalOpen={setShowStakeSuccessModal}
         title="Token staked successfully!"
         itemsList={[
-          { label: "Staked", desc: ""+fromCurrencyPrice+{token} },
+          { label: "Staked", desc: `${fromCurrencyPrice} ${token}` },
           { label: "APY (approx.)", desc: " 13 %" },
         ]}
         resultsList={[{ label: "", desc: "" }]}
