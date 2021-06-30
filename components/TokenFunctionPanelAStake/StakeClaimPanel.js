@@ -78,7 +78,7 @@ const StakeClaimPanel = ({ token }) => {
         balance={balance}
         amount={amount}
         onAmountChange={setAmount}
-        selectedCurrency={Currencies.SDAO_LP.id}
+        selectedCurrency={Currencies.SDAO.id}
       />
       <div className="d-flex justify-content-center">
         <DefaultButton background="white" color="black" borderColor="black">
