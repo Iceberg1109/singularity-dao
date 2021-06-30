@@ -99,7 +99,6 @@ const ForgeBasket = ({ title, apy, tokens }) => {
       if (!chainId || !account || !library) return;
 
       if (!tokenPair) throw new Error("Token addresses not available");
-      console.log("tokens", tokens[0], chainId);
       setShowError(false);
       const token1 = new Token(chainId, tokenPair[0], 18);
       const token2 = new Token(chainId, tokenPair[1], 18);
