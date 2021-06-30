@@ -11,7 +11,7 @@ export default function TokenFunctionPanelAddPool({tokens, pairAddress}) {
         <AddLiquidityPanel tokens={tokens} />
       </Col>
       <Col lg={5}>
-        <PoolInfoPanel pairAddress={pairAddress} />
+        <PoolInfoPanel pairAddress={pairAddress} tokens={tokens} />
       </Col>
     </Row>
   );

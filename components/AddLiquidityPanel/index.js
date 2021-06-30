@@ -368,7 +368,7 @@ const AddLiquidityPanel = ({ tokens }) => {
           { label: token0Data?.symbol, desc: `${fromAmount} ${token0Data?.symbol}` },
           { label: token1Data?.symbol, desc: `${toAmount} ${token1Data?.symbol}` },
         ]}
-        resultsList={[{ label: "LP Received", desc: `${liquidityReceived}` }]}
+        resultsList={[{ label: "LP Received", desc: `${liquidityReceived} ${token0Data?.symbol}-${token1Data?.symbol}` }]}
         primaryAction={{ label: "Ok", onClick: handleModalClose }}
       />
     </Card>
