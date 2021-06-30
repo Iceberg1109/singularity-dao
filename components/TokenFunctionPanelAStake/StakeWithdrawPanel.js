@@ -49,6 +49,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
     const withdrawAmount =  parseFloat(amount.toString());
+    const withdraw = web3.utils.toWei(amount.toString());
     console.log("withdrawAmount", withdrawAmount);
     const gasPrice = await getGasPrice();
     
@@ -64,7 +65,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
  
      }else{
 
-     const tx = await stakingContract.withdrawAndHarvest("0", withdrawAmount, account, {
+     const tx = await stakingContract.withdrawAndHarvest("0", withdraw, account, {
         gasLimit: defaultGasLimit,
         gasPrice,
       });
