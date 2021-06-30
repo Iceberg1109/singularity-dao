@@ -122,7 +122,7 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
           await approveTokens();
         
         } catch {
-         
+           setapproving(false);
           toast("error: look console for details", { type: "error" });
        }
       
@@ -165,6 +165,7 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
   };
 
   const approveTokens = async () => {
+    setapproving(true);
     const signer = await library.getSigner(account);
     const lpToken = new ethers.Contract(ContractAddress.SDAO, DynasetABI, signer);
     const gasPrice = await getGasPrice();
@@ -176,8 +177,9 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
     const receipt = await tx.wait();
     console.log(`Transaction was mined in block ${receipt.blockNumber}`);
 
+    
      setApproved(true);
-
+      setapproving(false);
 
   };
   const getPendingRewards = async () => {

@@ -48,13 +48,14 @@ const TokenFunctionPanel = ({ panelType,id ,token, address,currencyid}) => {
   const [pendingRewards, setPendingRewards] = useState(0);
   const [userInfoAmount, setUserInfoAmount] = useState(0);
   const { library, account } = useUser();
+  const [days,setdays] = useState(0);
 
   useInterval(() => getUserStakeDetails(), unitBlockTime, [account]);
-
+;
 
  const countdown = ()=>{
 
-    new Date('02/19/2012 10:1 AM');
+    var end = new Date('09/01/2021 10:1 AM');
 
     var _second = 1000;
     var _minute = _second * 60;
@@ -65,23 +66,16 @@ const TokenFunctionPanel = ({ panelType,id ,token, address,currencyid}) => {
 
     var now = new Date();
     var distance = end - now;
-    
-    if (distance < 0) {
 
-            clearInterval(timer);
-            document.getElementById('countdown').innerHTML = 'EXPIRED!';
-
-            return;
-        }
-
-    var days = Math.floor(distance / _day);
+    var day = Math.floor(distance / _day);
     var hours = Math.floor((distance % _day) / _hour);
     var minutes = Math.floor((distance % _hour) / _minute);
     var seconds = Math.floor((distance % _minute) / _second);
 
-    console.log(days)
+    console.log("days");
+    console.log(day);
 
-    return days;
+    setdays(day);
 
  }
 
@@ -100,6 +94,7 @@ const TokenFunctionPanel = ({ panelType,id ,token, address,currencyid}) => {
   const getUserStakeDetails = () => {
     getPendingRewards();
     getStateUserInfo();
+    countdown();
   };
 
   const getPendingRewards = async () => {
@@ -162,7 +157,7 @@ const TokenFunctionPanel = ({ panelType,id ,token, address,currencyid}) => {
             </Typography>
              <Typography size={15} style={{ textAlign: "left",color:"#ABABAB" }}>SDAO farmed</Typography>
             <DetailLabel title="APY return" desc="13 %" />
-            <DetailLabel title="Ends in" desc={countdown} />
+            <DetailLabel title="Ends in" desc={`${days} days`} />
           </MainCard>
         </Col>
       </Row>
