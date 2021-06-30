@@ -70,9 +70,7 @@ const StakeClaimPanel = ({ token }) => {
   return (
     <>
       <div className="d-flex justify-content-between">
-        <Typography size={20} style={{ textAlign: "left" }}>
-          Start Staking
-        </Typography>
+ 
       </div>
       <CurrencyInputPanelSDAOLP
         balance={balance}
