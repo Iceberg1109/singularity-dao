@@ -233,7 +233,7 @@ const RewardStakePanel = ({ token, dynasetid ,address }) => {
             <span style={{ lineHeight: "35px" }}>
               <Spinner color="white" size="sm" className="ml-2" />
             </span>
-          ) : null}</GradientButton> : <GradientButton disabled={staking || approving} onClick={stakeToken} >Farm {approving ? (
+          ) : null}</GradientButton> : <GradientButton disabled={staking || approving} onClick={stakeToken} >Stake {approving ? (
             <span style={{ lineHeight: "35px" }}>
               <Spinner color="white" size="sm" className="ml-2" />
             </span>
