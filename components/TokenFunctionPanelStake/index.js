@@ -116,7 +116,7 @@ const TokenFunctionPanel = ({ panelType,id ,token, address,currencyid}) => {
       <Row>
         <Col lg={6}>
           <MainCard>
-            <MainPanel id={id} address={address} currencyid={currencyid}/>
+            <MainPanel id={id} token={token} address={address} currencyid={currencyid}/>
           </MainCard>
         </Col>
         <Col lg={6}>
