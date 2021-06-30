@@ -105,9 +105,7 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
   return (
     <>
       <div className="d-flex justify-content-between">
-        <Typography size={20} style={{ textAlign: "left" }}>
-          Start Staking
-        </Typography>
+      
       </div>
       <CurrencyInputPanelSDAOLP
         balance={balance}
@@ -127,10 +125,10 @@ const StakeWithdrawPanel = ({ type, token, dynasetid }) => {
         setModalOpen={setShowStakeSuccessModal}
         title="Withdraw done successfully!"
         itemsList={[
-          { label: "Stake Balance", desc: "960.0000 SDAO LP" },
-          { label: "APY (approx.)", desc: "34.74 %" },
+          { label: "", desc: "" },
+          { label: "", desc: "" },
         ]}
-        resultsList={[{ label: "Withdrawn", desc: "345.2500 SDAO" }]}
+        resultsList={[{ label: "Withdrawn", desc: "" }]}
         primaryAction={{ label: "Ok", onClick: () => router.push("/") }}
         secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
       />

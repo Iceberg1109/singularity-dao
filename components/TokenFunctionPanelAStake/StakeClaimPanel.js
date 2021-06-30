@@ -44,6 +44,7 @@ const StakeClaimPanel = ({ token }) => {
   const router = useRouter();
 
   const withdrawAndHarvest = async () => {
+
     const signer = await library.getSigner(account);
     const stakingContract = new ethers.Contract(ContractAddress.STAKING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
@@ -90,10 +91,10 @@ const StakeClaimPanel = ({ token }) => {
         setModalOpen={setShowStakeSuccessModal}
         title="Harvest done successfully!"
         itemsList={[
-          { label: "Stake Balance", desc: "960.0000 SDAO LP" },
-          { label: "APY (approx.)", desc: "34.74 %" },
+          { label: "Stake Balance", desc: "" },
+          { label: "APY (approx.)", desc: "" },
         ]}
-        resultsList={[{ label: "Withdrawn", desc: "345.2500 SDAO" }]}
+        resultsList={[{ label: "Withdrawn", desc: "" }]}
         primaryAction={{ label: "Ok", onClick: () => router.push("/") }}
         secondaryAction={{ label: "Withdraw more", onClick: () => setShowStakeSuccessModal(false) }}
       />
