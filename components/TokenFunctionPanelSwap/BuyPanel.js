@@ -341,7 +341,7 @@ const BuyPanel = () => {
         <GradientButton
           onClick={handleSwapping}
           disabled={swapping || approving}
-          style={{ width: 130, height: 56 }}
+          style={{ width: 120, height: 56 ,textAlign:"center"}}
           className="d-flex align-middle"
         >
           <span style={{ lineHeight: "40px" }}>Swap</span>
