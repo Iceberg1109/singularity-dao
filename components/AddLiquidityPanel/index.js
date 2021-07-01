@@ -175,6 +175,7 @@ const AddLiquidityPanel = ({ tokens }) => {
 
   const approveTokens = async () => {
     try {
+      setApproving(true)
       if (!token0Data) return;
       const txn = await token0Data.contract.approve(ContractAddress.UNISWAP, defaultApprovalAmount);
       setPendingTxn(txn.hash);
