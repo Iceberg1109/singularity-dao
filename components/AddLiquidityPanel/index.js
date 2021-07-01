@@ -55,7 +55,7 @@ const AddLiquidityPanel = ({ tokens }) => {
   // const [lpBalance, setLpBalance] = useState(undefined);
   const [liquidityReceived, setLiquidityReceived] = useState(undefined);
 
-  console.log({ token0Loading, token0Data, token0Error });
+  // console.log({ token0Loading, token0Data, token0Error });
   const { data: ethPriceData } = useQuery(ETH_PRICE_QUERY);
 
   useEffect(async () => {
@@ -118,8 +118,8 @@ const AddLiquidityPanel = ({ tokens }) => {
       const decimals = type === conversionTypes.FROM ? token0Data.decimals : token1Data.decimals;
       const trade = new Trade(route, new TokenAmount(tradeToken, fromFraction(value, decimals)), tradeType);
 
-      console.log("getConversionRate trade executionPrice", trade.executionPrice.toSignificant(6));
-      console.log("getConversionRate trade executionPrice invert", trade.executionPrice.invert().toSignificant(6));
+      // console.log("getConversionRate trade executionPrice", trade.executionPrice.toSignificant(6));
+      // console.log("getConversionRate trade executionPrice invert", trade.executionPrice.invert().toSignificant(6));
       return trade;
     } catch (error) {
       if (error instanceof InsufficientReservesError) {
@@ -204,16 +204,16 @@ const AddLiquidityPanel = ({ tokens }) => {
       // const amountTokenDesired = web3.utils.toWei(fromAmount.toString(), "ether");
       // console.log("amountTokenDesired", amountTokenDesired);
 
-      const amountTokenDesired = fromFraction(fromAmount, token0Data.decimals);
-
-      const slippage = Currencies.SDAO.slippagePercent;
-      const slippageMulFactor = 1 - slippage / 100;
-      const amountTokenMin = ethers.BigNumber.from(amountTokenDesired) * slippageMulFactor;
-      const amountETHMin = web3.utils.toWei(toAmount.toString(), "ether");
+      const amountTokenDesired = fromFraction(fromAmount, token0Data.decimals, 0);
+      const value = fromFraction(toAmount, 18, 0)
+      // const slippage = Currencies.SDAO.slippagePercent;
+      // const slippageMulFactor = 1 - slippage / 100;
+      // const amountTokenMin = ethers.BigNumber.from(amountTokenDesired) * slippageMulFactor;
+      // const amountETHMin = web3.utils.toWei(toAmount.toString(), "ether");
       const tx = await uniswap.addLiquidityETH(token0Data.address, amountTokenDesired, "0", "0", account, deadline, {
         gasLimit: defaultGasLimit,
         gasPrice,
-        value: web3.utils.toWei(toAmount.toString()),
+        value,
       });
       setPendingTxn(tx.hash);
       console.log(`Transaction hash: ${tx.hash}`);
@@ -278,9 +278,6 @@ const AddLiquidityPanel = ({ tokens }) => {
     const allowance = BigNumber(fromTokenAllowance);
     if (allowance.isZero()) return true;
     const amount = fromFraction(fromAmount, token0Data?.decimals);
-    console.log("showApproval allowance", allowance.toString());
-    console.log("showApproval amount", amount);
-    console.log("showApproval comparision", allowance.comparedTo(BigNumber(amount)));
     return allowance.comparedTo(BigNumber(amount)) !== 1;
   };
 

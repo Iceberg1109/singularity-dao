@@ -33,6 +33,7 @@ import { sanitizeNumber } from "../../utils/input";
 import useInterval from "../../utils/hooks/useInterval";
 import BigNumber from "bignumber.js";
 import PendingTxn from "../PendingTxn";
+import { BigNumberComparision, fromFraction } from "../../utils/balance";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -103,13 +104,16 @@ const BuyPanel = () => {
   };
 
   const getConversionRate = (value, type = conversionTypes.FROM) => {
-    if (!swappingRoute) return;
-
+    if (!swappingRoute) return 0;
+    if (isNaN(Number(value))) return 0;
     const { fromToken, toToken } = getTokens();
     const tradeToken = type === conversionTypes.FROM ? fromToken : toToken;
     const tradeType = type === conversionTypes.FROM ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT;
 
-    const trade = new Trade(swappingRoute, new TokenAmount(tradeToken, web3.utils.toWei(value.toString())), tradeType);
+    const fromValue = fromFraction(value, 18, 0);
+    if (BigNumber(fromValue).isZero()) return 0;
+
+    const trade = new Trade(swappingRoute, new TokenAmount(tradeToken, fromValue), tradeType);
     console.log("trade.executionPrice", trade.executionPrice.toSignificant(6));
     setConversionRate(trade.executionPrice.toSignificant(6));
     return trade.executionPrice.toSignificant(6);
@@ -183,8 +187,10 @@ const BuyPanel = () => {
     const signer = await library.getSigner(account);
     const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
 
-    const allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
-    if (allowance.lte(web3.utils.toWei(fromAmount, "ether"))) {
+    let allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
+    allowance = BigNumber(allowance.toString());
+    const amount = fromFraction(fromAmount, 18, 0);
+    if (allowance.comparedTo(BigNumber(amount)) !== BigNumberComparision.GREATER) {
       await approveTokens();
     }
   };
@@ -219,17 +225,17 @@ const BuyPanel = () => {
       let value;
       if (fromCurrency === Currencies.ETH.id) {
         operation = uniswap.swapExactETHForTokens;
-        const amountOutMin = web3.utils.toWei(reduceSlippage(toAmount), "gwei");
+        const amountOutMin = fromFraction(reduceSlippage(toAmount), 9, 0); // 9 decimals for gwei
         const path = [route.path[0].address, route.path[1].address];
         const to = account;
         const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
         args = [amountOutMin, path, to, deadline];
-        value = web3.utils.toWei(fromAmount.toString(), "ether");
+        value = fromFraction(fromAmount, 18, 0);
       } else {
         await validateSDAOAllowanceForUniswap();
         operation = uniswap.swapTokensForExactETH;
-        const amountOut = web3.utils.toWei(toAmount.toString(), "ether");
-        const amountInMax = web3.utils.toWei(addSlippage(fromAmount), "ether"); // using ether for proper decimals
+        const amountOut = fromFraction(toAmount, 18, 0);
+        const amountInMax = fromFraction(addSlippage(fromAmount), 18, 0);
         const path = [route.path[1].address, route.path[0].address];
         const to = account;
         const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
@@ -290,8 +296,8 @@ const BuyPanel = () => {
       return false;
     const allowance = BigNumber(fromTokenAllowance);
     if (allowance.isZero()) return true;
-    const amount = BigNumber(web3.utils.toWei(sanitizeNumber(fromAmount), "ether"));
-    return allowance.comparedTo(amount) !== 1;
+    const amount = fromFraction(fromAmount, 18, 0);
+    return allowance.comparedTo(BigNumber(amount)) !== 1;
   };
 
   return (

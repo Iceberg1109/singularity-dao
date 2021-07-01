@@ -19,12 +19,13 @@ export const toFraction = (balance, decimals, precision = 8) => {
  *
  * @param {BigNumber | String | Number} balance
  * @param {BigNumber | String | Number} decimals
+ * @param {Number} precision
  * @returns {String} balance
  */
-export const fromFraction = (balance, decimals) => {
+export const fromFraction = (balance, decimals, precision = 8) => {
   balance = BigNumber(balance.toString());
   decimals = BigNumber(10).exponentiatedBy(decimals);
-  return balance.multipliedBy(decimals).toString();
+  return balance.multipliedBy(decimals).decimalPlaces(precision).toString();
 };
 
 export const BigNumberComparision = {
