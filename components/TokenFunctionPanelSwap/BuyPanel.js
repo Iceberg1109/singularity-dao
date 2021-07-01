@@ -223,12 +223,12 @@ const BuyPanel = () => {
       let value;
       if (fromCurrency === Currencies.ETH.id) {
         operation = uniswap.swapExactETHForTokens;
-        const amountOutMin = web3.utils.toWei(reduceSlippage(toAmount), "gwei");
+        const amountOutMin = fromFraction(reduceSlippage(toAmount), 9, 0); // 9 decimals for gwei
         const path = [route.path[0].address, route.path[1].address];
         const to = account;
         const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
         args = [amountOutMin, path, to, deadline];
-        value = web3.utils.toWei(fromAmount.toString(), "ether");
+        value = fromFraction(fromAmount, 18, 0)
       } else {
         await validateSDAOAllowanceForUniswap();
         operation = uniswap.swapTokensForExactETH;
