@@ -102,8 +102,9 @@ const RewardStakePanel = ({ token, dynasetid, address }) => {
     const LPtoken = new ethers.Contract(Currencies.SDAO.address, minABI, signer);
 
     let balance = await LPtoken.balanceOf(account);
+    const decimals = await LPtoken.callStatic.decimals();
 
-    balance = toFraction(balance.toString(), Currencies.SDAO.decimal, 8);
+    balance = toFraction(balance.toString(), decimals);
 
     const balanceComparedToStakeAmount = BigNumber(balance).comparedTo(BigNumber(fromCurrencyPrice));
 
@@ -111,7 +112,8 @@ const RewardStakePanel = ({ token, dynasetid, address }) => {
       balanceComparedToStakeAmount == BigNumberComparision.LESSER ||
       balanceComparedToStakeAmount == BigNumberComparision.NAN
     ) {
-      return toast("Insufficient Balance", { type: "error" });
+      toast("Insufficient Balance", { type: "error" });
+      return;
     } else {
       try {
         setapproving(true);

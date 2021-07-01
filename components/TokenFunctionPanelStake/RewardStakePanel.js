@@ -25,6 +25,8 @@ import { useRouter } from "next/router";
 import { Currencies } from "../../utils/currencies";
 import { toast } from "react-toastify";
 import { Spinner } from "reactstrap";
+import BigNumber from "bignumber.js";
+import { BigNumberComparision, toFraction } from "../../utils/balance";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -35,7 +37,7 @@ const FeeBlock = styled(Row)`
   padding: 8px 0;
 `;
 
-const RewardStakePanel = ({ token, dynasetid , id, address,currencyid }) => {
+const RewardStakePanel = ({ token, dynasetid, id, address, currencyid }) => {
   const [fromCurrency, setFromCurrency] = useState("ETH");
   const [fromCurrencyPrice, setFromCurrencyPrice] = useState("0");
   const [balance, setBalance] = useState(0);
@@ -52,91 +54,80 @@ const RewardStakePanel = ({ token, dynasetid , id, address,currencyid }) => {
   const [showStakeSuccessModal, setShowStakeSuccessModal] = useState(false);
   const router = useRouter();
 
-let minABI = [
-  // balanceOf
-  {
-    constant: true,
-    inputs: [{ name: "_owner", type: "address" }],
-    name: "balanceOf",
-    outputs: [{ name: "balance", type: "uint256" }],
-    type: "function",
-  },
-  // decimals
-  {
-    constant: true,
-    inputs: [],
-    name: "decimals",
-    outputs: [{ name: "", type: "uint8" }],
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        name: "_spender",
-        type: "address",
-      },
-      {
-        name: "_value",
-        type: "uint256",
-      },
-    ],
-    name: "approve",
-    outputs: [
-      {
-        name: "",
-        type: "bool",
-      },
-    ],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
-  const checkenoughtokens = async() =>{
+  let minABI = [
+    // balanceOf
+    {
+      constant: true,
+      inputs: [{ name: "_owner", type: "address" }],
+      name: "balanceOf",
+      outputs: [{ name: "balance", type: "uint256" }],
+      type: "function",
+    },
+    // decimals
+    {
+      constant: true,
+      inputs: [],
+      name: "decimals",
+      outputs: [{ name: "", type: "uint8" }],
+      type: "function",
+    },
+    {
+      constant: false,
+      inputs: [
+        {
+          name: "_spender",
+          type: "address",
+        },
+        {
+          name: "_value",
+          type: "uint256",
+        },
+      ],
+      name: "approve",
+      outputs: [
+        {
+          name: "",
+          type: "bool",
+        },
+      ],
+      payable: false,
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+  ];
+  const checkenoughtokens = async () => {
+    const signer = await library.getSigner(account);
 
-     const signer = await library.getSigner(account);
+    const LPtoken = new ethers.Contract(address, minABI, signer);
 
-     const LPtoken = new ethers.Contract(address, minABI, signer);
+    let balance = await LPtoken.balanceOf(account);
+    const decimals = await LPtoken.callStatic.decimals();
+    balance = toFraction(balance.toString(), decimals);
 
-     const balance = await LPtoken.balanceOf(account);
-     
-     console.log("balance");
-     console.log(web3.utils.fromWei(balance.toString()));
+    const balanceComparedToStakeAmount = BigNumber(balance).comparedTo(BigNumber(fromCurrencyPrice));
+    console.log("balanceComparedToStakeAmount", balanceComparedToStakeAmount);
+    // console.log("stakeAmount");
+    // console.log(stakeAmount);
 
-     const stakeAmount = parseFloat(fromCurrencyPrice); //
-     
-     console.log("stakeAmount");
-     console.log(stakeAmount);
+    //  console.log(BigNumber.from(fromCurrencyPrice.toString()) > balance);
 
-   //  console.log(BigNumber.from(fromCurrencyPrice.toString()) > balance);
-
-       if(web3.utils.fromWei(balance.toString()) < stakeAmount || web3.utils.fromWei("0")  >= stakeAmount){
-
-         return toast("Not enough tokens", { type: "error" });
-
-       } else {
-
-       try{
-          await approveTokens();
-        
-        } catch {
-         
-          toast("error: look console for details", { type: "error" });
-       }
-      
-     }
-
-
-  }
+    if (
+      balanceComparedToStakeAmount == BigNumberComparision.LESSER ||
+      balanceComparedToStakeAmount == BigNumberComparision.NAN
+    ) {
+      toast("Insufficient Balance", { type: "error" });
+      return;
+    } else {
+      await approveTokens();
+    }
+  };
   const stakeToken = async () => {
     if (!approved) {
       return toast("Please Approve before staking");
     }
 
     try {
-      
-      setapproving(true)
+      setapproving(true);
       const signer = await library.getSigner(account);
 
       const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
@@ -144,7 +135,6 @@ let minABI = [
       const stakeAmount = web3.utils.toWei(fromCurrencyPrice.toString()); //
       const gasPrice = await getGasPrice();
 
-      
       const tx = await stakingContract.deposit(id, stakeAmount, account, {
         gasLimit: defaultGasLimit,
         gasPrice,
@@ -155,43 +145,40 @@ let minABI = [
       const receipt = await tx.wait();
 
       console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-       setapproving(false);
-       setShowStakeSuccessModal(true);
+      setapproving(false);
+      setShowStakeSuccessModal(true);
     } catch (error) {
-       setapproving(false)
+      setapproving(false);
       console.log("error", error);
       alert("error: look console for details");
     }
   };
 
   const approveTokens = async () => {
-    try{
-      setapproving(true)
-     const signer = await library.getSigner(account);
-    
-    const lpToken = new ethers.Contract(address, DynasetABI, signer);
-   
-  
-    const gasPrice = await getGasPrice();
-    const tx = await lpToken.approve(ContractAddress.FARMING_REWARD, defaultApprovalAmount, {
-      gasLimit: defaultGasLimit,
-      gasPrice,
-    });
-    console.log(`Transaction hash: ${tx.hash}`);
-    const receipt = await tx.wait();
-    console.log(`Transaction was mined in block ${receipt.blockNumber}`);
-    
-    setApproved(true)
-    setapproving(false)
-    }catch{
-      setapproving(false)
-      toast("approve failed", { type: "error" })
-    }
- 
+    try {
+      setapproving(true);
+      const signer = await library.getSigner(account);
 
+      const lpToken = new ethers.Contract(address, DynasetABI, signer);
+
+      const gasPrice = await getGasPrice();
+      const tx = await lpToken.approve(ContractAddress.FARMING_REWARD, defaultApprovalAmount, {
+        gasLimit: defaultGasLimit,
+        gasPrice,
+      });
+      console.log(`Transaction hash: ${tx.hash}`);
+      const receipt = await tx.wait();
+      console.log(`Transaction was mined in block ${receipt.blockNumber}`);
+
+      setApproved(true);
+      setapproving(false);
+    } catch (error) {
+      toast(`Approval Failed: ${error.message}`, { type: "error" });
+    } finally {
+      setapproving(false);
+    }
   };
   const getPendingRewards = async () => {
-    
     const signer = await library.getSigner(account);
     const stakingContract = new ethers.Contract(ContractAddress.FARMING_REWARD, SDAOTokenStakingABI, signer);
     const poolId = 0;
@@ -201,7 +188,6 @@ let minABI = [
       gasPrice,
     });
 
-
     return rewards;
   };
 
@@ -210,14 +196,12 @@ let minABI = [
     if (!approved) {
       try {
         await checkenoughtokens();
-        
       } catch (error) {
         console.log("error", error);
         toast("error: look console for details");
       }
     } else {
-      await 
-      setShowStakeSuccessModal(true);
+      await setShowStakeSuccessModal(true);
     }
   };
 
@@ -239,16 +223,25 @@ let minABI = [
         <DefaultButton background="white" color="black" borderColor="black" onClick={() => router.push("/farms")}>
           Cancel
         </DefaultButton>
-        {!approved ? <GradientButton disabled={staking || approving} onClick={handleSubmit} >Approve {approving ? (
-            <span style={{ lineHeight: "35px" }}>
-              <Spinner color="white" size="sm" className="ml-2" />
-            </span>
-          ) : null}</GradientButton> : <GradientButton disabled={staking || approving} onClick={stakeToken} >Farm {approving ? (
-            <span style={{ lineHeight: "35px" }}>
-              <Spinner color="white" size="sm" className="ml-2" />
-            </span>
-          ) : null}</GradientButton>}
-   
+        {!approved ? (
+          <GradientButton disabled={staking || approving} onClick={handleSubmit}>
+            Approve
+            {approving ? (
+              <span style={{ lineHeight: "35px" }}>
+                <Spinner color="white" size="sm" className="ml-2" />
+              </span>
+            ) : null}
+          </GradientButton>
+        ) : (
+          <GradientButton disabled={staking || approving} onClick={stakeToken}>
+            Farm
+            {approving ? (
+              <span style={{ lineHeight: "35px" }}>
+                <Spinner color="white" size="sm" className="ml-2" />
+              </span>
+            ) : null}
+          </GradientButton>
+        )}
       </div>
       <StakeSuccessModal
         modalOpen={showStakeSuccessModal}
