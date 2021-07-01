@@ -26,3 +26,10 @@ export const fromFraction = (balance, decimals) => {
   decimals = BigNumber(10).exponentiatedBy(decimals);
   return balance.multipliedBy(decimals).toString();
 };
+
+export const BigNumberComparision = {
+  GREATER: 1,
+  LESSER: -1,
+  EQUAL: 0,
+  NAN: null,
+};
