@@ -15,7 +15,7 @@ import { unitBlockTime } from "../../utils/ethereum";
 import Web3 from "web3";
 import useInterval from "../../utils/hooks/useInterval";
 import { Currencies } from "../../utils/currencies";
-import countdown from "countdown";
+// import countdown from "countdown";
 
 const MainCard = styled(Card)`
   padding: 40px;
