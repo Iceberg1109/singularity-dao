@@ -190,7 +190,6 @@ const BuyPanel = () => {
     let allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
     allowance = BigNumber(allowance.toString());
     const amount = fromFraction(fromAmount, 18, 0);
-    debugger;
     if (allowance.comparedTo(BigNumber(amount)) !== BigNumberComparision.GREATER) {
       await approveTokens();
     }
@@ -235,11 +234,8 @@ const BuyPanel = () => {
       } else {
         await validateSDAOAllowanceForUniswap();
         operation = uniswap.swapTokensForExactETH;
-        debugger;
-        const amountOut = web3.utils.toWei(toAmount.toString(), "ether");
-        debugger;
-        const amountInMax = web3.utils.toWei(addSlippage(fromAmount), "ether"); // using ether for proper decimals
-        debugger;
+        const amountOut = fromFraction(toAmount, 18, 0);
+        const amountInMax = fromFraction(addSlippage(fromAmount), 18, 0);
         const path = [route.path[1].address, route.path[0].address];
         const to = account;
         const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
