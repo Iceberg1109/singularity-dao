@@ -3,6 +3,7 @@ import web3 from "web3";
 import { ethers } from "ethers";
 import { ContractAddress } from "../assets/constants/addresses";
 import { Currencies } from "./currencies";
+import BigNumber from "bignumber.js";
 
 export const getGasPrice = async () => {
   const url = "https://gasprice.poa.network/";
@@ -34,17 +35,23 @@ export const fetchSDAOBalance = async (account, signer) => {
  * @param {Number} slippage Slippage value in percentage
  * @returns {String}
  */
-export const addSlippage = (amount, slippage = Currencies.SDAO.slippagePercent) =>
-  (Number(amount) * (1 + slippage / 100)).toFixed(8);
+export const addSlippage = (amount, slippage = Currencies.SDAO.slippagePercent) => {
+  const mulFactor = 1 + slippage / 100;
+  return BigNumber(amount).multipliedBy(mulFactor).decimalPlaces(8).toString();
+};
 
 /**
  *
- * @param {String | Number} amount Amount to be adjusted for the slippage
+ * @param {BigNumber | String | Number} amount Amount to be adjusted for the slippage
  * @param {Number} slippage Slippage value in percentage
  * @returns {String}
  */
-export const reduceSlippage = (amount, slippage = Currencies.SDAO.slippagePercent) =>
-  (Number(amount) * (1 - slippage / 100)).toFixed(8);
+export const reduceSlippage = (amount, slippage = Currencies.SDAO.slippagePercent) => {
+  const mulFactor = 1 - slippage / 100;
+  return BigNumber(amount).multipliedBy(mulFactor).decimalPlaces(8).toString();
+};
+
+// (Number(amount) * (1 - slippage / 100)).toFixed(8);
 
 export const defaultGasLimit = 210000;
 export const defaultApprovalAmount = ethers.BigNumber.from(10).pow(28).toString(); // Inspired from UNISWAP default Approval
