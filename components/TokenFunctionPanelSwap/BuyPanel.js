@@ -228,7 +228,7 @@ const BuyPanel = () => {
         const to = account;
         const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
         args = [amountOutMin, path, to, deadline];
-        value = fromFraction(fromAmount, 18, 0)
+        value = fromFraction(fromAmount, 18, 0);
       } else {
         await validateSDAOAllowanceForUniswap();
         operation = uniswap.swapTokensForExactETH;
@@ -294,8 +294,8 @@ const BuyPanel = () => {
       return false;
     const allowance = BigNumber(fromTokenAllowance);
     if (allowance.isZero()) return true;
-    const amount = BigNumber(web3.utils.toWei(sanitizeNumber(fromAmount), "ether"));
-    return allowance.comparedTo(amount) !== 1;
+    const amount = fromFraction(fromAmount, 18, 0);
+    return allowance.comparedTo(BigNumber(amount)) !== 1;
   };
 
   return (
