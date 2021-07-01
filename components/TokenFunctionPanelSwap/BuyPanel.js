@@ -289,6 +289,7 @@ const BuyPanel = () => {
     if (fromCurrency === Currencies.ETH.id || !sanitizeNumber(fromAmount) || isNaN(sanitizeNumber(fromAmount)))
       return false;
     const allowance = BigNumber(fromTokenAllowance);
+    if (allowance.isZero()) return true;
     const amount = BigNumber(web3.utils.toWei(sanitizeNumber(fromAmount), "ether"));
     return allowance.comparedTo(amount) !== 1;
   };
@@ -341,7 +342,7 @@ const BuyPanel = () => {
       <div className="d-flex justify-content-center mt-4">
         <GradientButton
           onClick={handleSwapping}
-          disabled={swapping || approving}
+          disabled={swapping || approving || showApproval()}
           style={{ width: 130, height: 56 }}
           className="d-flex align-middle justify-content-center"
         >

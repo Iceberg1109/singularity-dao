@@ -276,6 +276,7 @@ const AddLiquidityPanel = ({ tokens }) => {
   const showApproval = () => {
     if (!sanitizeNumber(fromAmount) || isNaN(sanitizeNumber(fromAmount))) return false;
     const allowance = BigNumber(fromTokenAllowance);
+    if (allowance.isZero()) return true;
     const amount = fromFraction(fromAmount, token0Data?.decimals);
     console.log("showApproval allowance", allowance.toString());
     console.log("showApproval amount", amount);
@@ -316,7 +317,7 @@ const AddLiquidityPanel = ({ tokens }) => {
         <div className="d-flex justify-content-center">
           <GradientButton
             onClick={approveTokens}
-            disabled={!toAmount || addingLiquidity || approving}
+            disabled={addingLiquidity || approving}
             style={{ width: 186, height: 56 }}
             className="d-flex align-middle justify-content-center"
           >
