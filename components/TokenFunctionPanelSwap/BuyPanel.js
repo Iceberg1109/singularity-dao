@@ -33,7 +33,7 @@ import { sanitizeNumber } from "../../utils/input";
 import useInterval from "../../utils/hooks/useInterval";
 import BigNumber from "bignumber.js";
 import PendingTxn from "../PendingTxn";
-import { fromFraction } from "../../utils/balance";
+import { BigNumberComparision, fromFraction } from "../../utils/balance";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -187,8 +187,11 @@ const BuyPanel = () => {
     const signer = await library.getSigner(account);
     const sdaoToken = getErc20TokenById(Currencies.SDAO.id, { signer });
 
-    const allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
-    if (allowance.lte(web3.utils.toWei(fromAmount, "ether"))) {
+    let allowance = await sdaoToken.allowance(account, ContractAddress.UNISWAP);
+    allowance = BigNumber(allowance.toString());
+    const amount = fromFraction(fromAmount, 18, 0);
+    debugger;
+    if (allowance.comparedTo(BigNumber(amount)) !== BigNumberComparision.GREATER) {
       await approveTokens();
     }
   };
@@ -232,8 +235,11 @@ const BuyPanel = () => {
       } else {
         await validateSDAOAllowanceForUniswap();
         operation = uniswap.swapTokensForExactETH;
+        debugger;
         const amountOut = web3.utils.toWei(toAmount.toString(), "ether");
+        debugger;
         const amountInMax = web3.utils.toWei(addSlippage(fromAmount), "ether"); // using ether for proper decimals
+        debugger;
         const path = [route.path[1].address, route.path[0].address];
         const to = account;
         const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
