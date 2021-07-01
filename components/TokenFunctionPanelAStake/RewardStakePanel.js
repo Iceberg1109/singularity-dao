@@ -116,9 +116,9 @@ const RewardStakePanel = ({ token, dynasetid, address }) => {
       try {
         setapproving(true);
         await approveTokens();
-      } catch {
+      } catch (error) {
         setapproving(false);
-        toast("error: look console for details", { type: "error" });
+        toast(`Approval Failed: ${error.message}`, { type: "error" });
       }
     }
   };
