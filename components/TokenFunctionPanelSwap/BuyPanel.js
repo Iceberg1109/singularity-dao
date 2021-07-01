@@ -33,6 +33,7 @@ import { sanitizeNumber } from "../../utils/input";
 import useInterval from "../../utils/hooks/useInterval";
 import BigNumber from "bignumber.js";
 import PendingTxn from "../PendingTxn";
+import { fromFraction } from "../../utils/balance";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -103,13 +104,16 @@ const BuyPanel = () => {
   };
 
   const getConversionRate = (value, type = conversionTypes.FROM) => {
-    if (!swappingRoute) return;
-
+    if (!swappingRoute) return 0;
+    if (isNaN(Number(value))) return 0;
     const { fromToken, toToken } = getTokens();
     const tradeToken = type === conversionTypes.FROM ? fromToken : toToken;
     const tradeType = type === conversionTypes.FROM ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT;
 
-    const trade = new Trade(swappingRoute, new TokenAmount(tradeToken, web3.utils.toWei(value.toString())), tradeType);
+    const fromValue = fromFraction(value, 18, 0);
+    if (BigNumber(fromValue).isZero()) return 0;
+
+    const trade = new Trade(swappingRoute, new TokenAmount(tradeToken, fromValue), tradeType);
     console.log("trade.executionPrice", trade.executionPrice.toSignificant(6));
     setConversionRate(trade.executionPrice.toSignificant(6));
     return trade.executionPrice.toSignificant(6);
