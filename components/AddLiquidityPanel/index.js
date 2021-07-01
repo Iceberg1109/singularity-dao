@@ -86,9 +86,7 @@ const AddLiquidityPanel = ({ tokens }) => {
     if (!token0Data) return;
     let allowance = await token0Data.contract.allowance(account, ContractAddress.UNISWAP);
     allowance = BigNumber(allowance.toString());
-    const amount = fromFraction(allowance, token0Data?.decimals);
-
-    setFromTokenAllowance(amount.toString());
+    setFromTokenAllowance(allowance.toString());
   };
 
   const getTokens = useCallback(() => {
