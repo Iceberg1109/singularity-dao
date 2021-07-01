@@ -21,6 +21,7 @@ import { useQuery } from "@apollo/client";
 import { ETH_PRICE_QUERY } from "../../queries/price";
 import AddLiquiditySuccessModal from "./AddLiquiditySuccessModal";
 import IUniswapV2ERC20 from "@uniswap/v2-core/build/IUniswapV2ERC20.json";
+import PendingTxn from "../PendingTxn";
 
 const conversionTypes = { FROM: "FROM", TO: "TO" };
 
@@ -32,7 +33,7 @@ const AddLiquidityPanel = ({ tokens }) => {
   const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
   const { library, account, network, chainId } = useUser();
-  const [pendingTxn, setPendingTxn] = useState();
+  const [pendingTxn, setPendingTxn] = useState(undefined);
   const [addingLiquidity, setAddingLiquidity] = useState(false);
   const [approving, setApproving] = useState(false);
   const [swappingRoute, setSwappingRoute] = useState(undefined);
@@ -86,9 +87,7 @@ const AddLiquidityPanel = ({ tokens }) => {
     if (!token0Data) return;
     let allowance = await token0Data.contract.allowance(account, ContractAddress.UNISWAP);
     allowance = BigNumber(allowance.toString());
-    const amount = fromFraction(allowance, token0Data?.decimals);
-
-    setFromTokenAllowance(amount.toString());
+    setFromTokenAllowance(allowance.toString());
   };
 
   const getTokens = useCallback(() => {
@@ -175,7 +174,7 @@ const AddLiquidityPanel = ({ tokens }) => {
 
   const approveTokens = async () => {
     try {
-      setApproving(true)
+      setApproving(true);
       if (!token0Data) return;
       const txn = await token0Data.contract.approve(ContractAddress.UNISWAP, defaultApprovalAmount);
       setPendingTxn(txn.hash);
@@ -345,21 +344,7 @@ const AddLiquidityPanel = ({ tokens }) => {
           ) : null}
         </GradientButton>
       </div>
-      {pendingTxn ? (
-        <Typography color="text1" className="mt-2">
-          Pending:&nbsp;
-          <a
-            href={`https://${chainId === 1 ? "" : network.toLowerCase() + "."}etherscan.io/tx/${pendingTxn}`}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            {pendingTxn}
-            <span className="ml-2">
-              <i className="fas fa-external-link-alt"></i>
-            </span>
-          </a>
-        </Typography>
-      ) : null}
+      <PendingTxn txn={pendingTxn} />
       <AddLiquiditySuccessModal
         modalOpen={showSuccessModal}
         setModalOpen={handleModalClose}

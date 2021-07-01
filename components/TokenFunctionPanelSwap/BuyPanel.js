@@ -32,6 +32,7 @@ import { toast } from "react-toastify";
 import { sanitizeNumber } from "../../utils/input";
 import useInterval from "../../utils/hooks/useInterval";
 import BigNumber from "bignumber.js";
+import PendingTxn from "../PendingTxn";
 
 const FeeBlock = styled(Row)`
   border-top: ${({ theme }) => `1px solid ${theme.color.grayLight}`};
@@ -56,7 +57,7 @@ const BuyPanel = () => {
   const [fromAmount, setFromAmount] = useState("0");
   const [swapping, setSwapping] = useState(false);
   const [approving, setApproving] = useState(false);
-  const [pendingTxn, setPendingTxn] = useState();
+  const [pendingTxn, setPendingTxn] = useState(undefined);
   const [fromCurrency, setFromCurrency] = useState(Currencies.ETH.id);
   const [toCurrency, setToCurrency] = useState(Currencies.SDAO.id);
   const [fromTokenAllowance, setFromTokenAllowance] = useState("0");
@@ -130,8 +131,8 @@ const BuyPanel = () => {
 
     if (!value) return resetAmounts();
     if (value === ".") return setFromAmount("0.");
-    if(`${value}`.charAt(0) === "."){
-      value = `0${value}`
+    if (`${value}`.charAt(0) === ".") {
+      value = `0${value}`;
     }
     // CONVERSION
     setFromAmount(value);
@@ -147,8 +148,8 @@ const BuyPanel = () => {
 
     if (!value) return resetAmounts();
     if (value === ".") return setToAmount("0.");
-    if(`${value}`.charAt(0) === "."){
-      value = `0${value}`
+    if (`${value}`.charAt(0) === ".") {
+      value = `0${value}`;
     }
     // CONVERSION
     setToAmount(value);
@@ -352,21 +353,7 @@ const BuyPanel = () => {
           ) : null}
         </GradientButton>
       </div>
-      {pendingTxn ? (
-        <Typography color="text1" className="mt-2">
-          Pending:&nbsp;
-          <a
-            href={`https://${chainId === 1 ? "" : network.toLowerCase() + "."}etherscan.io/tx/${pendingTxn}`}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            {pendingTxn}
-            <span className="ml-2">
-              <i className="fas fa-external-link-alt"></i>
-            </span>
-          </a>
-        </Typography>
-      ) : null}
+      <PendingTxn txn={pendingTxn} />
       <SwapSuccessModal
         modalOpen={showSuccessModal}
         setModalOpen={handleModalClose}

@@ -50,6 +50,7 @@ export function colors(darkMode) {
 
     link1: darkMode ? "#00E6CC" : "#7800FF",
     violet0: darkMode ? "#F3F1FF" : "#F3F1FF",
+    light: darkMode ? "#F7F9FB" : "#F7F9FB",
 
     // default colors
     text10: darkMode ? "#ffffff" : "#000000",
